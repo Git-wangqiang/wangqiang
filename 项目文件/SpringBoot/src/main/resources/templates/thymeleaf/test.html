@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:src="@{/static/js/11.js}"></script>
+</head>
+<body>
+    <div>
+
+        用户姓名：<input th:id="${user.name}" th:name="${user.name}" th:value="${user.name}"/>
+        <br/>
+        用户生日：<input th:value="${user.birthDay}">
+        <br/>
+        用户年龄：<input th:value="${user.age}">
+
+    </div>
+<br/>
+
+<span th:text="${user.desc}">aaa</span>
+    <br/>
+
+    <span th:utext="${user.desc}">aaa</span>
+
+
+<br>
+
+<form th:action="@{/th/postForm}" th:object="${user}" method="post" th:method="post">
+    <input type="text" th:field="*{name}"/>
+    <input type="submit">
+</form>
+
+<select>
+
+
+    <option>选择框</option>
+    <option th:selected="${user.name eq 'lee'}">lee</option>
+    <option th:selected="${user.name eq 'wang'}">wang</option>
+    <option th:selected="${user.name eq 'zhang'}">zhang</option>
+    <option></option>
+</select>
+</body>
+</html>
