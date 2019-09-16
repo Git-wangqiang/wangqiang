@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ The MIT License (MIT)
+  ~
+  ~ Copyright (c) 2014-2016 abel533@gmail.com
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in
+  ~ all copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  ~ THE SOFTWARE.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wmyskxz.springboot.mapper.SysPermissionMapper">
+    <!--    <resultMap id="BaseResultMap" type="cn.wmyskxz.springboot.pojo.UserInfo">
+            <result column="id" jdbcType="INTEGER" property="id"/>
+            <result column="student_id" jdbcType="VARCHAR" property="student_id"/>
+            <result column="name" jdbcType="VARCHAR" property="name"/>
+            <result column="age" jdbcType="VARCHAR" property="age"/>
+            <result column="sex" jdbcType="VARCHAR" property="sex"/>
+            <result column="birthday" jdbcType="VARCHAR" property="birthday"/>
+        </resultMap>-->
+    <select id="findPermissionByRoleId" resultType="cn.wmyskxz.springboot.pojo.SysPermission"
+            parameterType="cn.wmyskxz.springboot.pojo.SysRole">
+            SELECT
+	         *
+            FROM
+	        sys_permission a
+            WHERE
+	        a.id IN ( SELECT permission_id FROM sys_role_permission b WHERE b.role_id = #{id} )
+        </select>
+
+    <select id="userManagerPermissionSelect" resultType="cn.wmyskxz.springboot.mo.PermissionResponseMO">
+        select * from sys_permission a
+        where 1=1 order by a.order asc
+    </select>
+
+    <update id="updatePerbyId" parameterType="java.lang.Integer">
+        update sys_permission
+        set sys_permission.name = #{name},sys_permission.order = #{order},sys_permission.parentmenuname = #{parentmenuname}
+        <if test="url != null and url != '' ">,url=#{url}</if>
+        where id = #{id}
+    </update>
+
+</mapper>

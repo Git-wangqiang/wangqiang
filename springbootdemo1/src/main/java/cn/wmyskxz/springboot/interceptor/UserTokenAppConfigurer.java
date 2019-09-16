@@ -1,0 +1,26 @@
+
+package cn.wmyskxz.springboot.interceptor;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+@Component
+public class UserTokenAppConfigurer extends WebMvcConfigurerAdapter {
+
+
+    @Autowired
+    private UserLoginInterceptor userLoginInterceptor;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        // 多个拦截器组成一个拦截器链
+        // addPathPatterns 用于添加拦截规则
+        // excludePathPatterns 用户排除拦截
+        registry.addInterceptor(userLoginInterceptor).addPathPatterns("/html/**");
+        super.addInterceptors(registry);
+    }
+
+}

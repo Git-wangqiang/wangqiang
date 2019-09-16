@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/layui.css">
+    <link href="../css/main.css">
+    <style>
+        h3 {
+            text-align: center;
+            margin: 10px;
+        }
+
+        .diy {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px;
+            line-height: 50px;
+        }
+
+        /*   .diya {
+               background-color: #eeeeee;
+           }*/
+    </style>
+</head>
+<body>
+<h3>excle导入导出</h3>
+<hr class="layui-bg-black">
+
+<div class="layui-col-md12">
+
+
+    <div class="layui-form-item" style="height: 30px;margin-top: 30px;">
+        <div class="layui-inline">
+            <label class="layui-form-label cxlable">上传excle:</label>
+            <div class="layui-input-inline colformstyle" style="width: 200px;">
+                <input type="text" name="" autocomplete="off"
+                       class="layui-input colformstyle" style="height: 30px;" id="fileinfo">
+            </div>
+        </div>
+        <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="uploadexcle"><i
+                class="layui-icon"></i>选择excle
+        </button>
+        <div class="layui-col-md12 diy">
+            <div class="diya">
+                <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="daoru">导入</button>
+
+                <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" onclick="downloadmoban();">下载模板
+                </button>
+
+                <button type="button" class="layui-btn  layui-btn-sm">导出数据</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</div>
+
+<script type="text/javascript" src="../js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="../js/main.js"></script>
+<script src="../js/layui.all.js"></script>
+<script>
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element', 'laypage', 'form', 'laydate', 'upload'], function () {
+        element = layui.element;
+        laypage = layui.laypage;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var upload = layui.upload;
+        laydate.render({
+            elem: '#rznf'
+            , change: function (value, date, endDate) {
+                console.log(value); //得到日期生成的值，如：2017-08-18
+                console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+            }
+        });
+        //指定允许上传的文件类型
+        upload.render({
+            elem: '#uploadexcle'
+            , url: '/api/importexcel'
+            , accept: 'file' //普通文件
+            , acceptMime: 'file/xls,file/xlsx'
+            , auto: false
+            , bindAction: '#daoru'
+            , multiple: false//不允许多文件上传
+            , choose: function (obj) {
+                //将每次选择的文件追加到文件队列
+                var files = obj.pushFile();
+                //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                obj.preview(function (index, file, result) {
+                    $('#fileinfo').val(file.name + "大小:" + file.size);   //得到文件索引
+                    console.log(file); //得到文件对象
+                    console.log(result); //得到文件base64编码，比如图片用
+                });
+            }
+            , done: function (res) {
+                //返回成功
+                if (res.code == 200) {
+                    //假设这是iframe页
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                    parent.location.reload();
+                    parent.layer.msg("导入成功");
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

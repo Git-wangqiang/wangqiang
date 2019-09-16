@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>长治数据上报综合管理系统</title>
+    <link rel="stylesheet" href="../css/layui.css">
+    <link href="../css/main.css">
+    <style>
+        body, td, th, label {
+            font-size: 12px;
+            color: #1d1007;
+            line-height: 24px
+        }
+    </style>
+</head>
+
+<body onload="cd()">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-bg-black">
+        <div class="layui-row layui-col-md10">
+            <h1 align="center" class="title-index" style="float: left;">&nbsp;<i
+                    class="layui-icon layui-icon-template-1"></i>&nbsp;长治数据上报综合管理系统
+            </h1>
+        </div>
+        <div class="layui-row layui-col-md2" id="loginusername" style="float: left;">
+            <!-- <a href="" style="color: white;margin: auto;position:relative" class="title-index">退出</a>-->
+            <ul class="layui-nav">
+                <div class="pagefix">
+                    <li class="layui-nav-item">
+                        <!--<a href=""><img src="//t.cn/RCzsdCq" class="layui-nav-img">我</a>-->
+                        <a href=""><i class="layui-icon layui-icon-user" style="font-size: 16px;"></i>&nbsp;我</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">修改信息</a></dd>
+                            <dd><a href="javascript:;">退了</a></dd>
+                        </dl>
+                    </li>
+                </div>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-side layui-bg-black diy3">
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+            <li class="layui-nav-item" id="dtcd">
+            </li>
+        </ul>
+
+    </div>
+
+    <div class="bstyle">
+        <div class="layui-body">
+
+            <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">角色信息</li>
+                    <li>分配角色</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <div class="layui-col-md12">
+                            <table id="xitongshezhit" lay-filter="xtsz" lay-data="{id:'reldata')"></table>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">
+                        <div class="layui-row layui-form">
+                            <fieldset class="layui-elem-field layui-field-title">
+                                <legend>角色信息</legend>
+                                <input type="hidden" id="privilege"/>
+                                <div class="layui-field-box">
+                                    <div class="layui-form-item" id="gettreeselect">
+                                        <!--<label class="layui-form-label">角色名称</label>
+                                        <div class="layui-input-block">
+                                            <select name="city" lay-verify="required">
+                                                <option value=""></option>
+                                                <option value="0">北京</option>
+                                                <option value="1">上海</option>
+                                                <option value="2">广州</option>
+                                                <option value="3">深圳</option>
+                                                <option value="4">杭州</option>
+                                            </select>
+                                        </div>-->
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">备注</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="remark" id="remark" class="layui-input"
+                                                   placeholder="备注"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                                <legend>开启复选框</legend>
+                            </fieldset>
+                            <div id="test7" class="demo-tree"></div>
+                            <div class="layui-form-item" style="text-align: center">
+                                <button class="layui-btn layui-btn-sm" onclick="updaterole();">保存</button>
+                                <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="x_admin_close()">取消
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<!--<script src="../js/layui.js"></script>-->
+<script type="text/javascript" src="../js/jquery-1.8.0.min.js"></script>
+<script src="../js/main.js"></script>
+<!--引入lay-->
+<script src="../js/layui.all.js"></script>
+
+
+<!--依赖于lay的js-->
+<script>
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element', 'laypage', 'form', 'laydate', 'upload', 'table'], function () {
+        element = layui.element;
+        laypage = layui.laypage;
+        form = layui.form;
+        var laydate = layui.laydate;
+        var upload = layui.upload;
+        var table = layui.table;
+        tree = layui.tree;
+        var util = layui.util;
+        var tableins = table.render({
+                elem: '#xitongshezhit'
+                //, toolbar: '#titleTpl'
+                , tool: "#titleTpl"
+                , toolbar: false
+                , height: 500
+                , width: 1300
+                , even: true
+                , url: '/api/selectrolepage' //数据接口
+                , page: true //开启分页
+                , done: function (res, curr, count) {
+                    console.log(res);
+                    console.log(curr);
+                    console.log(count);
+                }
+                , method: 'post'
+                , contentType: 'application/json'
+                , cols: [[ //表头
+                    {field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left', align: 'center'}
+                    , {field: 'acailable', title: '是否有效', align: 'center'}
+                    , {field: 'description', title: '角色名称', sort: true, align: 'center'}
+                    , {field: 'role', title: '角色', align: 'center'}
+                    , {field: 'caozuo', title: '操作', width: 280, templet: '#titleTpl', align: 'center'}
+                ]]
+            })
+        ;
+        table.on('tool(xtsz)', function (obj) {
+            var layEvent = obj.event;
+            var data = obj.data; //获得当前行数据
+            var u = "/api/deldataByid";
+            if (layEvent == 'delete') {
+                var ms = delthis(data.id, u);
+                tableins.reload({
+                    where: {rdnf: null, mc: null, yyzt: null, pageNum: 1, pageSize: 10}, page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                });
+                layer.msg("删除成功");
+            } else {
+                layer.msg('修改成功');
+            }
+        });
+        var treedata = gettreedata();
+        var treeselect = gettreeselect();
+        tree.render({
+            elem: '#test7'
+            , id: 'demoId'
+            , data: [{
+                title: '早餐'
+                , id: 1
+                , spread: true
+                , children: [{
+                    title: '油条'
+                    , id: 5,
+                    disabled: false
+                }, {
+                    title: '包子'
+                    , id: 6
+                }, {
+                    title: '豆浆'
+                    , id: 7
+                }]
+            }, {
+                title: '午餐'
+                , id: 2
+                , spread: true
+                , children: [{
+                    title: '藜蒿炒腊肉'
+                    , id: 8
+                }, {
+                    title: '西湖醋鱼'
+                    , id: 9
+                }, {
+                    title: '小白菜'
+                    , id: 10
+                }, {
+                    title: '海带排骨汤'
+                    , id: 11
+                }]
+            }]
+            , showCheckbox: true
+        });
+    });
+</script>
+
+<script type="text/html" id="titleTpl">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
+        <button class="layui-btn layui-btn-sm" lay-event="update">编辑</button>
+    </div>
+</script>
+<script type="text/html" id="offon">
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <input type="checkbox" name="switch" lay-skin="switch">
+        </div>
+    </div>
+</script>
+
+
+<style>
+    .title-index {
+        line-height: 60px;
+    }
+
+    .pagefix {
+        float: right;
+        margin-right: 20px;
+    }
+
+    .bstyle {
+        float: left;
+        margin-top: 30px;
+        margin-right: 20px;
+        text-align: center;
+    }
+
+    .box1 {
+        margin-top: 30px;
+    }
+
+</style>
+</body>
+</html>

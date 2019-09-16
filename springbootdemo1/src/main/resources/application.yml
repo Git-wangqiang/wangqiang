@@ -1,0 +1,40 @@
+server:
+    port: 8080
+spring:
+#  mvc:
+#     view:
+#        prefix: /WEB-INF/views/
+#        suffix: .jsp
+  view:
+        prefix: /WEB-INF/views
+        suffix: .html
+  datasource:
+        url: jdbc:mysql://localhost:3306/sbxt?useUnicode=true&characterEncoding=utf-8&useSSL=false
+        username: root
+        password: 123456
+        driver-class-name: com.mysql.jdbc.Driver
+  output:
+        ansi:
+          enabled: always  #启用日志颜色
+mybatis:
+    type-aliases-package: cn.wmyskxz.springboot.pojo
+    mapper-locations: classpath:mapper/*.xml
+    configuration:
+        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+        use-generated-keys: true
+
+
+
+logging:
+  level:
+     cn.wmyskxz.springboot.mapper : info
+ # file: ./logs/×××.logs
+#  pattern:
+ #   console: %d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %clr(%logger){cyan} %clr(%msg%n){green}
+ #   file: %d{yyyy/MM/dd-HH:mm} [%thread] %-5level %logger- %msg%n
+#分页插件
+pagehelper:
+  helper-dialect: mysql
+  params : count=countSql
+  reasonable: true
+  support-methods-arguments: true

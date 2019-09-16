@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wmyskxz.springboot.mapper.UserMapper">
+
+
+    <insert id="setTokenId" parameterType="cn.wmyskxz.springboot.pojo.UserToken">
+        INSERT INTO rbacusertoken(userid,tokenId,updatetime)
+        VALUES (#{userId},#{tokenId},#{updatetime})
+    </insert>
+
+    <select id="getTimeByToken" parameterType="java.lang.String" resultType="cn.wmyskxz.springboot.pojo.UserToken">
+      select a.updatetime from rbacusertoken a where a.tokenid = #{token}
+    </select>
+
+
+    <update id="updateTimeByToken" parameterType="cn.wmyskxz.springboot.pojo.UserToken">
+          update rbacusertoken a set a.updatetime = #{updatetime} where a.tokenid = #{tokenId}
+    </update>
+
+
+    <delete id="deleteUserTokenByUser" parameterType="java.lang.Long">
+        DELETE FROM RBACUSERTOKEN WHERE userid=#{userId}
+    </delete>
+    <delete id="deleteUserToken" parameterType="java.lang.String">
+        DELETE FROM RBACUSERTOKEN WHERE tokenId=#{tokenId}
+    </delete>
+    <select id="getUserToken" resultType="java.lang.Integer">
+        select COUNT(*) FROM rbacusertoken
+    </select>
+
+    <select id="getUserByToken" parameterType="java.lang.String" resultType="cn.wmyskxz.springboot.pojo.User">
+        select * from rbacuser t,rbacusertoken ut
+        where ut.userid = t.userid AND ut.tokenid = #{tokenId}
+    </select>
+
+
+    <update id="updateUser" parameterType="cn.wmyskxz.springboot.pojo.User">
+        update rbacuser
+        set updatedby=#{updatedBy},updatedon=#{updatedOn}
+        <if test="branchCode != null">,branchcode=#{branchCode}</if>
+        <if test="branchName != null">,branchname=#{branchName}</if>
+        <if test="userCode != null">,usercode=#{userCode}</if>
+        <if test="userName != null">,username=#{userName}</if>
+        <if test="userLoginCode != null">,userlogincode=#{userLoginCode}</if>
+        <if test="password != null">,password=#{password}</if>
+        where userid = #{userId}
+    </update>
+    <delete id="deleteUser" parameterType="java.lang.Long">
+        DELETE FROM rbacuser WHERE userid=#{userId}
+    </delete>
+
+    <select id="findByLoginCode" parameterType="java.lang.String" resultType="cn.wmyskxz.springboot.pojo.User">
+        select * from rbacuser t
+        where  t.userlogincode = #{userLoginCode}
+    </select>
+
+    <resultMap id="user" type="cn.wmyskxz.springboot.pojo.User">
+        <id column="userid" property="userId"/>
+        <result column="username" property="userName"/>
+        <result column="usercode" property="userCode"/>
+        <result column="branchcode" property="branchCode"/>
+    </resultMap>
+
+    <select id="getNuclearMedicine" parameterType="java.lang.String" resultType="cn.wmyskxz.springboot.pojo.User">
+       select * from RBACUSER b,rbacuserrole r
+       where b.userid=r.userid and r.roleid=3 and r.regioncode = #{code}
+    </select>
+
+    <select id="findByUserId" parameterType="java.lang.Long" resultType="cn.wmyskxz.springboot.pojo.User">
+        select * from rbacuser t
+        where  t.userid = #{userId}
+    </select>
+</mapper>

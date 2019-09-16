@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>长治数据上报综合管理系统</title>
+    <link rel="stylesheet" href="../css/layui.css">
+    <link href="../css/main.css">
+    <style>
+        body, td, th, label {
+            font-size: 12px;
+            color: #1d1007;
+            line-height: 24px
+        }
+    </style>
+</head>
+
+<body onload="cd()">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-bg-black">
+        <div class="layui-row layui-col-md10">
+            <h1 align="center" class="title-index" style="float: left;">&nbsp;<i
+                    class="layui-icon layui-icon-template-1"></i>&nbsp;长治数据上报综合管理系统
+            </h1>
+        </div>
+        <div class="layui-row layui-col-md2" id="loginusername" style="float: left;">
+            <!-- <a href="" style="color: white;margin: auto;position:relative" class="title-index">退出</a>-->
+            <ul class="layui-nav">
+                <div class="pagefix">
+                    <li class="layui-nav-item">
+                        <!--<a href=""><img src="//t.cn/RCzsdCq" class="layui-nav-img">我</a>-->
+                        <a href=""><i class="layui-icon layui-icon-user" style="font-size: 16px;"></i>&nbsp;我</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">修改信息</a></dd>
+                            <dd><a href="javascript:;">退了</a></dd>
+                        </dl>
+                    </li>
+                </div>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-side layui-bg-black diy3">
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+            <li class="layui-nav-item" id="dtcd">
+            </li>
+        </ul>
+
+    </div>
+
+    <div class="bstyle">
+        <div class="layui-body">
+            <div class="layui-col-md12">
+
+
+                <div class="layui-form-item box1" style="height: 30px; padding:5px;">
+                    <form id="formstyle" method="post" class="layui-form layui-form-pane">
+                        <div class="layui-inline">
+                            <label class="layui-form-label cxlable">用户名:</label>
+                            <div class="layui-input-inline colformstyle"
+                                 style="width: 200px; line-height: 30px">
+                                <input type="text" name="username" autocomplete="off"
+                                       class="layui-input colformstyle rdnf" id="username">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label cxlable">电话:</label>
+                            <div class="layui-input-inline colformstyle" style="width: 200px;">
+                                <input type="text" name="telephone" autocomplete="off"
+                                       class="layui-input colformstyle mc" id="telephone">
+                            </div>
+                        </div>
+                        <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="chaxun">查询
+                        </button>
+                        <button type="button"
+                                class="layui-btn layui-btn-primary layui-btn-sm" id="xinzeng">新增
+                        </button>
+                        <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+                    </form>
+                </div>
+                <table id="usermanager" lay-filter="xtsz" lay-data="{id:'reldata')"></table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<!--<script src="../js/layui.js"></script>-->
+<script type="text/javascript" src="../js/jquery-1.8.0.min.js"></script>
+<script src="../js/main.js"></script>
+<!--引入lay-->
+<script src="../js/layui.all.js"></script>
+
+
+<!--依赖于lay的js-->
+<script>
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element', 'laypage', 'form', 'laydate', 'upload', 'table'], function () {
+        element = layui.element;
+        laypage = layui.laypage;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var upload = layui.upload;
+        var table = layui.table;
+        var layer = layui.layer;
+        laydate.render({
+            elem: '#rznf'
+            , change: function (value, date, endDate) {
+                console.log(value); //得到日期生成的值，如：2017-08-18
+                console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+            }
+        });
+        var uploadInst = upload.render({
+            elem: '#shangchuan' //绑定元素
+            , url: '/upload/' //上传接口
+            , done: function (res) {
+                //上传完毕回调
+            }
+            , error: function () {
+                //请求异常回调
+            }
+        });
+        var tableins = table.render({
+            elem: '#usermanager'
+            //, toolbar: '#titleTpl'
+            , tool: "#titleTpl"
+            , toolbar: false
+            , height: 500
+            , width: 1300
+            , even: true
+            , url: '/api/usermanagerselect' //数据接口
+            , page: true //开启分页
+            , done: function (res, curr, count) {
+                console.log("iiiiii" + res);
+                console.log(curr);
+                console.log("file" + res.field);
+            }
+            , request: {
+                page: 1 //页码的参数名称，默认：page
+                , limit: 10 //每页数据量的参数名，默认：limit
+                , username: '',
+                telephone: ''
+            }
+            , method: 'post'
+            , contentType: 'application/json'
+            , cols: [[ //表头
+                {field: 'id', width: 80, sort: true, fixed: 'left', align: 'center', type: 'checkbox'}
+                , {field: 'username', title: '用户名', align: 'center'}
+                , {field: 'telephone', title: '电话', sort: true, align: 'center'}
+                , {field: 'description', title: '角色', align: 'center'}
+                , {field: 'updatedate', title: '更新时间', align: 'center'}
+                , {field: 'salt', title: '是否有效', align: 'center'}
+                , {field: 'caozuo', title: '操作', width: 280, templet: '#titleTpl', align: 'center'},
+                {field: 'roleid', title: 'roleid', hide: true},
+                {field: 'saltstatus', title: 'saltstatus', hide: true}
+            ]]
+        });
+
+
+        $("#chaxun").click(function () {
+            tableins.reload({
+                where: {
+                    username: $('#username').val(),
+                    telephone: $('#telephone').val()
+                }
+            });
+
+        });
+
+        $("#xinzeng").click(function () {
+            var str = "";
+            var str1 = "";
+            $.ajax({
+                type: "post",
+                contentType: 'application/json',
+                dataType: "json",
+                url: "/api/selectrole",
+                data: JSON.stringify({name: 123}),
+                success: function (data) {
+                    console.log(data);
+                    if (data.isSuccess == true) {
+                        layer.open({
+                            type: 1,
+                            content: $("#adduser").html(),
+                            title: '新增用户',
+                            area: ['500px', '450px']
+                        });
+                        var d = data.data;
+                        str += "<label class=\"layui-form-label\">角色</label><div class=\"layui-input-block\"><select name=\"roleid\" lay-verify=\"required\"><option value=\"\"></option>";
+                        for (i = 0; i < d.length; i++) {
+                            str += "<option value=\"" + d[i].id + "\">" + d[i].description + "</option>";
+                        }
+                        str += "</select></div>";
+                        var aa = document.getElementById("rolesxlk");
+                        str1 += "<label class=\"layui-form-label\">是否有效</label> <div class=\"layui-input-block\"> <select name=\"salt\" lay-verify=\"required\"> <option value=\"\"></option> <option value=\"0\">无效</option> <option value=\"1\">有效</option> </select> </div>";
+
+                        aa.innerHTML = str;
+                        document.getElementById("isok").innerHTML = str1;
+                        form.render('select');
+                    } else {
+                        layer.msg("操作失败");
+                    }
+                },
+                error: function () {
+                    alert(data.errorMessage);
+                }
+            });
+
+        });
+
+
+        //删除
+        table.on('tool(xtsz)', function (obj) {
+            var layEvent = obj.event;
+            var data = obj.data; //获得当前行数据
+            var u = "/api/deleteuserbyid";
+            if (layEvent == 'delete') {
+                layer.confirm('是否删除', {icon: 3, title: '消息'}, function (index) {
+                    var ms = delthis(data.id, u);
+                    tableins.reload();
+                    layer.alert('删除成功', {icon: 1});
+                });
+            } else {
+                layer.open({
+                    type: 1,
+                    content: $("#editxinxi").html(),
+                    title: '修改数据',
+                    area: ['550px', '350px']
+                });
+                //填充表单
+                form.val("edit-filter-form", {
+                    "id": data.id
+                    , "username": data.username
+                    , "roleid": data.roleid,
+                    "telephone": data.telephone,
+                    "saltstatus": data.saltstatus
+                })
+                ;
+                var r = $("#roleid").val();
+                var s = $("#saltstatus").valueOf();
+                var str = "";
+                var str1 = "";
+                $.ajax({
+                    type: "post",
+                    contentType: 'application/json',
+                    dataType: "json",
+                    url: "/api/selectrole",
+                    data: JSON.stringify({name: 123}),
+                    success: function (data) {
+                        console.log(data);
+                        if (data.isSuccess == true) {
+                            var d = data.data;
+                            str += "<label class=\"layui-form-label\">角色</label><div class=\"layui-input-block\"><select name=\"roleid\" lay-verify=\"required\">";
+                            for (i = 0; i < d.length; i++) {
+                                if (r == d[i].id) {
+                                    str += "<option value=\"" + d[i].id + "\" selected>" + d[i].description + "</option>";
+                                    $('#flag').val('update');
+                                } else if (r == null || r == "") {
+                                    str += "<option value=\"" + d[i].id + "\">" + d[i].description + "</option>";
+                                    $('#flag').val('new');
+                                } else {
+                                    str += "<option value=\"" + d[i].id + "\">" + d[i].description + "</option>";
+                                    $('#flag').val('update');
+                                }
+
+                            }
+                            str += "</select></div>";
+                            var aa = document.getElementById("rolesxlk-edit");
+                            str1 += "<label class=\"layui-form-label\">是否有效</label> <div class=\"layui-input-block\"> <select name=\"salt\" lay-verify=\"required\">";
+                            if (s == 1) {
+                                str1 += "<option value=\"0\">无效</option> <option value=\"1\" selected>有效</option>";
+                            } else {
+                                str1 += "<option value=\"0\" selected>无效</option> <option value=\"1\">有效</option>";
+                            }
+                            str1 += "</select> </div>";
+
+                            aa.innerHTML = str;
+                            document.getElementById("isok-edit").innerHTML = str1;
+                            form.render('select');
+                        } else {
+                            layer.msg("操作失败");
+                        }
+                    },
+                    error: function () {
+                        alert(data.errorMessage);
+                    }
+                });
+
+            }
+
+            //提交表单
+            form.on('submit(but-submit)', function (data) {
+                var subeditd = data.field;
+                $.ajax({
+                    type: "post",
+                    contentType: 'application/json',
+                    dataType: "json",
+                    url: "/api/updateuserbyid",
+                    //data: $('#formajax').serialize(),
+                    data: JSON.stringify({
+                        id: subeditd.id,
+                        username: subeditd.username,
+                        telephone: subeditd.telephone,
+                        role: subeditd.role,
+                        salt: subeditd.salt,
+                        roleid: subeditd.roleid,
+                        flag: subeditd.flag
+                    }),
+                    success: function (data) {
+                        console.log(data);
+                        if (data.isSuccess == true) {
+                            layer.closeAll();
+                            tableins.reload();
+                            layer.alert('修改成功', {icon: 1});
+                        } else {
+                            layer.alert('修改失败', {icon: 2});
+                        }
+                    },
+                    error: function () {
+                        alert(data.errorMessage);
+                    }
+                });
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+        });
+
+        form.on('submit(but-submit-add)', function (data) {
+            var subadd = data.field;
+            $.ajax({
+                type: "post",
+                contentType: 'application/json',
+                dataType: "json",
+                url: "/api/adduser",
+                data: JSON.stringify({
+                    id: subadd.id,
+                    username: subadd.username,
+                    name: subadd.name,
+                    password: subadd.password,
+                    telephone: subadd.telephone,
+                    state: subadd.state,
+                    roleid: subadd.roleid,
+                    salt: subadd.salt
+                }),
+                success: function (data) {
+                    console.log(data);
+                    if (data.isSuccess == true) {
+                        layer.closeAll();
+                        tableins.reload();
+                        layer.alert('新增成功', {icon: 1});
+                    } else {
+                        layer.alert('新增失败', {icon: 2});
+                    }
+                },
+                error: function () {
+                    alert(data.errorMessage);
+                }
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
+        // element.render();
+    });
+</script>
+
+<script type="text/html" id="titleTpl">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
+        <button class="layui-btn layui-btn-sm" lay-event="update">编辑</button>
+    </div>
+</script>
+<script type="text/html" id="offon">
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <input type="checkbox" name="switch" lay-skin="switch">
+        </div>
+    </div>
+</script>
+<script type="text/html" id="editxinxi">
+    <form class="layui-form layui-form-pane" action="" lay-filter="edit-filter-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="username" required lay-verify="required"
+                       autocomplete="off"
+                       class="layui-input" id="username-edit" style="width: 300px;">
+                <input type="hidden" name="id">
+                <input type="hidden" name="roleid" id="roleid">
+                <input type="hidden" name="saltstatus" id="saltstatus">
+                <input type="hidden" name="flag" id="flag">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">电话</label>
+            <div class="layui-input-block">
+                <input type="text" name="telephone" required lay-verify="required" placeholder="请输入标题"
+                       autocomplete="off"
+                       class="layui-input" style="width: 300px;">
+            </div>
+        </div>
+        <div class="layui-form-item" id="rolesxlk-edit" style="width: 410px">
+        </div>
+        <div class="layui-form-item" id="isok-edit" style="width: 410px">
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="but-submit">立即提交</button>
+                <button class="layui-btn layui-btn-sm" onclick="chongzhimima();">重置密码</button>
+                <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+            </div>
+        </div>
+    </form>
+</script>
+
+<script type="text/html" id="adduser">
+    <form class="layui-form layui-form-pane" lay-filter="add-filter-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="username" required lay-verify="required"
+                       autocomplete="off"
+                       class="layui-input" style="width: 300px;">
+                <input type="hidden" name="id">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required lay-verify="required"
+                       autocomplete="off"
+                       class="layui-input" style="width: 300px;">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input type="text" name="password" required lay-verify="required"
+                       autocomplete="off"
+                       class="layui-input" style="width: 300px;">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">电话</label>
+            <div class="layui-input-block">
+                <input type="text" name="telephone" required lay-verify="required" placeholder=""
+                       autocomplete="off"
+                       class="layui-input" style="width: 300px;">
+            </div>
+        </div>
+
+        <div class="layui-form-item" id="rolesxlk" style="width: 410px">
+        </div>
+        <div class="layui-form-item" id="isok" style="width: 410px">
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="but-submit-add">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+            </div>
+        </div>
+    </form>
+</script>
+
+
+<style>
+    .title-index {
+        line-height: 60px;
+    }
+
+    .pagefix {
+        float: right;
+        margin-right: 20px;
+    }
+
+    .bstyle {
+        float: left;
+        margin-top: 30px;
+        margin-right: 20px;
+        text-align: center;
+    }
+
+    .box1 {
+        margin-top: 30px;
+    }
+</style>
+</body>
+</html>
