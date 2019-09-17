@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wmyskxz.springboot.mapper.ModeDatasMapper">
+
+    <select id="findZckj" parameterType="cn.wmyskxz.springboot.mo.ZckjRequestMO"
+            resultType="cn.wmyskxz.springboot.pojo.Zckj">
+        select * from t_szckj t
+        where 1=1
+        <if test="yyzt != null and yyzt != '' ">and yyzt=#{yyzt}</if>
+        <if test="rdnf != null and rdnf != '' ">and rdnf=#{rdnf}</if>
+        <if test="mc != null and mc != '' ">and mode_name=#{mc}</if>
+        order by id asc
+    </select>
+
+
+    <delete id="delDataByid" parameterType="java.lang.Integer">
+        DELETE FROM t_szckj WHERE id=${id}
+    </delete>
+
+    <update id="editData" parameterType="cn.wmyskxz.springboot.mo.ZckjRequestMO">
+        update t_szckj
+        set yyzt=#{yyzt},rdnf=#{rdnf}
+        where id = #{id}
+    </update>
+
+
+    <delete id="delDatas" parameterType="java.lang.Integer">
+        DELETE FROM t_szckj WHERE id in
+        <foreach collection="ids" item="id" open="(" close=")" index="index" separator=",">
+            ${id}
+        </foreach>
+    </delete>
+
+
+    <insert id="imporTexcel" parameterType="cn.wmyskxz.springboot.mo.ZckjRequestMO">
+            INSERT INTO t_szckj (rdnf,mode_name,yyzt,updatedate)
+            VALUES
+            (
+            #{rdnf},
+            #{mode_name},
+            #{yyzt},
+            #{updatedate}
+            );
+    </insert>
+
+    <select id="findZckjByid" parameterType="java.lang.Integer"
+            resultType="cn.wmyskxz.springboot.pojo.Zckj">
+        select * from t_szckj t
+        where 1=1 and id = #{id}
+    </select>
+
+
+</mapper>

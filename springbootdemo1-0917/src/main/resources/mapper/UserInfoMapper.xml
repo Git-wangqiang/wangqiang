@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wmyskxz.springboot.mapper.UserInfoMapper">
+    <select id="findByUsername" resultType="cn.wmyskxz.springboot.pojo.UserInfo">
+            SELECT
+            user_info.uid,
+            user_info.`name`,
+            user_info.`password`,
+            user_info.salt,
+            if(salt='0','无效','有效') as state,
+            user_info.username
+            FROM
+            user_info
+            WHERE username=#{username}
+        </select>
+    <select id="userManagerSelect" parameterType="cn.wmyskxz.springboot.mo.UserManagerReqoestMO"
+            resultType="cn.wmyskxz.springboot.mo.UserManagerResponseMO">
+        select a.uid id,a.username,a.telephone,if(salt='0','无效','有效') as salt,
+        salt as saltstatus,
+        (select b.description from sys_role b where b.id = c.roleid) description,
+        c.updatedate,c.lastdate,c.roleid
+        from user_info a left join
+        sys_user_role c on a.uid = c.userid
+        where 1=1
+        <if test="username != null and username != '' ">and a.username=#{username}</if>
+        <if test="telephone != null and telephone != '' ">and a.telephone=#{telephone}</if>
+    </select>
+    <select id="selectUserByid" resultType="cn.wmyskxz.springboot.mo.UserManagerResponseMO">
+        select a.uid id,a.username,a.telephone,
+        (select b.description from sys_role b where b.id = c.roleid) description,
+        c.updatedate,c.lastdate
+        from user_info a left join
+        sys_user_role c on a.uid = c.userid
+        where 1=1
+        and a.uid=#{id}
+        </select>
+
+    <update id="updateUserByid" parameterType="java.lang.Integer">
+        update user_info
+        set updatedate = sysdate()
+        <if test="username != null and username != '' ">,username=#{username}</if>
+        <if test="name != null and name != '' ">,name=#{name}</if>
+        <if test="password != null and password != '' ">,password=#{password}</if>
+        <if test="salt != null and salt != '' ">,salt=#{salt}</if>
+        <if test="telephone != null and telephone != '' ">,telephone=#{telephone}</if>
+        where uid = #{id}
+    </update>
+
+    <update id="updateUserRole" parameterType="java.lang.Integer">
+        update sys_user_role
+        set roleid=#{roleid}, updatedate = sysdate(),lastdate = sysdate()
+        where userid = #{id}
+    </update>
+
+
+    <delete id="deleteUserByid" parameterType="java.lang.Integer">
+        DELETE FROM user_info WHERE uid = #{uid}
+    </delete>
+    <insert id="addUser" parameterType="cn.wmyskxz.springboot.mo.UserManagerReqoestMO">
+        INSERT INTO user_info(username,name,password,salt,telephone,updatedate,lastdate)
+        VALUES (#{username},#{name},#{password},#{salt},#{telephone},sysdate(),sysdate())
+    </insert>
+
+    <insert id="adduserRole" parameterType="cn.wmyskxz.springboot.mo.UserManagerReqoestMO">
+        INSERT INTO sys_user_role(userid,roleid,updatedate,lastdate)
+        VALUES (#{id},#{roleid},sysdate(),sysdate())
+    </insert>
+    <update id="tresetPassword" parameterType="java.lang.Integer">
+        update user_info
+        set password=#{password}
+        where username = #{username}
+    </update>
+
+</mapper>
