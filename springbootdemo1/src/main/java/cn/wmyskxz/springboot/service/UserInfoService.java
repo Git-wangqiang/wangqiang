@@ -37,4 +37,9 @@ public interface UserInfoService {
     List<PermissionResponseMO> userManagerPermissionSelect();
 
     void updatePerbyId(PermissionRequestMO permissionRequestMO);
+
+    List<PermissionselectResponseMO> permissionselect(PermissionselectRequestMO permissionselectRequestMO);
+
+    List<PermissionselectResponseMO> permissionchilderselect(PermissionselectRequestMO permissionselectRequestMO);
+
 }

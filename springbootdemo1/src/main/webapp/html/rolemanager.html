@@ -68,17 +68,6 @@
                                 <input type="hidden" id="privilege"/>
                                 <div class="layui-field-box">
                                     <div class="layui-form-item" id="gettreeselect">
-                                        <!--<label class="layui-form-label">角色名称</label>
-                                        <div class="layui-input-block">
-                                            <select name="city" lay-verify="required">
-                                                <option value=""></option>
-                                                <option value="0">北京</option>
-                                                <option value="1">上海</option>
-                                                <option value="2">广州</option>
-                                                <option value="3">深圳</option>
-                                                <option value="4">杭州</option>
-                                            </select>
-                                        </div>-->
                                     </div>
 
                                     <div class="layui-form-item">
@@ -171,45 +160,11 @@
                 layer.msg('修改成功');
             }
         });
-        var treedata = gettreedata();
         var treeselect = gettreeselect();
-        tree.render({
-            elem: '#test7'
-            , id: 'demoId'
-            , data: [{
-                title: '早餐'
-                , id: 1
-                , spread: true
-                , children: [{
-                    title: '油条'
-                    , id: 5,
-                    disabled: false
-                }, {
-                    title: '包子'
-                    , id: 6
-                }, {
-                    title: '豆浆'
-                    , id: 7
-                }]
-            }, {
-                title: '午餐'
-                , id: 2
-                , spread: true
-                , children: [{
-                    title: '藜蒿炒腊肉'
-                    , id: 8
-                }, {
-                    title: '西湖醋鱼'
-                    , id: 9
-                }, {
-                    title: '小白菜'
-                    , id: 10
-                }, {
-                    title: '海带排骨汤'
-                    , id: 11
-                }]
-            }]
-            , showCheckbox: true
+        var d = gettreedata();
+        //监听下拉列表
+        form.on('select(roleselect)', function (data) {
+            var d = gettreedata(data.value);
         });
     });
 </script>

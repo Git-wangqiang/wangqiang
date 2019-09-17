@@ -92,4 +92,14 @@ public class UserInfoServiceImpl implements UserInfoService {
     public void updatePerbyId(PermissionRequestMO permissionRequestMO) {
         sysPermissionMapper.updatePerbyId(permissionRequestMO);
     }
+
+    @Override
+    public List<PermissionselectResponseMO> permissionselect(PermissionselectRequestMO permissionselectRequestMO) {
+        return sysPermissionMapper.permissionselect(permissionselectRequestMO);
+    }
+
+    @Override
+    public List<PermissionselectResponseMO> permissionchilderselect(PermissionselectRequestMO permissionselectRequestMO) {
+        return sysPermissionMapper.permissionchilderselect(permissionselectRequestMO);
+    }
 }

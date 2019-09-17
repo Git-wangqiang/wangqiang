@@ -2,11 +2,13 @@ package cn.wmyskxz.springboot.controller;
 
 import cn.wmyskxz.springboot.exceptions.BusinessException;
 import cn.wmyskxz.springboot.mo.*;
+import cn.wmyskxz.springboot.pojo.SysPermission;
 import cn.wmyskxz.springboot.service.UserInfoService;
 import cn.wmyskxz.springboot.util.JsonUtil;
 import cn.wmyskxz.springboot.util.MD5;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mysql.jdbc.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api")
@@ -144,6 +150,63 @@ public class UserManagerController {
         Object object = JsonUtil.successTable(page.getList(), page.getTotal());
         System.out.println(object);
         return object;
+    }
+
+
+    @RequestMapping(value = "/permissionselect", method = RequestMethod.POST)
+    @ResponseBody
+    private Object permissionselect(@RequestBody PermissionselectRequestMO permissionselectRequestMO) {
+        //查询所有的菜单list
+        List<PermissionselectResponseMO> permissionselect = userInfoService.permissionselect(permissionselectRequestMO);
+        //根据Parentid将集合分类成多个
+        Map<Integer, List<PermissionselectResponseMO>> listMap = permissionselect.stream().collect(Collectors.groupingBy(PermissionselectResponseMO::getParentid));
+        //拿到主菜单后循环
+        List<PermissionselectResponseMO> permianmenulist = listMap.get(-1);
+        //返回树形组件json
+        List<ResponseTreeMO> responseTreeMOList = new ArrayList<>();
+        ResponseTreeMO responseTreeMO = null;
+        if (permianmenulist != null && permianmenulist.size() > 0) {
+            for (PermissionselectResponseMO permianmenu : permianmenulist) {
+                responseTreeMO = new ResponseTreeMO();
+                responseTreeMO.setTitle(permianmenu.getName());
+                responseTreeMO.setId(permianmenu.getPerid());
+                responseTreeMO.setSpread(true);
+                List<PermissionselectResponseMO> perchildlist = listMap.get(permianmenu.getPerid());
+                if (perchildlist != null && perchildlist.size() > 0) {
+                    List<ResponseTreeChildrenMO> responseTreeChildrenMOList = new ArrayList<>();
+                    ResponseTreeChildrenMO responseTreeChildrenMO = null;
+                    Map<Integer, String> id2Name = new HashMap<>();
+                    //如果是选择特定的角色，就查询到拥有的菜单权限，然后确定是否选择
+                    if (permissionselectRequestMO.getId() != null) {
+                        //查询拥有的菜单权限
+                        List<PermissionselectResponseMO> permissionselectchenckedlist = userInfoService.permissionchilderselect(permissionselectRequestMO);
+                        if (permissionselectchenckedlist != null && permissionselectchenckedlist.size() > 0) {
+                            //将list转map
+                            id2Name = permissionselectchenckedlist.stream()
+                                    .collect(Collectors.toMap(PermissionselectResponseMO::getPerid, PermissionselectResponseMO::getName));
+                        }
+                    }
+                    for (PermissionselectResponseMO perchild : perchildlist) {
+                        responseTreeChildrenMO = new ResponseTreeChildrenMO();
+                        responseTreeChildrenMO.setId(perchild.getPerid());
+                        responseTreeChildrenMO.setTitle(perchild.getName());
+                        //如果有权限就默认勾选
+                        if (id2Name != null) {
+                            if (id2Name.get(perchild.getPerid()) != null) {
+                                responseTreeChildrenMO.setChecked(true);
+                            } else {
+                                responseTreeChildrenMO.setChecked(false);
+                            }
+                        }
+                        responseTreeChildrenMOList.add(responseTreeChildrenMO);
+
+                    }
+                    responseTreeMO.setChildren(responseTreeChildrenMOList);
+                }
+                responseTreeMOList.add(responseTreeMO);
+            }
+        }
+        return JsonUtil.success(responseTreeMOList);
     }
 
 

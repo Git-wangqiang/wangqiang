@@ -40,7 +40,7 @@
             FROM
 	        sys_permission a
             WHERE
-	        a.id IN ( SELECT permission_id FROM sys_role_permission b WHERE b.role_id = #{id} )
+	        a.id IN ( SELECT permission_id FROM sys_role_permission b WHERE b.role_id = #{id} ) and a.isMenu = 1
         </select>
 
     <select id="userManagerPermissionSelect" resultType="cn.wmyskxz.springboot.mo.PermissionResponseMO">
@@ -50,9 +50,19 @@
 
     <update id="updatePerbyId" parameterType="java.lang.Integer">
         update sys_permission
-        set sys_permission.name = #{name},sys_permission.order = #{order},sys_permission.parentmenuname = #{parentmenuname}
+        set sys_permission.name = #{name},sys_permission.order = #{order},sys_permission.parentmenuname =
+        #{parentmenuname}
         <if test="url != null and url != '' ">,url=#{url}</if>
         where id = #{id}
     </update>
+    <select id="permissionselect" parameterType="java.lang.Integer" resultType="cn.wmyskxz.springboot.mo.PermissionselectResponseMO">
+      select b.id perid,b.`name`,b.parentId from sys_permission b
+    </select>
 
+    <select id="permissionchilderselect" parameterType="java.lang.Integer" resultType="cn.wmyskxz.springboot.mo.PermissionselectResponseMO">
+          select a.id,a.role,a.description,b.id perid,b.`name`,b.parentId
+        from sys_role a ,sys_permission b ,sys_role_permission c
+        where a.id = c.role_id and b.id = c.permission_id
+        and a.id = #{id}
+    </select>
 </mapper>

@@ -152,36 +152,21 @@
         tree.render({
             elem: '#test7'
             , id: 'demoId'
+            , spread: true
             , data: [{
                 title: '早餐'
                 , id: 1
+                , spread: true
                 , children: [{
                     title: '油条'
                     , id: 5,
-                    disabled: false
+                    checked: true
                 }, {
                     title: '包子'
                     , id: 6
                 }, {
                     title: '豆浆'
                     , id: 7
-                }]
-            }, {
-                title: '午餐'
-                , id: 2
-                , checked: true
-                , children: [{
-                    title: '藜蒿炒腊肉'
-                    , id: 8
-                }, {
-                    title: '西湖醋鱼'
-                    , id: 9
-                }, {
-                    title: '小白菜'
-                    , id: 10
-                }, {
-                    title: '海带排骨汤'
-                    , id: 11
                 }]
             }]
             , showCheckbox: true

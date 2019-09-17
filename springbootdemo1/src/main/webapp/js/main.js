@@ -240,7 +240,7 @@ function gettreeselect() {
                 var str = "";
                 str += "<label class=\"layui-form-label\">角色名称</label>\n" +
                     "                <div class=\"layui-input-block\">\n" +
-                    "                <select name=\"city\" lay-verify=\"required\">\n" +
+                    "                <select name=\"city\" lay-filter=\"roleselect\" lay-verify=\"required\">\n" +
                     "                <option value=\"\"></option>";
                 var d = data.data;
                 for (i = 0; i < d.length; i++) {
@@ -258,20 +258,29 @@ function gettreeselect() {
     });
 }
 
-function gettreedata() {
+function gettreedata(id) {
     $.ajax({
         type: "post",
         contentType: 'application/json',
         dataType: "json",
-        url: "/api/tresetpassword",
-        data: "",
+        url: "/api/permissionselect",
+        data: JSON.stringify({id: id}),
         success: function (data) {
+            debugger;
             if (data.isSuccess == true) {
-                layer.msg("重置成功，初始密码为123456");
+                console.log("dddddddddddd" + data.data);
+                debugger;
+                //树形控件
+                tree.render({
+                    elem: '#test7'
+                    , id: 'demoId'
+                    , data: data.data
+                    , showCheckbox: true
+                });
             }
         },
         error: function () {
-            layer.msg("重置成功，初始密码为123456");
+            layer.msg("系统异常");
         }
     });
 }

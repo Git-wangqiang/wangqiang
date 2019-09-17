@@ -2,6 +2,8 @@ package cn.wmyskxz.springboot.mapper;
 
 import cn.wmyskxz.springboot.mo.PermissionRequestMO;
 import cn.wmyskxz.springboot.mo.PermissionResponseMO;
+import cn.wmyskxz.springboot.mo.PermissionselectRequestMO;
+import cn.wmyskxz.springboot.mo.PermissionselectResponseMO;
 import cn.wmyskxz.springboot.pojo.SysPermission;
 import cn.wmyskxz.springboot.pojo.SysRole;
 
@@ -16,4 +18,6 @@ public interface SysPermissionMapper {
 
     void updatePerbyId(PermissionRequestMO permissionRequestMO);
     List<PermissionResponseMO> userManagerPermissionSelect();
+    List<PermissionselectResponseMO> permissionselect(PermissionselectRequestMO permissionselectRequestMO);
+    List<PermissionselectResponseMO> permissionchilderselect(PermissionselectRequestMO permissionselectRequestMO);
 }
