@@ -2,6 +2,7 @@ package cn.wmyskxz.springboot.service;
 
 import cn.wmyskxz.springboot.mo.*;
 import cn.wmyskxz.springboot.pojo.UserInfo;
+import cn.wmyskxz.springboot.util.JsonUtil;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -42,4 +43,11 @@ public interface UserInfoService {
 
     List<PermissionselectResponseMO> permissionchilderselect(PermissionselectRequestMO permissionselectRequestMO);
 
+    void updateRole(UpdateRoleRequestMO updateRoleRequestMO);
+
+    void addRole(AddRoleRequestMO addRoleRequestMO);
+
+    void delroleByid(AddRoleRequestMO addRoleRequestMO);
+
+    void updateRolebyid(AddRoleRequestMO addRoleRequestMO);
 }

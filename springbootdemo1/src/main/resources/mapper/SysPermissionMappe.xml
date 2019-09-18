@@ -55,14 +55,32 @@
         <if test="url != null and url != '' ">,url=#{url}</if>
         where id = #{id}
     </update>
-    <select id="permissionselect" parameterType="java.lang.Integer" resultType="cn.wmyskxz.springboot.mo.PermissionselectResponseMO">
+    <select id="permissionselect" parameterType="java.lang.Integer"
+            resultType="cn.wmyskxz.springboot.mo.PermissionselectResponseMO">
       select b.id perid,b.`name`,b.parentId from sys_permission b
     </select>
 
-    <select id="permissionchilderselect" parameterType="java.lang.Integer" resultType="cn.wmyskxz.springboot.mo.PermissionselectResponseMO">
+    <select id="permissionchilderselect" parameterType="java.lang.Integer"
+            resultType="cn.wmyskxz.springboot.mo.PermissionselectResponseMO">
           select a.id,a.role,a.description,b.id perid,b.`name`,b.parentId
         from sys_role a ,sys_permission b ,sys_role_permission c
         where a.id = c.role_id and b.id = c.permission_id
         and a.id = #{id}
     </select>
+
+
+    <select id="getRolePermissionByRoleID" parameterType="java.lang.Integer"
+            resultType="cn.wmyskxz.springboot.mo.RolePermissionResponseMO">
+           select * from sys_role_permission where role_id = #{roleid}
+    </select>
+
+    <delete id="delRolePermissionByRoleID" parameterType="java.lang.Integer">
+        DELETE * from sys_role_permission  where role_id =  #{roleid}
+    </delete>
+
+    <insert id="insertRolePermission" parameterType="cn.wmyskxz.springboot.mo.InsertRolePermisssionRequestMO">
+        insert into sys_role_permission (permission_id,role_id,updatedate,lastdate) VALUES (#{perid} , #{roleid} ,  SYSDATE(), SYSDATE())
+    </insert>
+
+
 </mapper>

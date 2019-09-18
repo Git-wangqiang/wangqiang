@@ -17,25 +17,25 @@
 <body onload="cd()">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header layui-bg-black">
-        <div class="layui-row layui-col-md10">
+        <div class="layui-row layui-col-md6">
             <h1 align="center" class="title-index" style="float: left;">&nbsp;<i
                     class="layui-icon layui-icon-template-1"></i>&nbsp;长治数据上报综合管理系统
             </h1>
         </div>
-        <div class="layui-row layui-col-md2" id="loginusername" style="float: left;">
+        <div class="layui-row layui-col-md6" id="loginusername" style="float: left;">
             <!-- <a href="" style="color: white;margin: auto;position:relative" class="title-index">退出</a>-->
-            <ul class="layui-nav">
-                <div class="pagefix">
-                    <li class="layui-nav-item">
-                        <!--<a href=""><img src="//t.cn/RCzsdCq" class="layui-nav-img">我</a>-->
-                        <a href=""><i class="layui-icon layui-icon-user" style="font-size: 16px;"></i>&nbsp;我</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">修改信息</a></dd>
-                            <dd><a href="javascript:;">退了</a></dd>
-                        </dl>
-                    </li>
-                </div>
-            </ul>
+            <!-- <ul class="layui-nav">
+                 <div class="pagefix">
+                     <li class="layui-nav-item">
+                         &lt;!&ndash;<a href=""><img src="//t.cn/RCzsdCq" class="layui-nav-img">我</a>&ndash;&gt;
+                         <a href=""><i class="layui-icon layui-icon-user" style="font-size: 16px;"></i>&nbsp;我</a>
+                         <dl class="layui-nav-child">
+                             <dd><a href="javascript:;">修改信息</a></dd>
+                             <dd><a href="javascript:;">退了</a></dd>
+                         </dl>
+                     </li>
+                 </div>
+             </ul>-->
         </div>
     </div>
 
@@ -126,8 +126,8 @@
             //, toolbar: '#titleTpl'
             , tool: "#titleTpl"
             , toolbar: false
-            , height: 500
-            , width: 1300
+            , height: 510
+            , width: 1330
             , even: true
             , url: '/api/usermanagerselect' //数据接口
             , page: true //开启分页
@@ -145,7 +145,7 @@
             , method: 'post'
             , contentType: 'application/json'
             , cols: [[ //表头
-                {field: 'id', width: 80, sort: true, fixed: 'left', align: 'center', type: 'checkbox'}
+                {field: 'id', width: 66, sort: true, fixed: 'left', align: 'center', type: 'checkbox'}
                 , {field: 'username', title: '用户名', align: 'center'}
                 , {field: 'telephone', title: '电话', sort: true, align: 'center'}
                 , {field: 'description', title: '角色', align: 'center'}
@@ -365,8 +365,12 @@
 
 <script type="text/html" id="titleTpl">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
-        <button class="layui-btn layui-btn-sm" lay-event="update">编辑</button>
+        <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="update"><i
+                class="layui-icon layui-icon-edit"/>编辑
+        </button>
+        <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete"><i
+                class="layui-icon layui-icon-delete"/>删除
+        </button>
     </div>
 </script>
 <script type="text/html" id="offon">

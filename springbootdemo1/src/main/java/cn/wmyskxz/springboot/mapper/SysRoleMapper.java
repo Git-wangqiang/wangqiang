@@ -1,5 +1,6 @@
 package cn.wmyskxz.springboot.mapper;
 
+import cn.wmyskxz.springboot.mo.AddRoleRequestMO;
 import cn.wmyskxz.springboot.mo.RoleResponseMO;
 import cn.wmyskxz.springboot.mo.UserManagerReqoestMO;
 import cn.wmyskxz.springboot.pojo.SysRole;
@@ -15,4 +16,10 @@ public interface SysRoleMapper {
     List<RoleResponseMO> selectRole(UserManagerReqoestMO userManagerReqoestMO);
 
     Integer lastInsertId();
+
+    void addRole(AddRoleRequestMO addRoleRequestMO);
+
+    void delroleByid(AddRoleRequestMO addRoleRequestMO);
+
+    void updateRolebyid(AddRoleRequestMO addRoleRequestMO);
 }

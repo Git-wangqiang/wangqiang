@@ -11,10 +11,10 @@ function cd() {
         console.log(data[i]);
         var dataj = data[i];
         // console.log("ddd"+dataj[j].name+dataj[j].url);
-        trs += "<li class=\"layui-nav-item\"><a href = \"#\"" + ">" + "<i class=\"layui-icon layui-icon-align-right \"></i> &nbsp;" + i + "</a>";
+        trs += "<li class=\"layui-nav-item\"><a href = \"#\"" + ">" + "<i class=\"layui-icon layui-icon-layer \"></i> &nbsp;" + i + "</a>";
         trs += "<dl class=\"layui-nav-child\">"
         for (var j in dataj) {
-            trs += "<dd><a href=\"" + dataj[j].url + "\">" + "<i class=\"layui-icon layui-icon-circle-dot\" style=\"font-size: 3px\"></i>&nbsp;"
+            trs += "<dd><a href=\"" + dataj[j].url + "\">" + "<i class=\"layui-icon layui-icon-file\" style=\"font-size: 3px\"></i>&nbsp;"
                 + dataj[j].name + "</a></dd>"
         }
         trs += "</dl></li>";
@@ -22,12 +22,16 @@ function cd() {
     console.log(trs);
     dtcd.innerHTML = trs;
     //jztable(1, 10);
-    element.render('nav');
-    /* var loginuser = document.getElementById("loginusername");
-     var loginusername = sessionStorage.getItem("logusername");
-     loginuser.innerHTML("<label class=\"layui-form-label\">" + loginusername + "</label>");
-     element.render('nav');*/
-
+    var str = "";
+    var logininfo = document.getElementById("loginusername");
+    var logusername = sessionStorage.getItem("logusername");
+    str += "<ul class=\"layui-nav\"><div class=\"pagefix\"><li class=\"layui-nav-item\">"
+        + "<a href=\"\"><i class=\"layui-icon layui-icon-user\" style=\"font-size: 16px;\"></i>&nbsp;"
+        + "欢迎回来," + logusername + "</a>" + "<dl class=\"layui-nav-child\"><dd><a href=\"\">修改信息</a></dd>"
+        + "<dd><a href=\"\">退了</a></dd>"
+        + "</dl></li></div></ul>";
+    logininfo.innerHTML = str;
+    element.init();
 }
 
 function jztable(pNum, pSize) {
@@ -203,7 +207,6 @@ function downloadTemplateByPost(action, type, value) {
 function chongzhimima() {
     var password = "123456";
     var username = $("#username-edit").val();
-    debugger;
     $.ajax({
         type: "post",
         contentType: 'application/json',
@@ -222,9 +225,38 @@ function chongzhimima() {
 }
 
 function updaterole() {
-    debugger;
     var checkData = tree.getChecked('demoId');
-    debugger;
+    var selectrole = $('#select-role option:selected').val();
+    var ids = [];
+    if (checkData != null && checkData.length > 0) {
+        for (i = 0; i < checkData.length; i++) {
+            ids.push(checkData[i].id);
+            var children = checkData[i].children;
+            if (children != null && children.length > 0) {
+                for (j = 0; j < children.length; j++) {
+                    ids.push(children[j].id);
+                }
+            }
+        }
+    }
+    if (selectrole == null || selectrole == "") {
+        layer.msg("请选择相应的角色信息");
+    } else {
+        $.ajax({
+            type: "post",
+            contentType: 'application/json',
+            url: "/api/updaterole",
+            data: JSON.stringify({ids: ids, roleid: selectrole}),
+            success: function (data) {
+                if (data.isSuccess == true) {
+                    layer.msg("修改成功");
+                }
+            },
+            error: function () {
+                layer.msg("修改失败");
+            }
+        });
+    }
 }
 
 function gettreeselect() {
@@ -240,7 +272,7 @@ function gettreeselect() {
                 var str = "";
                 str += "<label class=\"layui-form-label\">角色名称</label>\n" +
                     "                <div class=\"layui-input-block\">\n" +
-                    "                <select name=\"city\" lay-filter=\"roleselect\" lay-verify=\"required\">\n" +
+                    "                <select name=\"city\" id=\"select-role\" lay-filter=\"roleselect\" lay-verify=\"required\">\n" +
                     "                <option value=\"\"></option>";
                 var d = data.data;
                 for (i = 0; i < d.length; i++) {
@@ -266,10 +298,8 @@ function gettreedata(id) {
         url: "/api/permissionselect",
         data: JSON.stringify({id: id}),
         success: function (data) {
-            debugger;
             if (data.isSuccess == true) {
                 console.log("dddddddddddd" + data.data);
-                debugger;
                 //树形控件
                 tree.render({
                     elem: '#test7'

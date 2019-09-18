@@ -20,23 +20,12 @@
 <body onload="cd()">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header layui-bg-black">
-        <div class="layui-row layui-col-md10">
+        <div class="layui-row layui-col-md6">
             <h1 align="center" class="title-index" style="float: left;">&nbsp;<i
                     class="layui-icon layui-icon-template-1"></i>&nbsp;长治数据上报综合管理系统
             </h1>
         </div>
-        <div class="layui-row layui-col-md2" id="loginusername" style="float: left;">
-            <ul class="layui-nav">
-                <div class="pagefix">
-                    <li class="layui-nav-item">
-                        <a href=""><i class="layui-icon layui-icon-user" style="font-size: 16px;"></i>&nbsp;我</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">修改信息</a></dd>
-                            <dd><a href="javascript:;">退了</a></dd>
-                        </dl>
-                    </li>
-                </div>
-            </ul>
+        <div class="layui-row layui-col-md6" id="loginusername" style="float: left;">
         </div>
     </div>
 
@@ -98,6 +87,7 @@
             treeIdName: 'id',
             treePidName: 'parentId',
             elem: '#auth-table',
+            even: true,
             tool: "#auth-table",
             url: '/api/usermanagerpermissionselect',
             method: 'post',
@@ -110,18 +100,18 @@
                 {field: 'url', title: '权限路径', align: 'center'},
                 {field: 'order', title: '优先级', sort: true, align: 'center'},
                 {
-                    field: 'isMenu', width: 80, align: 'center', templet: function (d) {
+                    field: 'isMenu', width: 90, align: 'center', templet: function (d) {
                         if (d.isMenu == 1) {
-                            return '<span class="layui-badge layui-bg-gray">按钮</span>';
+                            return '<span class="layui-badge layui-bg-gray">二级菜单</span>';
                         }
                         if (d.parentId == -1) {
-                            return '<span class="layui-badge layui-bg-blue">目录</span>';
+                            return '<span class="layui-badge layui-bg-blue">一级菜单</span>';
                         } else {
                             return '<span class="layui-badge-rim">菜单</span>';
                         }
                     }, title: '类型'
                 },
-                {templet: '#auth-state', width: 120, align: 'center', title: '操作'}
+                {templet: '#auth-state', align: 'center', title: '操作'}
             ]],
             done: function () {
                 layer.closeAll('loading');
@@ -204,8 +194,8 @@
     });
 </script>
 <script type="text/html" id="auth-state">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"/>修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"/>删除</a>
 </script>
 <script type="text/html" id="editxinxi">
     <form class="layui-form layui-form-pane" action="" lay-filter="edit-filter-form" style="margin-top: 20px">

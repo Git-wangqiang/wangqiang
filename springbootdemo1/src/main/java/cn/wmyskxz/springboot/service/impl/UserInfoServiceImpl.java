@@ -102,4 +102,38 @@ public class UserInfoServiceImpl implements UserInfoService {
     public List<PermissionselectResponseMO> permissionchilderselect(PermissionselectRequestMO permissionselectRequestMO) {
         return sysPermissionMapper.permissionchilderselect(permissionselectRequestMO);
     }
+
+    @Override
+    public void updateRole(UpdateRoleRequestMO updateRoleRequestMO) {
+        //通过roleid先查询是否有分配有效权限
+        List<RolePermissionResponseMO> rolePermissionResponseMOlist = sysPermissionMapper.getRolePermissionByRoleID(updateRoleRequestMO);
+        //如果有就先删除此角色的所有权限后在重新插入
+        if (rolePermissionResponseMOlist != null & rolePermissionResponseMOlist.size() > 0) {
+            sysPermissionMapper.delRolePermissionByRoleID(updateRoleRequestMO);
+        }
+        InsertRolePermisssionRequestMO insertRolePermisssionRequestMO = null;
+        for (Integer id : updateRoleRequestMO.getIds()) {
+            insertRolePermisssionRequestMO = new InsertRolePermisssionRequestMO();
+            insertRolePermisssionRequestMO.setPerid(id);
+            insertRolePermisssionRequestMO.setRoleid(updateRoleRequestMO.getRoleid());
+            sysPermissionMapper.insertRolePermission(insertRolePermisssionRequestMO);
+        }
+    }
+
+    @Override
+    public void addRole(AddRoleRequestMO addRoleRequestMO) {
+        sysRoleMapper.addRole(addRoleRequestMO);
+    }
+
+    @Override
+    public void delroleByid(AddRoleRequestMO addRoleRequestMO) {
+        sysRoleMapper.delroleByid(addRoleRequestMO);
+    }
+
+    @Override
+    public void updateRolebyid(AddRoleRequestMO addRoleRequestMO) {
+        sysRoleMapper.updateRolebyid(addRoleRequestMO);
+    }
+
+
 }

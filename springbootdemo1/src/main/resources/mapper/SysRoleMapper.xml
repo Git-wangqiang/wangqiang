@@ -23,4 +23,22 @@
         select last_insert_id();
     </select>
 
+    <insert id="addRole" parameterType="cn.wmyskxz.springboot.mo.AddRoleRequestMO">
+        INSERT INTO sys_role (acailable,description,role,updatedate,lastdate)
+        VALUES (#{acailable},#{description},#{role},sysdate(),sysdate())
+    </insert>
+
+    <delete id="delroleByid" parameterType="java.lang.Integer">
+        DELETE FROM sys_role WHERE id = #{id}
+    </delete>
+
+    <update id="updateRolebyid" parameterType="cn.wmyskxz.springboot.mo.AddRoleRequestMO">
+        update sys_role
+        set acailable=#{acailable},
+        description = #{description},
+        role = #{role},
+        updatedate = SYSDATE(),
+        lastdate = SYSDATE()
+        where id = #{id}
+    </update>
 </mapper>

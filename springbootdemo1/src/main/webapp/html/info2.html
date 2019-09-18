@@ -10,33 +10,12 @@
 <body onload="cd();">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header layui-bg-black">
-        <div class="layui-row layui-col-md10">
+        <div class="layui-row layui-col-md6">
             <h1 align="center" class="title-index" style="float: left;">&nbsp;<i
                     class="layui-icon layui-icon-template-1"></i>&nbsp;长治数据上报综合管理系统
             </h1>
         </div>
-        <!--<div class="layui-row layui-col-md7">
-            <ul class="layui-nav">
-                <li class="layui-nav-item"><a href="info.html"></a></li>
-                <li class="layui-nav-item"><a href="wodemianban.html"></a></li>
-                <li class="layui-nav-item"><a href="xitongshezhi.html"></a></li>
-                <li class="layui-nav-item"><a href="daimashengcheng.html"></a></li>
-            </ul>
-        </div>-->
-        <div class="layui-row layui-col-md2" id="loginusername" style="float: left;">
-            <!-- <a href="" style="color: white;margin: auto;position:relative" class="title-index">退出</a>-->
-            <ul class="layui-nav">
-                <div class="pagefix">
-                    <li class="layui-nav-item">
-                        <!--<a href=""><img src="//t.cn/RCzsdCq" class="layui-nav-img">我</a>-->
-                        <a href=""><i class="layui-icon layui-icon-user" style="font-size: 16px;"></i>&nbsp;我</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">修改信息</a></dd>
-                            <dd><a href="javascript:;">退了</a></dd>
-                        </dl>
-                    </li>
-                </div>
-            </ul>
+        <div class="layui-row layui-col-md6" id="loginusername" style="float: left;">
         </div>
     </div>
 
@@ -50,7 +29,7 @@
     <div class="bstyle">
         <div class="layui-body">
 
-            <div class="layui-tab">
+            <div class="layui-tab layui-tab-brief">
                 <ul class="layui-tab-title">
                     <li class="layui-this">工程技术研究中心</li>
                     <li>工程技术研究添加</li>
@@ -58,7 +37,7 @@
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show">
 
-                        <div class="layui-col-md12">
+                        <div class="layui-col-md12 infotable">
 
 
                             <div class="layui-form-item box1">
@@ -104,7 +83,7 @@
                     </div>
                     <div class="layui-tab-item">
 
-                        <form class="layui-form" action="" class="layui-form layui-form-pane">
+                        <form action="" class="layui-form layui-form-pane">
                             <div class="layui-form-item">
                                 <label class="layui-form-label">认证年份</label>
                                 <div class="layui-input-block">
@@ -126,17 +105,12 @@
                                            autocomplete="off" class="layui-input tjform">
                                 </div>
                             </div>
-                            <div class="layui-form-item layui-form-text">
-                                <label class="layui-form-label">备注信息</label>
-                                <div class="layui-input-block">
-                                    <textarea name="desc" placeholder="请输入内容" class="layui-textarea tjform"></textarea>
-                                </div>
-                            </div>
                             <div class="layui-form-item">
                                 <div class="layui-input-block">
-                                    <button class="layui-btn" lay-submit lay-filter="formDemo" onclick="test(data)">保存
+                                    <button class="layui-btn layui-btn-sm" lay-submit lay-filter="formDemo"
+                                            onclick="test(data)">保存
                                     </button>
-                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
                                 </div>
                             </div>
                         </form>
@@ -364,8 +338,12 @@
 
 <script type="text/html" id="titleTpl">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="delete"><i class="layui-icon layui-icon-delete"/>删除</button>
-        <button class="layui-btn layui-btn-sm" lay-event="update"><i class="layui-icon layui-icon-edit"/>编辑</button>
+        <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete"><i
+                class="layui-icon layui-icon-delete"/>删除
+        </button>
+        <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="update"><i
+                class="layui-icon layui-icon-edit"/>编辑
+        </button>
     </div>
 
 </script>
@@ -407,6 +385,7 @@
     .title-index {
         line-height: 60px;
     }
+
     .tjform {
         width: 400px;
     }
@@ -429,6 +408,11 @@
 
     .bstyle {
         margin-right: 20px;
+        text-align: center;
+    }
+
+    .infotable {
+        text-align: center;
     }
 </style>
 </body>

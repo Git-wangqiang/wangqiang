@@ -217,4 +217,34 @@ public class UserManagerController {
         return JsonUtil.success();
     }
 
+    @RequestMapping(value = "/updaterole", method = RequestMethod.POST)
+    @ResponseBody
+    private Object updateRole(@RequestBody UpdateRoleRequestMO updateRoleRequestMO) {
+        userInfoService.updateRole(updateRoleRequestMO);
+        return JsonUtil.success();
+    }
+
+    @RequestMapping(value = "/addrole", method = RequestMethod.POST)
+    @ResponseBody
+    private Object addRole(@RequestBody AddRoleRequestMO addRoleRequestMO) {
+        userInfoService.addRole(addRoleRequestMO);
+        return JsonUtil.success();
+    }
+
+    @RequestMapping(value = "/delroleByid", method = RequestMethod.POST)
+    @ResponseBody
+    private Object delroleByid(@RequestBody AddRoleRequestMO addRoleRequestMO) {
+        userInfoService.delroleByid(addRoleRequestMO);
+        return JsonUtil.success();
+    }
+
+    @RequestMapping(value = "/updaterolebyid", method = RequestMethod.POST)
+    @ResponseBody
+    private Object updateRolebyid(@RequestBody AddRoleRequestMO addRoleRequestMO) {
+        userInfoService.updateRolebyid(addRoleRequestMO);
+        return JsonUtil.success();
+    }
+
+
+
 }
