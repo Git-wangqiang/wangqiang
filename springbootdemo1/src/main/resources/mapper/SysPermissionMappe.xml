@@ -75,7 +75,7 @@
     </select>
 
     <delete id="delRolePermissionByRoleID" parameterType="java.lang.Integer">
-        DELETE * from sys_role_permission  where role_id =  #{roleid}
+        DELETE  from sys_role_permission  where role_id =  #{roleid}
     </delete>
 
     <insert id="insertRolePermission" parameterType="cn.wmyskxz.springboot.mo.InsertRolePermisssionRequestMO">

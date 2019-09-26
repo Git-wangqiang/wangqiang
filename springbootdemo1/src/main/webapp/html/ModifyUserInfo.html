@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>长治数据上报综合管理系统</title>
+    <link rel="stylesheet" href="../css/layui.css">
+    <link href="../css/main.css">
+    <style>
+        body, td, th, label {
+            font-size: 12px;
+            color: #1d1007;
+            line-height: 24px
+        }
+    </style>
+</head>
+
+<body onload="cd()">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-bg-black">
+        <div class="layui-row layui-col-md6">
+            <h1 align="center" class="title-index" style="float: left;">&nbsp;<i
+                    class="layui-icon layui-icon-template-1"></i>&nbsp;长治数据上报综合管理系统
+            </h1>
+        </div>
+        <div class="layui-row layui-col-md6" id="loginusername" style="float: left;">
+        </div>
+    </div>
+
+    <div class="layui-side layui-bg-black diy3">
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+            <li class="layui-nav-item" id="dtcd">
+            </li>
+        </ul>
+
+    </div>
+
+    <div class="bstyle">
+        <div class="layui-body">
+            <form class="layui-form layui-form-pane from-user-modify" lay-filter="modify-filter-form">
+                <div class="layui-form-item from-user-modify">
+                    <label class="layui-form-label">用户名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="username" required lay-verify="required" id="username-edit"
+                               autocomplete="off"
+                               class="layui-input" style="width: 300px;">
+                        <input type="hidden" name="id">
+                    </div>
+                </div>
+                <div class="layui-form-item from-user-modify">
+                    <label class="layui-form-label">姓名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" required lay-verify="required"
+                               autocomplete="off"
+                               class="layui-input" style="width: 300px;">
+                    </div>
+                </div>
+                <div class="layui-form-item from-user-modify">
+                    <label class="layui-form-label">电话</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="telephone" required lay-verify="required" placeholder=""
+                               autocomplete="off"
+                               class="layui-input" style="width: 300px;">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" id="rolesxlk" style="width: 410px">
+                </div>
+                <div class="layui-form-item" id="isok" style="width: 410px">
+                </div>
+                <div class="layui-form-item from-user-modify-btn">
+                    <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-sm" lay-submit lay-filter="but-submit-add">立即提交</button>
+                        <button class="layui-btn layui-btn-sm" onclick="chongzhimima();">重置密码</button>
+                        <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
+<!--<script src="../js/layui.js"></script>-->
+<script type="text/javascript" src="../js/jquery-1.8.0.min.js"></script>
+<script src="../js/main.js"></script>
+<!--引入lay-->
+<script src="../js/layui.all.js"></script>
+
+
+<!--依赖于lay的js-->
+<script>
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element', 'laypage', 'form', 'laydate', 'upload', 'table'], function () {
+        element = layui.element;
+        laypage = layui.laypage;
+        var form = layui.form;
+        var logusername = sessionStorage.getItem("logusername");
+        var userinfo = getUser(logusername);
+        form.val("modify-filter-form", {
+            "username": userinfo.username,
+            "name": userinfo.name,
+            "telephone": userinfo.telephone,
+            "id": userinfo.uid
+        });
+
+    });
+</script>
+
+<style>
+    .title-index {
+        line-height: 60px;
+    }
+
+    .pagefix {
+        float: right;
+        margin-right: 20px;
+    }
+
+    .bstyle {
+        float: left;
+        margin-top: 30px;
+        margin-right: 20px;
+        text-align: center;
+    }
+
+    .box1 {
+        margin-top: 30px;
+    }
+
+    .from-user-modify {
+        margin-top: 40px;
+        margin-left: 20px;
+    }
+
+    .from-user-modify-btn {
+        margin-top: 200px;
+        text-align: center;
+    }
+</style>
+</body>
+</html>

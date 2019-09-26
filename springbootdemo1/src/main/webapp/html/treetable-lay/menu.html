@@ -14,7 +14,7 @@
         <button class="layui-btn" id="btn-fold">全部折叠</button>
     </div>
 
-    <table id="auth-table" class="layui-table" lay-filter="auth-table"></table>
+    <table id="auth-table" class="layui-table"  lay-filter="auth-table"></table>
 </div>
 <!-- 操作列 -->
 <script type="text/html" id="auth-state">
@@ -47,7 +47,7 @@
             page: true,
             cols: [[
                 {type: 'numbers'},
-                {field: 'name', width: 80,title: '权限名称', align: 'center'},
+                {field: 'name', width: 80, title: '权限名称', align: 'center'},
                 {field: 'parentmenuname', title: '权限分类', align: 'center'},
                 {field: 'url', title: '权限路径', align: 'center'},
                 {field: 'order', title: '优先级', sort: true, align: 'center'},

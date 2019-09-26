@@ -245,6 +245,10 @@ public class UserManagerController {
         return JsonUtil.success();
     }
 
-
+    @RequestMapping(value = "/findbyusername", method = RequestMethod.POST)
+    @ResponseBody
+    private Object findByUsername(@RequestBody String username) {
+        return JsonUtil.success(userInfoService.findByUsername(username));
+    }
 
 }

@@ -15,9 +15,10 @@
             </select>
 
     <select id="selectRole" resultType="cn.wmyskxz.springboot.mo.RoleResponseMO">
-        SELECT  *
+        SELECT  a.id,a.description,a.role,a.updatedate,a.lastdate,
+              if(a.acailable='0','无效','有效') as acailable
         FROM
-        sys_role
+        sys_role a
     </select>
     <select id="lastInsertId" resultType="java.lang.Integer">
         select last_insert_id();

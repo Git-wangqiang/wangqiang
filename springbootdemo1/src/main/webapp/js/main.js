@@ -11,7 +11,7 @@ function cd() {
         console.log(data[i]);
         var dataj = data[i];
         // console.log("ddd"+dataj[j].name+dataj[j].url);
-        trs += "<li class=\"layui-nav-item\"><a href = \"#\"" + ">" + "<i class=\"layui-icon layui-icon-layer \"></i> &nbsp;" + i + "</a>";
+        trs += "<li class=\"layui-nav-item layui-nav-itemed\"><a href = \"#\"" + ">" + "<i class=\"layui-icon layui-icon-layer \"></i> &nbsp;" + i + "</a>";
         trs += "<dl class=\"layui-nav-child\">"
         for (var j in dataj) {
             trs += "<dd><a href=\"" + dataj[j].url + "\">" + "<i class=\"layui-icon layui-icon-file\" style=\"font-size: 3px\"></i>&nbsp;"
@@ -19,16 +19,15 @@ function cd() {
         }
         trs += "</dl></li>";
     }
-    console.log(trs);
     dtcd.innerHTML = trs;
     //jztable(1, 10);
     var str = "";
     var logininfo = document.getElementById("loginusername");
     var logusername = sessionStorage.getItem("logusername");
-    str += "<ul class=\"layui-nav\"><div class=\"pagefix\"><li class=\"layui-nav-item\">"
-        + "<a href=\"\"><i class=\"layui-icon layui-icon-user\" style=\"font-size: 16px;\"></i>&nbsp;"
-        + "欢迎回来," + logusername + "</a>" + "<dl class=\"layui-nav-child\"><dd><a href=\"\">修改信息</a></dd>"
-        + "<dd><a href=\"\">退了</a></dd>"
+    str += "<ul class=\"layui-nav\"><div class=\"pagefix\" style=\"float: right;\"><li class=\"layui-nav-item\">"
+        + "<a href=\"#\"><i class=\"layui-icon layui-icon-user\" style=\"font-size: 16px;\"></i>&nbsp;"
+        + "欢迎回来," + logusername + "</a>" + "<dl class=\"layui-nav-child\"><dd><a href=\"/html/ModifyUserInfo.html\">修改信息</a></dd>"
+        + "<dd><a href=\"\" onclick=\"logout();\">退了</a></dd>"
         + "</dl></li></div></ul>";
     logininfo.innerHTML = str;
     element.init();
@@ -214,6 +213,7 @@ function chongzhimima() {
         url: "/api/tresetpassword",
         data: JSON.stringify({password: password, username: username}),
         success: function (data) {
+            debugger;
             if (data.isSuccess == true) {
                 layer.msg("重置成功，初始密码为123456");
             }
@@ -299,7 +299,6 @@ function gettreedata(id) {
         data: JSON.stringify({id: id}),
         success: function (data) {
             if (data.isSuccess == true) {
-                console.log("dddddddddddd" + data.data);
                 //树形控件
                 tree.render({
                     elem: '#test7'
@@ -316,4 +315,28 @@ function gettreedata(id) {
 }
 
 
+function getUser(logusername) {
+    var d = "";
+    $.ajax({
+        type: "post",
+        contentType: 'application/json',
+        dataType: "json",
+        async: false,
+        url: "/api/findbyusername",
+        data: logusername,
+        success: function (data) {
+            if (data.isSuccess == true) {
+                d = data.data;
+            }
+        },
+        error: function () {
+            layer.msg("系统异常");
+        }
+    });
+    return d;
+}
 
+function logout() {
+    sessionStorage.clear();  //清除所有session值
+    window.location.replace("/login.html");
+}

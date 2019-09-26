@@ -50,7 +50,6 @@ function getVerify() {
 function aVerify() {
     var value = $("#verify_input").val();
     // alert(value);
-    debugger;
     $.ajax({
         async: false,
         type: 'post',
@@ -60,7 +59,6 @@ function aVerify() {
             verifyInput: value
         },
         success: function (result) {
-            debugger;
             if (result) {
                 //alert("success!");
                 login();

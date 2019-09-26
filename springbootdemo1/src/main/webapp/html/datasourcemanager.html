@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>长治数据上报综合管理系统</title>
+    <link rel="stylesheet" href="../css/layui.css">
+    <link href="../css/main.css">
+</head>
+
+<body onload="cd();">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-bg-black">
+        <div class="layui-row layui-col-md6">
+            <h1 align="center" class="title-index" style="float: left;">&nbsp;<i
+                    class="layui-icon layui-icon-template-1"></i>&nbsp;长治数据上报综合管理系统
+            </h1>
+        </div>
+        <div class="layui-row layui-col-md6" id="loginusername" style="float: left;">
+        </div>
+    </div>
+
+    <div class="layui-side layui-bg-black diy3">
+        <ul class="layui-nav layui-nav-tree" lay-filter="test" id="dtcd">
+
+        </ul>
+
+    </div>
+
+    <div class="bstyle">
+        <div class="layui-body">
+            <table id="xitongshezhit" lay-filter="xtsz" lay-data="{id:'reldata')"></table>
+        </div>
+    </div>
+
+</div>
+
+<!--<script src="../js/layui.js"></script>-->
+<script type="text/javascript" src="../js/jquery-1.8.0.min.js"></script>
+<script src="../js/main.js"></script>
+<!--引入lay-->
+<script src="../js/layui.all.js"></script>
+
+
+<!--依赖于lay的js-->
+<script>
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element', 'laypage', 'form', 'laydate', 'upload', 'table'], function () {
+        element = layui.element;
+        laypage = layui.laypage;
+        var form = layui.form;
+        var table = layui.table;
+
+        var tableins = table.render({
+            elem: '#xitongshezhit'
+            //, toolbar: '#titleTpl'
+            , tool: "#titleTpl"
+            , toolbar: false
+            , height: 500
+            , width: 1300
+            , even: true
+            , url: '/api/selectdatasource' //数据接口
+            , page: true //开启分页
+            , method: 'post'
+            , contentType: 'application/json'
+            , cols: [[ //表头
+                {field: 'id', title: 'ID', sort: true, fixed: 'left', align: 'center', type: 'checkbox'}
+                //, {checkbox: true, align: 'center'}
+                , {field: 'tablename', title: '数据源表名', align: 'center'}
+                , {field: 'createuser', title: '创建者', sort: true, align: 'center'}
+                , {field: 'createdate', title: '创建时间', align: 'center'}
+                , {field: 'updateuser', title: '修改者', sort: true, align: 'center'}
+                , {field: 'updatedate', title: '修改时间', align: 'center'}
+                , {field: 'caozuo', title: '操作', templet: '#titleTpl', align: 'center'}
+            ]]
+        })
+    });
+    /*   formworkmanager
+       categorymanager*/
+
+</script>
+
+<script type="text/html" id="titleTpl">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete"><i
+                class="layui-icon layui-icon-delete"/>删除
+        </button>
+        <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="update"><i
+                class="layui-icon layui-icon-edit"/>编辑
+        </button>
+    </div>
+
+</script>
+
+<style>
+    .title-index {
+        line-height: 60px;
+    }
+
+    .tjform {
+        width: 400px;
+    }
+
+    .cxlable {
+        line-height: 30px;
+        font-size: 13.5px;
+        text-align: center;
+    }
+
+    .box1 {
+        display: flex;
+        justify-content: center;
+    }
+
+    .pagefix {
+        float: right;
+        margin-right: 20px;
+    }
+
+    .bstyle {
+        margin-right: 20px;
+        text-align: center;
+    }
+
+    .infotable {
+        text-align: center;
+    }
+
+    .addinfo {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .gcjs-add {
+        margin-top: 40px;
+        margin-left: 20px;
+    }
+
+    .gcjs-add-but {
+        margin-top: 200px;
+        text-align: center;
+    }
+</style>
+</body>
+</html>

@@ -81,35 +81,35 @@
                             <div id="test1"></div>
                         </div>
                     </div>
-                    <div class="layui-tab-item">
+                    <div class="layui-tab-item addinfo">
 
-                        <form action="" class="layui-form layui-form-pane">
-                            <div class="layui-form-item">
+                        <form action="" class="layui-form layui-form-pane gcjs-add">
+                            <div class="layui-form-item gcjs-add">
                                 <label class="layui-form-label">认证年份</label>
                                 <div class="layui-input-block">
                                     <input type="text" class="layui-input tjform" id="rznf">
                                 </div>
                             </div>
 
-                            <div class="layui-form-item">
+                            <div class="layui-form-item gcjs-add">
                                 <label class="layui-form-label">省级众创空间名称</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="title" required lay-verify="required" placeholder="请输入..."
                                            autocomplete="off" class="layui-input tjform">
                                 </div>
                             </div>
-                            <div class="layui-form-item ">
+                            <div class="layui-form-item gcjs-add">
                                 <label class="layui-form-label">运营主体</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="title" required lay-verify="required" placeholder="请输入..."
                                            autocomplete="off" class="layui-input tjform">
                                 </div>
                             </div>
-                            <div class="layui-form-item">
+                            <div class="layui-form-item gcjs-add-but">
                                 <div class="layui-input-block">
                                     <button class="layui-btn layui-btn-sm" lay-submit lay-filter="formDemo"
                                             onclick="test(data)">保存
-                                    </button>
+                                    </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
                                 </div>
                             </div>
@@ -412,6 +412,21 @@
     }
 
     .infotable {
+        text-align: center;
+    }
+
+    .addinfo {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .gcjs-add {
+        margin-top: 40px;
+        margin-left: 20px;
+    }
+
+    .gcjs-add-but {
+        margin-top: 200px;
         text-align: center;
     }
 </style>

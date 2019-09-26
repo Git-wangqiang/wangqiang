@@ -10,7 +10,8 @@
             user_info.`password`,
             user_info.salt,
             if(salt='0','无效','有效') as state,
-            user_info.username
+            user_info.username,
+            user_info.telephone
             FROM
             user_info
             WHERE username=#{username}

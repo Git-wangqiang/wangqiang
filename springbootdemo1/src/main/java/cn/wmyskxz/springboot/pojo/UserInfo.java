@@ -7,6 +7,15 @@ public class UserInfo {
     private String password;
     private String salt;
     private String state;
+    private String telephone;
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
 
     public Integer getUid() {
         return uid;

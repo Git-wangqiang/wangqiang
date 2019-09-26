@@ -39,12 +39,13 @@
 
     <div class="bstyle">
         <div class="layui-body">
-            <div class="layui-col-md12" style="margin-top: 50px;width: 1300px;">
-                <div class="layui-btn-group" style="float: right;margin-right: 20px;">
+            <div class="layui-col-md12" style="margin-top: 20px;width: 1300px;">
+                <div class="layui-btn-container" style="float: right;margin-right: 20px;">
                     <button class="layui-btn" id="btn-expand">全部展开</button>
                     <button class="layui-btn" id="btn-fold">全部折叠</button>
                 </div>
-                <table id="auth-table" class="layui-table" lay-filter="auth-table"></table>
+                <table id="auth-table" class="layui-table" lay-filter="auth-table"
+                       lay-data="{id: 'treetablereload'}"></table>
             </div>
         </div>
     </div>
@@ -86,6 +87,7 @@
             treeSpid: -1,
             treeIdName: 'id',
             treePidName: 'parentId',
+            width: 1300,
             elem: '#auth-table',
             even: true,
             tool: "#auth-table",
@@ -126,7 +128,7 @@
             treetable.foldAll('#auth-table');
         });
         //监听工具条
-        table.on('tool(auth-table)', function (obj) {
+        var tablere = table.on('tool(auth-table)', function (obj) {
             var data = obj.data;
             var layEvent = obj.event;
             if (layEvent === 'del') {
@@ -141,8 +143,8 @@
                 //填充表单
                 form.val("edit-filter-form", {
                     "id": data.id
-                    , "name": data.name
-                    , "url": data.url,
+                    , "name": data.name,
+                    /*, "url": data.url,*/
                     "order": data.order
                 })
                 ;
@@ -156,6 +158,15 @@
                 str += "</div>";
                 document.getElementById("radio-fenlei").innerHTML = str;
                 form.render('radio');
+
+                var str1 = "";
+                str1 += "<label class=\"layui-form-label\">权限路径</label><div class=\"layui-input-block\">";
+                if (data.url == null || data.url == "") {
+                    str1 += "<input type=\"text\" name=\"url\" required lay-verify=\"required\" autocomplete=\"off\" class=\"layui-input\" disabled style=\"width: 300px;\"></div>";
+                } else {
+                    str1 += "<input type=\"text\" name=\"url\" required lay-verify=\"required\" autocomplete=\"off\" class=\"layui-input\"" + " value=" + data.url + " style=\"width: 300px;\"></div>";
+                }
+                document.getElementById("url-per").innerHTML = str1;
             }
         });
 
@@ -175,11 +186,11 @@
                     parentmenuname: subeditd.parentmenuname
                 }),
                 success: function (data) {
-                    console.log(data);
                     if (data.isSuccess == true) {
                         layer.closeAll();
-                        table.reload();
-                        layer.alert('修改成功', {icon: 1});
+                        layer.msg('修改成功', function () {
+                            window.location.href = "http://localhost:8080/html/treetable-lay/test6.html";
+                        });
                     } else {
                         layer.alert('修改失败', {icon: 2});
                     }
@@ -216,13 +227,13 @@
         <div class="layui-form-item" id="radio-fenlei">
         </div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">权限路径</label>
+        <div class="layui-form-item" id="url-per">
+            <!--<label class="layui-form-label">权限路径</label>
             <div class="layui-input-block">
                 <input type="text" name="url" required lay-verify="required"
                        autocomplete="off"
                        class="layui-input" style="width: 300px;">
-            </div>
+            </div>-->
         </div>
 
         <div class="layui-form-item">
