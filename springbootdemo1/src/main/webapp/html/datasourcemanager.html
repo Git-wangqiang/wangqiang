@@ -5,6 +5,44 @@
     <title>长治数据上报综合管理系统</title>
     <link rel="stylesheet" href="../css/layui.css">
     <link href="../css/main.css">
+    <style type="text/css">
+        /*   !*您可以将下列样式写入自己的样式表中*!
+           .childBody {
+               padding: 15px;
+           }
+
+           !*layui 元素样式改写*!
+           .layui-btn-sm {
+               line-height: normal;
+               font-size: 12.5px;
+           }*/
+
+        /* .layui-table-view .layui-table-body {
+             min-height: 256px;
+         }*/
+
+        .layui-table-cell .layui-input.layui-unselect {
+            height: 30px;
+            line-height: 30px;
+        }
+
+        /*设置 layui 表格中单元格内容溢出可见样式*/
+        .table-overlay .layui-table-view,
+        .table-overlay .layui-table-box,
+        .table-overlay .layui-table-body {
+            overflow: visible;
+        }
+
+        .table-overlay .layui-table-cell {
+            height: auto;
+            overflow: visible;
+        }
+
+        /*文本对齐方式*/
+        .text-center {
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body onload="cd();">
@@ -28,7 +66,101 @@
 
     <div class="bstyle">
         <div class="layui-body">
-            <table id="xitongshezhit" lay-filter="xtsz" lay-data="{id:'reldata')"></table>
+
+
+            <div class="layui-tab layui-tab-brief">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">数据源信息</li>
+                    <li>新增数据源</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+
+                        <div class="layui-col-md12 infotable">
+
+
+                            <div class="layui-form-item box1">
+                                <form id="" method="post" class="layui-form layui-form-pane">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label cxlable">表名:</label>
+                                        <div class="layui-input-inline colformstyle"
+                                             style="width: 200px; line-height: 30px">
+                                            <input type="text" name="" autocomplete="off"
+                                                   class="layui-input colformstyle rdnf" id="rdnf">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label cxlable">创建者:</label>
+                                        <div class="layui-input-inline colformstyle" style="width: 200px;">
+                                            <input type="text" name="" autocomplete="off"
+                                                   class="layui-input colformstyle mc" id="mc">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label cxlable">修改者:</label>
+                                        <div class="layui-input-inline colformstyle" style="width: 200px;">
+                                            <input type="text" name="" autocomplete="off"
+                                                   class="layui-input colformstyle yyzt" id="yyzt">
+                                        </div>
+                                    </div>
+                                    <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="chaxun">查询
+                                    </button>
+                                    <button type="button" onclick="daochudaoru();"
+                                            class="layui-btn layui-btn-primary layui-btn-sm">导入导出
+                                    </button>
+                                    <button type="button" class="layui-btn layui-btn-danger layui-btn-sm"
+                                            id="piliangshanchu">批量删除
+                                    </button>
+                                </form>
+                            </div>
+                            <table id="xitongshezhit" lay-filter="xtsz" lay-data="{id:'reldata')"></table>
+                        </div>
+
+                        <div class="pagefix">
+                            <div id="test1"></div>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item addinfo">
+                        <!--<script src="/demos/googlegg.js"></script>-->
+                        <section>
+                            <div class="layui-card">
+                                <div class="layui-card-header">添加一行表格并提交生成数据源</div>
+                                <div class="layui-card-body layui-text">
+                                    <div id="toolbar">
+                                        <div>
+                                            <button type="button" class="layui-btn layui-btn-sm" data-type="addRow"
+                                                    title="添加一行">
+                                                <i class="layui-icon layui-icon-add-1"></i> 添加一行
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div id="tableRes" class="table-overlay">
+                                        <table id="dataTable" lay-filter="dataTable" class="layui-hide"></table>
+                                    </div>
+                                    <div id="action" class="text-center">
+                                        <button type="button" name="btnSave" class="layui-btn layui-btn-sm"
+                                                data-type="save">保存
+                                        </button>
+                                        <button type="reset" name="btnReset"
+                                                class="layui-btn layui-btn-sm layui-btn-primary">取消
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--保存结果输出-->
+                            <div class="layui-card">
+                                <div class="layui-card-header">保存结果输出</div>
+                                <div class="layui-card-body layui-text">
+                                    <blockquote class="layui-elem-quote layui-quote-nm">
+                                        <pre id="jsonResult"><span class="layui-word-aux">请点击“保存”后查看输出信息……</span></pre>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -72,10 +204,31 @@
                 , {field: 'updatedate', title: '修改时间', align: 'center'}
                 , {field: 'caozuo', title: '操作', templet: '#titleTpl', align: 'center'}
             ]]
-        })
+        });
+
+        /*        addresourcetable = table.render({
+                    elem: '#adddatasource'
+                    , tool: "#adddata-tool"
+                    , height: 500
+                    , width: 1300
+                    , even: true
+                    , data: adddata
+                    , page: true //开启分页
+                    , method: 'post'
+                    , contentType: 'application/json'
+                    , cols: [[ //表头
+                        {field: 'id', title: 'ID', sort: true, fixed: 'left', align: 'center', type: 'checkbox',edit: 'text'}
+                        , {field: 'cloumname', title: '字段名', align: 'center',edit: 'text'}
+                        , {field: 'cloumtype', title: '字段类型', sort: true, align: 'center',edit: 'text'}
+                        , {field: 'cloumlength', title: '字段长度', align: 'center',edit: 'text'}
+                        , {field: 'cloumpoint', title: '小数点长度', sort: true, align: 'center',edit: 'text'}
+                        , {field: 'isnull', title: '是否为空', align: 'center',edit: 'text'}
+                        , {field: 'iskey', title: '是否为主键', align: 'center',edit: 'text'}
+                        , {field: 'isautoincrement', title: '是否自动递增', align: 'center',edit: 'text'}
+                    ]]
+                });*/
     });
-    /*   formworkmanager
-       categorymanager*/
+
 
 </script>
 
@@ -91,54 +244,240 @@
 
 </script>
 
+
+<script type="text/html" id="adddata-tool">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
+        <button class="layui-btn layui-btn-sm" lay-event="update">编辑</button>
+    </div>
+</script>
+
+<script type="text/javascript">
+    //准备视图对象
+    window.viewObj = {
+        tbData: [{
+            tempId: new Date().valueOf(),
+            type: null,
+            cloumtname: '测试项名称',
+            isnull: 1,
+            cloumlength: 11,
+            cloumpoint: 2,
+            iskey: 0
+        }],
+        typeData: [
+            {id: 1, name: 'int'},
+            {id: 2, name: 'varchar'},
+            {id: 3, name: 'data'},
+            {id: 4, name: 'float'}
+        ],
+        renderSelectOptions: function (data, settings) {
+            settings = settings || {};
+            var valueField = settings.valueField || 'value',
+                textField = settings.textField || 'text',
+                selectedValue = settings.selectedValue || "";
+            var html = [];
+            for (var i = 0, item; i < data.length; i++) {
+                item = data[i];
+                html.push('<option value="');
+                html.push(item[valueField]);
+                html.push('"');
+                if (selectedValue && item[valueField] == selectedValue) {
+                    html.push(' selected="selected"');
+                }
+                html.push('>');
+                html.push(item[textField]);
+                html.push('</option>');
+            }
+            return html.join('');
+        }
+    };
+
+    //layui 模块化引用
+    layui.use(['jquery', 'table', 'layer'], function () {
+        var $ = layui.$, table = layui.table, form = layui.form, layer = layui.layer;
+
+        //数据表格实例化
+        var tbWidth = $("#tableRes").width();
+        var layTableId = "layTable";
+        var tableIns = table.render({
+            elem: '#dataTable',
+            id: layTableId,
+            data: viewObj.tbData,
+            width: tbWidth,
+            loading: true,
+            even: false, //不开启隔行背景
+            cols: [[
+                /*     {field: 'id', title: 'ID', sort: true, fixed: 'left', align: 'center', type: 'checkbox',edit: 'text'}
+                     , {field: 'cloumname', title: '字段名', align: 'center',edit: 'text'}
+                     , {field: 'cloumtype', title: '字段类型', sort: true, align: 'center',edit: 'text'}
+                     , {field: 'cloumlength', title: '字段长度', align: 'center',edit: 'text'}
+                     , {field: 'cloumpoint', title: '小数点长度', sort: true, align: 'center',edit: 'text'}
+                     , {field: 'isnull', title: '是否为空', align: 'center',edit: 'text'}
+                     , {field: 'iskey', title: '是否为主键', align: 'center',edit: 'text'}
+                     , {field: 'isautoincrement', title: '是否自动递增', align: 'center',edit: 'text'}*/
+                {title: '序号', type: 'numbers'},
+                {field: 'cloumtname', title: '字段名', edit: 'text'},
+                {
+                    field: 'type', title: '字段类型', templet: function (d) {
+                        var options = viewObj.renderSelectOptions(viewObj.typeData, {
+                            valueField: "id",
+                            textField: "name",
+                            selectedValue: d.type
+                        });
+                        return '<a lay-event="type"></a><select name="type" lay-filter="type"><option value="">请选择字段类型</option>' + options + '</select>';
+                    }
+                },
+                {field: 'cloumlength', title: '字段长度', edit: 'text'},
+                {field: 'cloumpoint', title: '小数点长度', edit: 'text'},
+                {
+                    field: 'isnull', title: '是否为空', event: 'isnull', templet: function (d) {
+                        var html = ['<input type="checkbox" name="isnull" lay-skin="switch" lay-text="是|否"'];
+                        html.push(d.isnull > 0 ? ' checked' : '');
+                        html.push('>');
+                        return html.join('');
+                    }
+                },
+                {
+                    field: 'iskey', title: '是否为主键', event: 'iskey', templet: function (d) {
+                        var html = ['<input type="checkbox" name="iskey" lay-skin="switch" lay-text="是|否"'];
+                        html.push(d.iskey > 0 ? ' checked' : '');
+                        html.push('>');
+                        return html.join('');
+                    }
+                },
+                {
+                    field: 'tempId', title: '操作', templet: function (d) {
+                        return '<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del" lay-id="' + d.tempId + '"><i class="layui-icon layui-icon-delete"></i>移除</a>';
+                    }
+                }
+            ]],
+            done: function (res, curr, count) {
+                viewObj.tbData = res.data;
+            }
+        });
+
+        //定义事件集合
+        var active = {
+            addRow: function () {	//添加一行
+                var oldData = table.cache[layTableId];
+                console.log(oldData);
+                var newRow = {
+                    tempId: new Date().valueOf(),
+                    type: null,
+                    cloumtname: '请填写名称',
+                    cloumlength: 11,
+                    cloumpoint: 2,
+                    iskey: 0,
+                    isnull: 1
+                };
+                oldData.push(newRow);
+                tableIns.reload({
+                    data: oldData
+                });
+            },
+            updateRow: function (obj) {
+                var oldData = table.cache[layTableId];
+                console.log(oldData);
+                for (var i = 0, row; i < oldData.length; i++) {
+                    row = oldData[i];
+                    if (row.tempId == obj.tempId) {
+                        $.extend(oldData[i], obj);
+                        return;
+                    }
+                }
+                tableIns.reload({
+                    data: oldData
+                });
+            },
+            removeEmptyTableCache: function () {
+                var oldData = table.cache[layTableId];
+                for (var i = 0, row; i < oldData.length; i++) {
+                    row = oldData[i];
+                    if (!row || !row.tempId) {
+                        oldData.splice(i, 1);    //删除一项
+                    }
+                    continue;
+                }
+                tableIns.reload({
+                    data: oldData
+                });
+            },
+            save: function () {
+                var oldData = table.cache[layTableId];
+                console.log(oldData);
+                for (var i = 0, row; i < oldData.length; i++) {
+                    row = oldData[i];
+                    if (!row.type) {
+                        layer.msg("检查每一行，请选择分类！", {icon: 5}); //提示
+                        return;
+                    }
+                }
+                document.getElementById("jsonResult").innerHTML = JSON.stringify(table.cache[layTableId], null, 2);	//使用JSON.stringify() 格式化输出JSON字符串
+            }
+        }
+
+        //激活事件
+        var activeByType = function (type, arg) {
+            if (arguments.length === 2) {
+                active[type] ? active[type].call(this, arg) : '';
+            } else {
+                active[type] ? active[type].call(this) : '';
+            }
+        }
+
+        //注册按钮事件
+        $('.layui-btn[data-type]').on('click', function () {
+            var type = $(this).data('type');
+            activeByType(type);
+        });
+
+        //监听select下拉选中事件
+        form.on('select(type)', function (data) {
+            var elem = data.elem; //得到select原始DOM对象
+            $(elem).prev("a[lay-event='type']").trigger("click");
+        });
+
+        //监听工具条
+        table.on('tool(dataTable)', function (obj) {
+            var data = obj.data, event = obj.event, tr = obj.tr; //获得当前行 tr 的DOM对象;
+            console.log(data);
+            switch (event) {
+                case "type":
+                    //console.log(data);
+                    var select = tr.find("select[name='type']");
+                    if (select) {
+                        var selectedVal = select.val();
+                        if (!selectedVal) {
+                            layer.tips("请选择一个分类", select.next('.layui-form-select'), {tips: [3, '#FF5722']}); //吸附提示
+                        }
+                        console.log(selectedVal);
+                        $.extend(obj.data, {'type': selectedVal});
+                        activeByType('updateRow', obj.data);	//更新行记录对象
+                    }
+                    break;
+                case "isnull":
+                    var stateVal = tr.find("input[name='isnull']").prop('checked') ? 1 : 0;
+                    $.extend(obj.data, {'isnull': stateVal})
+                    activeByType('updateRow', obj.data);	//更新行记录对象
+                    break;
+                case "iskey":
+                    var stateVal = tr.find("input[name='iskey']").prop('checked') ? 1 : 0;
+                    $.extend(obj.data, {'iskey': stateVal})
+                    activeByType('updateRow', obj.data);	//更新行记录对象
+                    break;
+                case "del":
+                    layer.confirm('真的删除行么？', function (index) {
+                        obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                        layer.closeAll();
+                        activeByType('removeEmptyTableCache');
+                    });
+                    break;
+            }
+        });
+    });
+</script>
+
 <style>
-    .title-index {
-        line-height: 60px;
-    }
-
-    .tjform {
-        width: 400px;
-    }
-
-    .cxlable {
-        line-height: 30px;
-        font-size: 13.5px;
-        text-align: center;
-    }
-
-    .box1 {
-        display: flex;
-        justify-content: center;
-    }
-
-    .pagefix {
-        float: right;
-        margin-right: 20px;
-    }
-
-    .bstyle {
-        margin-right: 20px;
-        text-align: center;
-    }
-
-    .infotable {
-        text-align: center;
-    }
-
-    .addinfo {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .gcjs-add {
-        margin-top: 40px;
-        margin-left: 20px;
-    }
-
-    .gcjs-add-but {
-        margin-top: 200px;
-        text-align: center;
-    }
 </style>
 </body>
 </html>

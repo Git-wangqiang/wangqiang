@@ -340,3 +340,28 @@ function logout() {
     sessionStorage.clear();  //清除所有session值
     window.location.replace("/login.html");
 }
+
+function addresource() {
+    layui.data('adddatasource',{
+        "cloumname": "uid",
+        "cloumtype": "int",
+        "cloumlength": 11,
+        "cloumpoint": "",
+        "isnull": 0,
+        "iskey": 1,
+        "isautoincrement": 1
+    });
+    /*var adddata = [{
+        "cloumname": "uid",
+        "cloumtype": "int",
+        "cloumlength": 11,
+        "cloumpoint": "",
+        "isnull": 0,
+        "iskey": 1,
+        "isautoincrement": 1
+    }];
+    Data.push(adddata);
+    addresourcetable.reload({
+        data: Data
+    });*/
+}
