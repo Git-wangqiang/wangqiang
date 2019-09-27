@@ -10,5 +10,7 @@ public interface ExportAndImportService {
     void createTable(CreateTableRequestMO createTableRequestMO);
 
     List<SelectDataSourceResponseMO> selectDataSource(SelectDataSourceRequestMO selectDataSourceRequestMO);
+
+    String codeGeneration(CreateTableRequestMO createTableRequestMO);
 }
 

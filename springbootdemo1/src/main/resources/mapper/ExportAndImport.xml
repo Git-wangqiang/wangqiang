@@ -13,4 +13,35 @@
         order by id asc
     </select>
 
+
+    <insert id="addDataSource" parameterType="cn.wmyskxz.springboot.mo.CreateTableRequestMO">
+        INSERT INTO t_datasource (tablename,createuser,createdate,updateuser,updatedate,lastdate,remark)
+        VALUES
+        (
+        #{tablename},
+        #{username},
+        sysdate(),
+        #{username},
+        sysdate(),
+        sysdate(),
+        #{remark}
+        );
+    </insert>
+
+
+    <insert id="addDataSourceDetail" parameterType="cn.wmyskxz.springboot.mo.CloumsPropertyRequestMO">
+        INSERT INTO t_datasource_detail (cloumtname,cloumtype,cloumlength,cloumpoint,isnull,iskey,isautoincrement,tablename)
+        VALUES
+        (
+        #{cloumtname},
+        #{cloumtype},
+        #{cloumlength},
+        #{cloumpoint},
+        #{isnull},
+        #{iskey},
+        #{isautoincrement},
+        #{tablename}
+        );
+    </insert>
+
 </mapper>

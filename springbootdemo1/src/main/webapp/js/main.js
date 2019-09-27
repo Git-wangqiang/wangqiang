@@ -341,27 +341,50 @@ function logout() {
     window.location.replace("/login.html");
 }
 
-function addresource() {
-    layui.data('adddatasource',{
-        "cloumname": "uid",
-        "cloumtype": "int",
-        "cloumlength": 11,
-        "cloumpoint": "",
-        "isnull": 0,
-        "iskey": 1,
-        "isautoincrement": 1
+function addresource(data) {
+    $.ajax({
+        type: "post",
+        contentType: 'application/json',
+        dataType: "json",
+        async: false,
+        url: "/api/createtable",
+        data: data,
+        success: function (data) {
+            if (data.isSuccess == true) {
+                tableins.reload('reldata', {
+                    url: '/api/selectdatasource'
+                    , where: {} //设定异步数据接口的额外参数
+                });
+                layer.msg("新增成功");
+            } else {
+                layer.msg("新增失败");
+            }
+        },
+        error: function () {
+            layer.msg("新增失败");
+        }
     });
-    /*var adddata = [{
-        "cloumname": "uid",
-        "cloumtype": "int",
-        "cloumlength": 11,
-        "cloumpoint": "",
-        "isnull": 0,
-        "iskey": 1,
-        "isautoincrement": 1
-    }];
-    Data.push(adddata);
-    addresourcetable.reload({
-        data: Data
-    });*/
+}
+
+function codegeneration(data) {
+    var d = "";
+    $.ajax({
+        type: "post",
+        contentType: 'application/json',
+        dataType: "json",
+        async: false,
+        url: "/api/codegeneration",
+        data: data,
+        success: function (data) {
+            if (data.isSuccess == true) {
+                d = data.data;
+            } else {
+                layer.msg("操作失败");
+            }
+        },
+        error: function () {
+            layer.msg("操作失败");
+        }
+    });
+    return d;
 }

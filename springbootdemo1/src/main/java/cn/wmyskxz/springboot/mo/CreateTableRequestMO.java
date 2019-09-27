@@ -3,9 +3,29 @@ package cn.wmyskxz.springboot.mo;
 import java.util.List;
 
 public class CreateTableRequestMO {
+    private String username;
     private String sqlyuju;
     private String tablename;
+    private String remark;
+
+
     private List<CloumsPropertyRequestMO> cloumsPropertyRequestMOList;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getSqlyuju() {
         return sqlyuju;

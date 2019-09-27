@@ -1,20 +1,38 @@
 package cn.wmyskxz.springboot.mo;
 
 public class CloumsPropertyRequestMO {
-    private String cloumname;//字段名
+    private String cloumtname;//字段名
     private String cloumtype;//字段类型
     private Integer cloumlength;//字段长度
     private Integer cloumpoint;//小数点长度
-    private Integer isnull;//0为非空 1 为空
+    private String isnull;//0为非空 1 为空
     private String iskey;//是否为主键
     private String isautoincrement;//是否自动递增
+    private String type;
+    private String tablename;
 
-    public String getCloumname() {
-        return cloumname;
+    public String getTablename() {
+        return tablename;
     }
 
-    public void setCloumname(String cloumname) {
-        this.cloumname = cloumname;
+    public void setTablename(String tablename) {
+        this.tablename = tablename;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getCloumtname() {
+        return cloumtname;
+    }
+
+    public void setCloumtname(String cloumtname) {
+        this.cloumtname = cloumtname;
     }
 
     public String getCloumtype() {
@@ -41,11 +59,11 @@ public class CloumsPropertyRequestMO {
         this.cloumpoint = cloumpoint;
     }
 
-    public Integer getIsnull() {
+    public String getIsnull() {
         return isnull;
     }
 
-    public void setIsnull(Integer isnull) {
+    public void setIsnull(String isnull) {
         this.isnull = isnull;
     }
 

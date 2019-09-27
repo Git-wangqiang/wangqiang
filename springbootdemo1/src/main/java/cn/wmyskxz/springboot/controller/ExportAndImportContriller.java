@@ -1,14 +1,10 @@
 package cn.wmyskxz.springboot.controller;
 
-import cn.wmyskxz.springboot.mapper.ExportAndImportMapper;
 import cn.wmyskxz.springboot.mo.CreateTableRequestMO;
 import cn.wmyskxz.springboot.mo.SelectDataSourceRequestMO;
 import cn.wmyskxz.springboot.mo.SelectDataSourceResponseMO;
-import cn.wmyskxz.springboot.mo.ZckjRequestMO;
-import cn.wmyskxz.springboot.pojo.Zckj;
 import cn.wmyskxz.springboot.service.ExportAndImportService;
 import cn.wmyskxz.springboot.util.JsonUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +47,13 @@ public class ExportAndImportContriller {
         System.out.println(object);
         return object;
     }
+
+
+    @RequestMapping(value = "/codegeneration", method = RequestMethod.POST)
+    @ResponseBody
+    public Object codeGeneration(@RequestBody CreateTableRequestMO createTableRequestMO) {
+        return JsonUtil.success(exportAndImportService.codeGeneration(createTableRequestMO));
+    }
+
 
 }

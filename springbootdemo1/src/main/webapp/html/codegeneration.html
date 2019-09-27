@@ -6,20 +6,6 @@
     <link rel="stylesheet" href="../css/layui.css">
     <link href="../css/main.css">
     <style type="text/css">
-        /*   !*您可以将下列样式写入自己的样式表中*!
-           .childBody {
-               padding: 15px;
-           }
-
-           !*layui 元素样式改写*!
-           .layui-btn-sm {
-               line-height: normal;
-               font-size: 12.5px;
-           }*/
-
-        /* .layui-table-view .layui-table-body {
-             min-height: 256px;
-         }*/
 
         .layui-table-cell .layui-input.layui-unselect {
             height: 30px;
@@ -70,61 +56,14 @@
 
             <div class="layui-tab layui-tab-brief">
                 <ul class="layui-tab-title">
-                    <li class="layui-this">数据源信息</li>
-                    <li>新增数据源</li>
+                    <li>生成建表语句</li>
                 </ul>
                 <div class="layui-tab-content">
-                    <div class="layui-tab-item layui-show">
-
-                        <div class="layui-col-md12 infotable">
-
-
-                            <div class="layui-form-item box1">
-                                <form id="" method="post" class="layui-form layui-form-pane">
-                                    <div class="layui-inline">
-                                        <label class="layui-form-label cxlable">表名:</label>
-                                        <div class="layui-input-inline colformstyle"
-                                             style="width: 200px; line-height: 30px">
-                                            <input type="text" name="" autocomplete="off"
-                                                   class="layui-input colformstyle rdnf" id="rdnf">
-                                        </div>
-                                    </div>
-                                    <div class="layui-inline">
-                                        <label class="layui-form-label cxlable">创建者:</label>
-                                        <div class="layui-input-inline colformstyle" style="width: 200px;">
-                                            <input type="text" name="" autocomplete="off"
-                                                   class="layui-input colformstyle mc" id="mc">
-                                        </div>
-                                    </div>
-                                    <div class="layui-inline">
-                                        <label class="layui-form-label cxlable">修改者:</label>
-                                        <div class="layui-input-inline colformstyle" style="width: 200px;">
-                                            <input type="text" name="" autocomplete="off"
-                                                   class="layui-input colformstyle yyzt" id="yyzt">
-                                        </div>
-                                    </div>
-                                    <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="chaxun">查询
-                                    </button>
-                                    <button type="button" onclick="daochudaoru();"
-                                            class="layui-btn layui-btn-primary layui-btn-sm">导入导出
-                                    </button>
-                                    <button type="button" class="layui-btn layui-btn-danger layui-btn-sm"
-                                            id="piliangshanchu">批量删除
-                                    </button>
-                                </form>
-                            </div>
-                            <table id="xitongshezhit" lay-filter="xtsz" lay-data="{id:'reldata')"></table>
-                        </div>
-
-                        <div class="pagefix">
-                            <div id="test1"></div>
-                        </div>
-                    </div>
-                    <div class="layui-tab-item addinfo">
+                    <div class="layui-tab-item layui-show addinfo">
                         <!--<script src="/demos/googlegg.js"></script>-->
                         <section>
                             <div class="layui-card">
-                                <div class="layui-card-header">添加一行表格并提交生成数据源</div>
+                                <div class="layui-card-header">添加一行表格并提交生成数据源的sql语句</div>
                                 <div class="layui-card-body layui-text">
                                     <div id="toolbar">
                                         <div>
@@ -141,13 +80,6 @@
                                                 <input type="text" name="tablename" required lay-verify="required"
                                                        placeholder="请输入表名" autocomplete="off" class="layui-input"
                                                        id="tablename">
-                                            </div>
-                                        </div>
-                                        <div class="layui-form-item layui-form-text">
-                                            <label class="layui-form-label">备注</label>
-                                            <div class="layui-input-block">
-                                                <textarea name="remark" placeholder="请输入内容"
-                                                          class="layui-textarea" id="remark"></textarea>
                                             </div>
                                         </div>
                                     </form>
@@ -198,30 +130,6 @@
         laypage = layui.laypage;
         var form = layui.form;
         var table = layui.table;
-
-         tableins = table.render({
-            elem: '#xitongshezhit'
-            //, toolbar: '#titleTpl'
-            , tool: "#titleTpl"
-            , toolbar: false
-            , height: 500
-            , width: 1300
-            , even: true
-            , url: '/api/selectdatasource' //数据接口
-            , page: true //开启分页
-            , method: 'post'
-            , contentType: 'application/json'
-            , cols: [[ //表头
-                {field: 'id', title: 'ID', sort: true, fixed: 'left', align: 'center', type: 'checkbox'}
-                //, {checkbox: true, align: 'center'}
-                , {field: 'tablename', title: '数据源表名', align: 'center'}
-                , {field: 'createuser', title: '创建者', sort: true, align: 'center'}
-                , {field: 'createdate', title: '创建时间', align: 'center'}
-                , {field: 'updateuser', title: '修改者', sort: true, align: 'center'}
-                , {field: 'updatedate', title: '修改时间', align: 'center'}
-                , {field: 'caozuo', title: '操作', templet: '#titleTpl', align: 'center'}
-            ]]
-        });
     });
 
 
@@ -302,14 +210,6 @@
             loading: true,
             even: false, //不开启隔行背景
             cols: [[
-                /*     {field: 'id', title: 'ID', sort: true, fixed: 'left', align: 'center', type: 'checkbox',edit: 'text'}
-                     , {field: 'cloumname', title: '字段名', align: 'center',edit: 'text'}
-                     , {field: 'cloumtype', title: '字段类型', sort: true, align: 'center',edit: 'text'}
-                     , {field: 'cloumlength', title: '字段长度', align: 'center',edit: 'text'}
-                     , {field: 'cloumpoint', title: '小数点长度', sort: true, align: 'center',edit: 'text'}
-                     , {field: 'isnull', title: '是否为空', align: 'center',edit: 'text'}
-                     , {field: 'iskey', title: '是否为主键', align: 'center',edit: 'text'}
-                     , {field: 'isautoincrement', title: '是否自动递增', align: 'center',edit: 'text'}*/
                 {title: '序号', type: 'numbers'},
                 {field: 'cloumtname', title: '字段名', edit: 'text'},
                 {
@@ -415,8 +315,7 @@
                 d['username'] = sessionStorage.getItem("logusername");
                 /*var data = JSON.stringify(table.cache[layTableId], null, 2);*/
                 var data = JSON.stringify(d, null, 2);
-                document.getElementById("jsonResult").innerHTML = data;	//使用JSON.stringify() 格式化输出JSON字符串
-                addresource(data)
+                document.getElementById("jsonResult").innerHTML = codegeneration(data);	//使用JSON.stringify() 格式化输出JSON字符串
             }
         }
 
