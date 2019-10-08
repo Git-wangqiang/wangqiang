@@ -1,8 +1,6 @@
 package cn.wmyskxz.springboot.controller;
 
-import cn.wmyskxz.springboot.mo.CreateTableRequestMO;
-import cn.wmyskxz.springboot.mo.SelectDataSourceRequestMO;
-import cn.wmyskxz.springboot.mo.SelectDataSourceResponseMO;
+import cn.wmyskxz.springboot.mo.*;
 import cn.wmyskxz.springboot.service.ExportAndImportService;
 import cn.wmyskxz.springboot.util.JsonUtil;
 import com.github.pagehelper.PageHelper;
@@ -53,6 +51,39 @@ public class ExportAndImportContriller {
     @ResponseBody
     public Object codeGeneration(@RequestBody CreateTableRequestMO createTableRequestMO) {
         return JsonUtil.success(exportAndImportService.codeGeneration(createTableRequestMO));
+    }
+
+    @RequestMapping(value = "/selectformwork", method = RequestMethod.POST)
+    @ResponseBody
+    public Object selectFormwork(@RequestBody FormworkRequestMO formworkRequestMO) {
+        PageHelper.startPage(formworkRequestMO.getPage(), formworkRequestMO.getLimit());
+        List<FormworkResponseMO> data = exportAndImportService.selectFormwork(formworkRequestMO);
+        //查询
+        PageInfo<FormworkResponseMO> page = new PageInfo<FormworkResponseMO>(data);
+        System.out.println("总数量：" + page.getTotal());
+        System.out.println("当前页查询记录：" + page.getList().size());
+        System.out.println("当前页码：" + page.getPageNum());
+        System.out.println("每页显示数量：" + page.getPageSize());
+        System.out.println("总页：" + page.getPages());
+        System.out.println(page);
+        Object object = JsonUtil.successTable(page.getList(), page.getTotal());
+        System.out.println(object);
+        return object;
+    }
+
+
+    @RequestMapping(value = "/selectdatasourcenopage", method = RequestMethod.POST)
+    @ResponseBody
+    public Object selectDataSourceNopage(@RequestBody SelectDataSourceRequestMO selectDataSourceRequestMO) {
+        List<SelectDataSourceResponseMO> data = exportAndImportService.selectDataSource(selectDataSourceRequestMO);
+        return JsonUtil.success(data);
+    }
+
+    @RequestMapping(value = "/createformwork", method = RequestMethod.POST)
+    @ResponseBody
+    public Object createformwork(@RequestBody CreateFormRequestMO createFormRequestMO) {
+        exportAndImportService.createformwork(createFormRequestMO);
+        return JsonUtil.success();
     }
 
 

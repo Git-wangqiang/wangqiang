@@ -26,8 +26,9 @@ function cd() {
     var logusername = sessionStorage.getItem("logusername");
     str += "<ul class=\"layui-nav\"><div class=\"pagefix\" style=\"float: right;\"><li class=\"layui-nav-item\">"
         + "<a href=\"#\"><i class=\"layui-icon layui-icon-user\" style=\"font-size: 16px;\"></i>&nbsp;"
-        + "欢迎回来," + logusername + "</a>" + "<dl class=\"layui-nav-child\"><dd><a href=\"/html/ModifyUserInfo.html\">修改信息</a></dd>"
-        + "<dd><a href=\"\" onclick=\"logout();\">退了</a></dd>"
+        + "欢迎回来," + logusername + "</a>" + "<dl class=\"layui-nav-child\">" +
+        "<dd style=\"margin-left: 30px;\"><a href=\"/html/ModifyUserInfo.html\"><i class=\"layui-icon layui-icon-password\"></i>&nbsp;&nbsp;修改密码</a></dd>"
+        + "<dd style=\"margin-left: 30px;\"><a href=\"\" onclick=\"logout();\"><i class=\"layui-icon layui-icon-close-fill\"></i>&nbsp;&nbsp;退了</a></dd>"
         + "</dl></li></div></ul>";
     logininfo.innerHTML = str;
     element.init();
@@ -387,4 +388,74 @@ function codegeneration(data) {
         }
     });
     return d;
+}
+
+function downselect() {
+    layer.open({
+        type: 1,
+        content: $("#downloadselect").html(),
+        title: '修改数据',
+        area: ['500px', '300px'],
+        offset: 'auto',
+        fixed: false,
+        scrollbar: false,
+        maxHeight: 100
+    });
+    var str = "";
+    var createformselect = document.getElementById("createformselect");
+    $.ajax({
+        type: "post",
+        contentType: 'application/json',
+        dataType: "json",
+        async: false,
+        url: "/api/selectdatasourcenopage",
+        data: JSON.stringify({id: ''}),
+        success: function (data) {
+            if (data.isSuccess == true) {
+                d = data.data;
+                str += " <div class=\"layui-inline\">\n" +
+                    "                <label class=\"layui-form-label\">选择数据源</label>\n" +
+                    "                <div class=\"layui-input-inline\">\n" +
+                    "                    <select id=\"select-id\" name=\"modules\" lay-verify=\"required\" lay-search=\"\">\n" +
+                    "                        <option value=\"\">直接选择或搜索选择</option>\n";
+                for (i = 0; i < d.length; i++) {
+                    str += "<option value=\"" + d[i].id + "\">" + d[i].tablename + "</option>";
+                }
+                str += "                    </select>\n" +
+                    "                </div>\n" +
+                    "            </div>\n" +
+                    "            <button class=\"layui-btn layui-btn-sm\" onclick=\"submitcreateform();\">立即提交</button>";
+                createformselect.innerHTML = str;
+                form.render('select');
+            } else {
+                layer.msg("操作失败");
+            }
+        },
+        error: function () {
+            layer.msg("操作失败");
+        }
+    });
+}
+
+function submitcreateform() {
+    var id = document.getElementById("select-id").value;
+    $.ajax({
+        type: "post",
+        contentType: 'application/json',
+        dataType: "json",
+        async: false,
+        url: "/api/createformwork",
+        data: JSON.stringify({id: id}),
+        success: function (data) {
+            debugger;
+            if (data.isSuccess == true) {
+                layer.msg("操作成功");
+            } else {
+                layer.msg("操作失败");
+            }
+        },
+        error: function () {
+            layer.msg("操作失败");
+        }
+    });
 }

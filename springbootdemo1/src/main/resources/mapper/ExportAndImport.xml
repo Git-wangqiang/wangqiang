@@ -44,4 +44,20 @@
         );
     </insert>
 
+    <select id="selectFormwork" parameterType="cn.wmyskxz.springboot.mo.FormworkRequestMO"
+            resultType="cn.wmyskxz.springboot.mo.FormworkResponseMO">
+        select * from t_formwork t
+        where 1=1
+        order by id asc
+    </select>
+
+    <select id="getCloumns" parameterType="cn.wmyskxz.springboot.mo.CreateFormRequestMO"
+            resultType="cn.wmyskxz.springboot.mo.CreateFormResponseMO">
+            SELECT *
+            FROM t_datasource_detail b
+            WHERE b.tablename IN (SELECT a.tablename
+                                  FROM t_datasource a
+                                  WHERE id = #{id})
+    </select>
+
 </mapper>

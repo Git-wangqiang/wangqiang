@@ -1,8 +1,6 @@
 package cn.wmyskxz.springboot.service;
 
-import cn.wmyskxz.springboot.mo.CreateTableRequestMO;
-import cn.wmyskxz.springboot.mo.SelectDataSourceRequestMO;
-import cn.wmyskxz.springboot.mo.SelectDataSourceResponseMO;
+import cn.wmyskxz.springboot.mo.*;
 
 import java.util.List;
 
@@ -12,5 +10,9 @@ public interface ExportAndImportService {
     List<SelectDataSourceResponseMO> selectDataSource(SelectDataSourceRequestMO selectDataSourceRequestMO);
 
     String codeGeneration(CreateTableRequestMO createTableRequestMO);
+
+    List<FormworkResponseMO> selectFormwork(FormworkRequestMO formworkRequestMO);
+
+    void createformwork(CreateFormRequestMO createFormRequestMO);
 }
 

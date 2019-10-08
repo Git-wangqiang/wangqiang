@@ -1,9 +1,6 @@
 package cn.wmyskxz.springboot.mapper;
 
-import cn.wmyskxz.springboot.mo.CloumsPropertyRequestMO;
-import cn.wmyskxz.springboot.mo.CreateTableRequestMO;
-import cn.wmyskxz.springboot.mo.SelectDataSourceRequestMO;
-import cn.wmyskxz.springboot.mo.SelectDataSourceResponseMO;
+import cn.wmyskxz.springboot.mo.*;
 
 import java.util.List;
 
@@ -15,4 +12,9 @@ public interface ExportAndImportMapper {
     void addDataSource(CreateTableRequestMO createTableRequestMO);
 
     void addDataSourceDetail(CloumsPropertyRequestMO cloumsPropertyRequestMO);
+
+    List<FormworkResponseMO> selectFormwork(FormworkRequestMO formworkRequestMO);
+
+    List<CreateFormResponseMO> getCloumns(CreateFormRequestMO createFormRequestMO);
 }
+
