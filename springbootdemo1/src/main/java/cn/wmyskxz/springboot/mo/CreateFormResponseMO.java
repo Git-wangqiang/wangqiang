@@ -8,6 +8,15 @@ public class CreateFormResponseMO {
     private Integer cloumlength;
     private Integer cloumpoint;
     private String tablename;
+    private String cloumtnote;
+
+    public String getCloumtnote() {
+        return cloumtnote;
+    }
+
+    public void setCloumtnote(String cloumtnote) {
+        this.cloumtnote = cloumtnote;
+    }
 
     public Integer getId() {
         return id;

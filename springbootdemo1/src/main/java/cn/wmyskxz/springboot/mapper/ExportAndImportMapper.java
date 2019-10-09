@@ -16,5 +16,15 @@ public interface ExportAndImportMapper {
     List<FormworkResponseMO> selectFormwork(FormworkRequestMO formworkRequestMO);
 
     List<CreateFormResponseMO> getCloumns(CreateFormRequestMO createFormRequestMO);
+
+    void addFormWork(CreateFormRequestMO createFormRequestMO);
+
+    List<RoleMO> getRole(GetCategoryAndRoleRequestMO getCategoryAndRoleRequestMO);
+
+    List<DatasourceMO> getDataSource(GetCategoryAndRoleRequestMO getCategoryAndRoleRequestMO);
+
+    List<FormworkMO> getFormwork(GetCategoryAndRoleRequestMO getCategoryAndRoleRequestMO);
+
+    void saveCategory(SaveCategoryRequestMO saveCategoryRequestMO);
 }
 

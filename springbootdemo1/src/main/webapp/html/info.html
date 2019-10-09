@@ -5,44 +5,6 @@
     <title>长治数据上报综合管理系统</title>
     <link rel="stylesheet" href="../css/layui.css">
     <link href="../css/main.css">
-    <style type="text/css">
-        /*   !*您可以将下列样式写入自己的样式表中*!
-           .childBody {
-               padding: 15px;
-           }
-
-           !*layui 元素样式改写*!
-           .layui-btn-sm {
-               line-height: normal;
-               font-size: 12.5px;
-           }*/
-
-        /* .layui-table-view .layui-table-body {
-             min-height: 256px;
-         }*/
-
-        .layui-table-cell .layui-input.layui-unselect {
-            height: 30px;
-            line-height: 30px;
-        }
-
-        /*设置 layui 表格中单元格内容溢出可见样式*/
-        .table-overlay .layui-table-view,
-        .table-overlay .layui-table-box,
-        .table-overlay .layui-table-body {
-            overflow: visible;
-        }
-
-        .table-overlay .layui-table-cell {
-            height: auto;
-            overflow: visible;
-        }
-
-        /*文本对齐方式*/
-        .text-center {
-            text-align: center;
-        }
-    </style>
 </head>
 
 <body onload="cd();">
@@ -67,11 +29,10 @@
     <div class="bstyle">
         <div class="layui-body">
 
-
             <div class="layui-tab layui-tab-brief">
                 <ul class="layui-tab-title">
-                    <li class="layui-this">数据源信息</li>
-                    <li>新增数据源</li>
+                    <li class="layui-this">工程技术研究中心</li>
+                    <li>工程技术研究添加</li>
                 </ul>
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show">
@@ -82,7 +43,7 @@
                             <div class="layui-form-item box1">
                                 <form id="" method="post" class="layui-form layui-form-pane">
                                     <div class="layui-inline">
-                                        <label class="layui-form-label cxlable">表名:</label>
+                                        <label class="layui-form-label cxlable">认定年份:</label>
                                         <div class="layui-input-inline colformstyle"
                                              style="width: 200px; line-height: 30px">
                                             <input type="text" name="" autocomplete="off"
@@ -90,14 +51,14 @@
                                         </div>
                                     </div>
                                     <div class="layui-inline">
-                                        <label class="layui-form-label cxlable">创建者:</label>
+                                        <label class="layui-form-label cxlable">名称:</label>
                                         <div class="layui-input-inline colformstyle" style="width: 200px;">
                                             <input type="text" name="" autocomplete="off"
                                                    class="layui-input colformstyle mc" id="mc">
                                         </div>
                                     </div>
                                     <div class="layui-inline">
-                                        <label class="layui-form-label cxlable">修改者:</label>
+                                        <label class="layui-form-label cxlable">运营主体:</label>
                                         <div class="layui-input-inline colformstyle" style="width: 200px;">
                                             <input type="text" name="" autocomplete="off"
                                                    class="layui-input colformstyle yyzt" id="yyzt">
@@ -121,49 +82,56 @@
                         </div>
                     </div>
                     <div class="layui-tab-item addinfo">
-                        <!--<script src="/demos/googlegg.js"></script>-->
-                        <section>
-                            <div class="layui-card">
-                                <div class="layui-card-header">添加一行表格并提交生成数据源</div>
-                                <div class="layui-card-body layui-text">
-                                    <div id="toolbar">
-                                        <div>
-                                            <button type="button" class="layui-btn layui-btn-sm" data-type="addRow"
-                                                    title="添加一行">
-                                                <i class="layui-icon layui-icon-add-1"></i> 添加一行
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div id="tableRes" class="table-overlay">
-                                        <table id="dataTable" lay-filter="dataTable" class="layui-hide"></table>
-                                    </div>
-                                    <div id="action" class="text-center">
-                                        <button type="button" name="btnSave" class="layui-btn layui-btn-sm"
-                                                data-type="save">保存
-                                        </button>
-                                        <button type="reset" name="btnReset"
-                                                class="layui-btn layui-btn-sm layui-btn-primary">取消
-                                        </button>
-                                    </div>
+
+                        <form action="" class="layui-form layui-form-pane gcjs-add">
+                            <div class="layui-form-item gcjs-add">
+                                <label class="layui-form-label">认证年份</label>
+                                <div class="layui-input-block">
+                                    <input type="text" class="layui-input tjform" id="rznf">
                                 </div>
                             </div>
 
-                            <!--保存结果输出-->
-                            <div class="layui-card">
-                                <div class="layui-card-header">保存结果输出</div>
-                                <div class="layui-card-body layui-text">
-                                    <blockquote class="layui-elem-quote layui-quote-nm">
-                                        <pre id="jsonResult"><span class="layui-word-aux">请点击“保存”后查看输出信息……</span></pre>
-                                    </blockquote>
+                            <div class="layui-form-item gcjs-add">
+                                <label class="layui-form-label">省级众创空间名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="title" required lay-verify="required" placeholder="请输入..."
+                                           autocomplete="off" class="layui-input tjform">
                                 </div>
                             </div>
-                        </section>
+                            <div class="layui-form-item gcjs-add">
+                                <label class="layui-form-label">运营主体</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="title" required lay-verify="required" placeholder="请输入..."
+                                           autocomplete="off" class="layui-input tjform">
+                                </div>
+                            </div>
+                            <div class="layui-form-item gcjs-add-but">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn layui-btn-sm" lay-submit lay-filter="formDemo"
+                                            onclick="test(data)">保存
+                                    </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!--  <button type="button" class="layui-btn" id="shangchuan">
+                              <i class="layui-icon">&#xe67c;</i>上传图片
+                          </button>-->
+
+
                     </div>
                 </div>
             </div>
+
+
         </div>
     </div>
 
+    <!--  <div class="layui-footer">
+          下边
+          &lt;!&ndash; 底部固定区域 &ndash;&gt;
+      </div>-->
 </div>
 
 <!--<script src="../js/layui.js"></script>-->
@@ -180,53 +148,189 @@
         element = layui.element;
         laypage = layui.laypage;
         var form = layui.form;
+        var laydate = layui.laydate;
+        var upload = layui.upload;
         var table = layui.table;
 
+
+        laydate.render({
+            elem: '#rznf'
+            , change: function (value, date, endDate) {
+                console.log(value); //得到日期生成的值，如：2017-08-18
+                console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+            }
+        });
+        var uploadInst = upload.render({
+            elem: '#shangchuan' //绑定元素
+            , url: '/upload/' //上传接口
+            , done: function (res) {
+                //上传完毕回调
+            }
+            , error: function () {
+                //请求异常回调
+            }
+        });
+        var bt = "";
+        var mycols = [];
+        mycols[0]= {field: 'id', title: 'ID', sort: true, fixed: 'left', align: 'center', type: 'checkbox'};
+        mycols[1] =  {field: 'mode_name', title: '用户名', align: 'center'};
+        mycols[2] =  {field: 'updatedate', title: '更新时间', sort: true, align: 'center'};
+        mycols[3] =  {field: 'yyzt', title: '名称', align: 'center'};
+        mycols[4] =  {field: 'caozuo', title: '操作', templet: '#titleTpl', align: 'center'};
         var tableins = table.render({
-            elem: '#xitongshezhit'
-            //, toolbar: '#titleTpl'
-            , tool: "#titleTpl"
-            , toolbar: false
-            , height: 500
-            , width: 1300
-            , even: true
-            , url: '/api/selectdatasource' //数据接口
-            , page: true //开启分页
-            , method: 'post'
-            , contentType: 'application/json'
-            , cols: [[ //表头
-                {field: 'id', title: 'ID', sort: true, fixed: 'left', align: 'center', type: 'checkbox'}
-                //, {checkbox: true, align: 'center'}
-                , {field: 'tablename', title: '数据源表名', align: 'center'}
-                , {field: 'createuser', title: '创建者', sort: true, align: 'center'}
-                , {field: 'createdate', title: '创建时间', align: 'center'}
-                , {field: 'updateuser', title: '修改者', sort: true, align: 'center'}
-                , {field: 'updatedate', title: '修改时间', align: 'center'}
-                , {field: 'caozuo', title: '操作', templet: '#titleTpl', align: 'center'}
-            ]]
+                elem: '#xitongshezhit'
+                //, toolbar: '#titleTpl'
+                , tool: "#titleTpl"
+                , toolbar: false
+                , height: 500
+                , width: 1300
+                , even: true
+                , url: '/api/zckj' //数据接口
+                , page: true //开启分页
+                , done: function (res, curr, count) {
+                    console.log(res);
+                    console.log(curr);
+                    console.log(count);
+                }
+                , method: 'post'
+                , contentType: 'application/json'
+                , request: {
+                    pageNum: 1 //页码的参数名称，默认：page
+                    , pageSize: 10 //每页数据量的参数名，默认：limit
+                    , yyzt: '',
+                    mc: '',
+                    rdnf: ''
+                }
+                , cols: [mycols]
+            })
+        ;
+
+        //查询
+        $("#chaxun").click(function () {
+            tableins.reload({
+                where: {rdnf: $("#rdnf").val(), mc: $("#mc").val(), yyzt: $("#yyzt").val(), pageNum: 1, pageSize: 10},
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
         });
 
-        /*        addresourcetable = table.render({
-                    elem: '#adddatasource'
-                    , tool: "#adddata-tool"
-                    , height: 500
-                    , width: 1300
-                    , even: true
-                    , data: adddata
-                    , page: true //开启分页
-                    , method: 'post'
-                    , contentType: 'application/json'
-                    , cols: [[ //表头
-                        {field: 'id', title: 'ID', sort: true, fixed: 'left', align: 'center', type: 'checkbox',edit: 'text'}
-                        , {field: 'cloumname', title: '字段名', align: 'center',edit: 'text'}
-                        , {field: 'cloumtype', title: '字段类型', sort: true, align: 'center',edit: 'text'}
-                        , {field: 'cloumlength', title: '字段长度', align: 'center',edit: 'text'}
-                        , {field: 'cloumpoint', title: '小数点长度', sort: true, align: 'center',edit: 'text'}
-                        , {field: 'isnull', title: '是否为空', align: 'center',edit: 'text'}
-                        , {field: 'iskey', title: '是否为主键', align: 'center',edit: 'text'}
-                        , {field: 'isautoincrement', title: '是否自动递增', align: 'center',edit: 'text'}
-                    ]]
-                });*/
+        //批量删除
+        $("#piliangshanchu").click(function () {
+            var checkdatas = table.checkStatus('xitongshezhit').data;
+            if (checkdatas.length == 0) {
+                layer.msg("请选中你要删除的数据");
+            } else {
+                var ids = [];
+                for (var i in checkdatas) {
+                    ids.push(checkdatas[i].id);//获取数组中的id
+                }
+
+                layer.confirm('是否删除', {icon: 3, title: '消息'}, function (index) {
+                    //传入后台
+                    $.ajax({
+                        type: "post",
+                        contentType: 'application/json',
+                        dataType: "json",
+                        url: "/api/deldatas",
+                        data: JSON.stringify({ids: ids}),
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                //如果成功就显示数据
+                                tableins.reload({
+                                    where: {rdnf: null, mc: null, yyzt: null, pageNum: 1, pageSize: 10}, page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                });
+                                layer.alert('删除成功', {icon: 1});
+                            } else {
+                                layer.alert('删除失败', {icon: 2});
+                            }
+                        },
+                        error: function () {
+                            alert(data.errorMessage);
+                        }
+                    });
+                });
+
+            }
+        });
+
+        //删除
+        table.on('tool(xtsz)', function (obj) {
+            var layEvent = obj.event;
+            var data = obj.data; //获得当前行数据
+            var u = "/api/deldataByid";
+            if (layEvent == 'delete') {
+
+                layer.confirm('是否删除', {icon: 3, title: '消息'}, function (index) {
+                    var ms = delthis(data.id, u);
+                    tableins.reload({
+                        where: {rdnf: null, mc: null, yyzt: null, pageNum: 1, pageSize: 10}, page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    });
+                    //table.reload("xitongshezhit", {});
+                    layer.alert('删除成功', {icon: 1});
+                });
+            } else {
+                //layer.alert('删除失败', {icon: 2});
+                layer.open({
+                    type: 1,
+                    content: $("#editxinxi").html(),
+                    title: '修改数据',
+                    area: ['500px', '300px']
+                });
+            }
+            //填充表单
+            form.val("edit-filter-form", {
+                "mode_name": data.mode_name // "name": "value"
+                , "updatedate": data.updatedate
+                , "yyzt": data.yyzt,
+                "id": data.id
+            })
+            //提交表单
+            form.on('submit(but-submit)', function (data) {
+                /*    console.logs("elem" + data.elem) //被执行事件的元素DOM对象，一般为button对象
+                    console.logs("form" + data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+                    console.logs("field" + data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+                    console.logs("mode_name" + data.field.mode_name)*/
+                var subeditd = data.field;
+                $.ajax({
+                    type: "post",
+                    contentType: 'application/json',
+                    dataType: "json",
+                    url: "/api/editdata",
+                    //data: $('#formajax').serialize(),
+                    data: JSON.stringify({
+                        rdnf: subeditd.mode_name,
+                        id: subeditd.id,
+                        mc: subeditd.updatedate,
+                        yyzt: subeditd.yyzt
+                    }),
+                    success: function (data) {
+                        if (data.isSuccess == true) {
+                            layer.closeAll();
+                            tableins.reload({
+                                where: {rdnf: null, mc: null, yyzt: null, pageNum: 1, pageSize: 10}, page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                            });
+                            layer.alert('修改成功', {icon: 1});
+                        } else {
+                            layer.alert('修改失败', {icon: 2});
+                        }
+                    },
+                    error: function () {
+                        alert(data.errorMessage);
+                    }
+                });
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+        });
+
+        element.render();
     });
 
 
@@ -243,288 +347,88 @@
     </div>
 
 </script>
-
-
-<script type="text/html" id="adddata-tool">
-    <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
-        <button class="layui-btn layui-btn-sm" lay-event="update">编辑</button>
-    </div>
+<script type="text/html" id="editxinxi">
+    <form class="layui-form layui-form-pane" action="" lay-filter="edit-filter-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="mode_name" required lay-verify="required" placeholder="请输入标题"
+                       autocomplete="off"
+                       class="layui-input">
+                <input type="hidden" name="id">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称1</label>
+            <div class="layui-input-block">
+                <input type="text" name="updatedate" required lay-verify="required" placeholder="请输入标题"
+                       autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称2</label>
+            <div class="layui-input-block">
+                <input type="text" name="yyzt" required lay-verify="required" placeholder="请输入标题" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="but-submit">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
 </script>
-
-<script type="text/javascript">
-    //准备视图对象
-    window.viewObj = {
-        tbData: [{
-            tempId: new Date().valueOf(),
-            type: null,
-            cloumtname: '测试项名称',
-            isnull: 1,
-            cloumlength: 11,
-            cloumpoint: 2,
-            iskey: 0
-        }],
-        typeData: [
-            {id: 1, name: 'int'},
-            {id: 2, name: 'varchar'},
-            {id: 3, name: 'data'},
-            {id: 4, name: 'float'}
-        ],
-        renderSelectOptions: function (data, settings) {
-            settings = settings || {};
-            var valueField = settings.valueField || 'value',
-                textField = settings.textField || 'text',
-                selectedValue = settings.selectedValue || "";
-            var html = [];
-            for (var i = 0, item; i < data.length; i++) {
-                item = data[i];
-                html.push('<option value="');
-                html.push(item[valueField]);
-                html.push('"');
-                if (selectedValue && item[valueField] == selectedValue) {
-                    html.push(' selected="selected"');
-                }
-                html.push('>');
-                html.push(item[textField]);
-                html.push('</option>');
-            }
-            return html.join('');
-        }
-    };
-
-    //layui 模块化引用
-    layui.use(['jquery', 'table', 'layer'], function () {
-        var $ = layui.$, table = layui.table, form = layui.form, layer = layui.layer;
-
-        //数据表格实例化
-        var tbWidth = $("#tableRes").width();
-        var layTableId = "layTable";
-        var tableIns = table.render({
-            elem: '#dataTable',
-            id: layTableId,
-            data: viewObj.tbData,
-            width: tbWidth,
-            loading: true,
-            even: false, //不开启隔行背景
-            cols: [[
-                /*     {field: 'id', title: 'ID', sort: true, fixed: 'left', align: 'center', type: 'checkbox',edit: 'text'}
-                     , {field: 'cloumname', title: '字段名', align: 'center',edit: 'text'}
-                     , {field: 'cloumtype', title: '字段类型', sort: true, align: 'center',edit: 'text'}
-                     , {field: 'cloumlength', title: '字段长度', align: 'center',edit: 'text'}
-                     , {field: 'cloumpoint', title: '小数点长度', sort: true, align: 'center',edit: 'text'}
-                     , {field: 'isnull', title: '是否为空', align: 'center',edit: 'text'}
-                     , {field: 'iskey', title: '是否为主键', align: 'center',edit: 'text'}
-                     , {field: 'isautoincrement', title: '是否自动递增', align: 'center',edit: 'text'}*/
-                {title: '序号', type: 'numbers'},
-                {field: 'cloumtname', title: '字段名', edit: 'text'},
-                {
-                    field: 'type', title: '字段类型', templet: function (d) {
-                        var options = viewObj.renderSelectOptions(viewObj.typeData, {
-                            valueField: "id",
-                            textField: "name",
-                            selectedValue: d.type
-                        });
-                        return '<a lay-event="type"></a><select name="type" lay-filter="type"><option value="">请选择字段类型</option>' + options + '</select>';
-                    }
-                },
-                {field: 'cloumlength', title: '字段长度', edit: 'text'},
-                {field: 'cloumpoint', title: '小数点长度', edit: 'text'},
-                {
-                    field: 'isnull', title: '是否为空', event: 'isnull', templet: function (d) {
-                        var html = ['<input type="checkbox" name="isnull" lay-skin="switch" lay-text="是|否"'];
-                        html.push(d.isnull > 0 ? ' checked' : '');
-                        html.push('>');
-                        return html.join('');
-                    }
-                },
-                {
-                    field: 'iskey', title: '是否为主键', event: 'iskey', templet: function (d) {
-                        var html = ['<input type="checkbox" name="iskey" lay-skin="switch" lay-text="是|否"'];
-                        html.push(d.iskey > 0 ? ' checked' : '');
-                        html.push('>');
-                        return html.join('');
-                    }
-                },
-                {
-                    field: 'tempId', title: '操作', templet: function (d) {
-                        return '<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del" lay-id="' + d.tempId + '"><i class="layui-icon layui-icon-delete"></i>移除</a>';
-                    }
-                }
-            ]],
-            done: function (res, curr, count) {
-                viewObj.tbData = res.data;
-            }
-        });
-
-        //定义事件集合
-        var active = {
-            addRow: function () {	//添加一行
-                var oldData = table.cache[layTableId];
-                console.log(oldData);
-                var newRow = {
-                    tempId: new Date().valueOf(),
-                    type: null,
-                    cloumtname: '请填写名称',
-                    cloumlength: 11,
-                    cloumpoint: 2,
-                    iskey: 0,
-                    isnull: 1
-                };
-                oldData.push(newRow);
-                tableIns.reload({
-                    data: oldData
-                });
-            },
-            updateRow: function (obj) {
-                var oldData = table.cache[layTableId];
-                console.log(oldData);
-                for (var i = 0, row; i < oldData.length; i++) {
-                    row = oldData[i];
-                    if (row.tempId == obj.tempId) {
-                        $.extend(oldData[i], obj);
-                        return;
-                    }
-                }
-                tableIns.reload({
-                    data: oldData
-                });
-            },
-            removeEmptyTableCache: function () {
-                var oldData = table.cache[layTableId];
-                for (var i = 0, row; i < oldData.length; i++) {
-                    row = oldData[i];
-                    if (!row || !row.tempId) {
-                        oldData.splice(i, 1);    //删除一项
-                    }
-                    continue;
-                }
-                tableIns.reload({
-                    data: oldData
-                });
-            },
-            save: function () {
-                var oldData = table.cache[layTableId];
-                console.log(oldData);
-                for (var i = 0, row; i < oldData.length; i++) {
-                    row = oldData[i];
-                    if (!row.type) {
-                        layer.msg("检查每一行，请选择分类！", {icon: 5}); //提示
-                        return;
-                    }
-                }
-                document.getElementById("jsonResult").innerHTML = JSON.stringify(table.cache[layTableId], null, 2);	//使用JSON.stringify() 格式化输出JSON字符串
-            }
-        }
-
-        //激活事件
-        var activeByType = function (type, arg) {
-            if (arguments.length === 2) {
-                active[type] ? active[type].call(this, arg) : '';
-            } else {
-                active[type] ? active[type].call(this) : '';
-            }
-        }
-
-        //注册按钮事件
-        $('.layui-btn[data-type]').on('click', function () {
-            var type = $(this).data('type');
-            activeByType(type);
-        });
-
-        //监听select下拉选中事件
-        form.on('select(type)', function (data) {
-            var elem = data.elem; //得到select原始DOM对象
-            $(elem).prev("a[lay-event='type']").trigger("click");
-        });
-
-        //监听工具条
-        table.on('tool(dataTable)', function (obj) {
-            var data = obj.data, event = obj.event, tr = obj.tr; //获得当前行 tr 的DOM对象;
-            console.log(data);
-            switch (event) {
-                case "type":
-                    //console.log(data);
-                    var select = tr.find("select[name='type']");
-                    if (select) {
-                        var selectedVal = select.val();
-                        if (!selectedVal) {
-                            layer.tips("请选择一个分类", select.next('.layui-form-select'), {tips: [3, '#FF5722']}); //吸附提示
-                        }
-                        console.log(selectedVal);
-                        $.extend(obj.data, {'type': selectedVal});
-                        activeByType('updateRow', obj.data);	//更新行记录对象
-                    }
-                    break;
-                case "isnull":
-                    var stateVal = tr.find("input[name='isnull']").prop('checked') ? 1 : 0;
-                    $.extend(obj.data, {'isnull': stateVal})
-                    activeByType('updateRow', obj.data);	//更新行记录对象
-                    break;
-                case "iskey":
-                    var stateVal = tr.find("input[name='iskey']").prop('checked') ? 1 : 0;
-                    $.extend(obj.data, {'iskey': stateVal})
-                    activeByType('updateRow', obj.data);	//更新行记录对象
-                    break;
-                case "del":
-                    layer.confirm('真的删除行么？', function (index) {
-                        obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-                        layer.closeAll();
-                        activeByType('removeEmptyTableCache');
-                    });
-                    break;
-            }
-        });
-    });
-</script>
-
 <style>
-    /*  .title-index {
-          line-height: 60px;
-      }
+    .title-index {
+        line-height: 60px;
+    }
 
-      .tjform {
-          width: 400px;
-      }
+    .tjform {
+        width: 400px;
+    }
 
-      .cxlable {
-          line-height: 30px;
-          font-size: 13.5px;
-          text-align: center;
-      }
+    .cxlable {
+        line-height: 30px;
+        font-size: 13.5px;
+        text-align: center;
+    }
 
-      .box1 {
-          display: flex;
-          justify-content: center;
-      }
+    .box1 {
+        display: flex;
+        justify-content: center;
+    }
 
-      .pagefix {
-          float: right;
-          margin-right: 20px;
-      }
+    .pagefix {
+        float: right;
+        margin-right: 20px;
+    }
 
-      .bstyle {
-          margin-right: 20px;
-          text-align: center;
-      }
+    .bstyle {
+        margin-right: 20px;
+        text-align: center;
+    }
 
-      .infotable {
-          text-align: center;
-      }
+    .infotable {
+        text-align: center;
+    }
 
-      .addinfo {
-          display: flex;
-          flex-direction: column;
-      }
+    .addinfo {
+        display: flex;
+        flex-direction: column;
+    }
 
-      .gcjs-add {
-          margin-top: 40px;
-          margin-left: 20px;
-      }
+    .gcjs-add {
+        margin-top: 40px;
+        margin-left: 20px;
+    }
 
-      .gcjs-add-but {
-          margin-top: 200px;
-          text-align: center;
-      }*/
+    .gcjs-add-but {
+        margin-top: 200px;
+        text-align: center;
+    }
 </style>
 </body>
 </html>

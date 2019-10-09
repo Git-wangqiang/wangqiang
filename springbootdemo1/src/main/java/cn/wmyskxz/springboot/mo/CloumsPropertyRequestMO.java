@@ -10,6 +10,15 @@ public class CloumsPropertyRequestMO {
     private String isautoincrement;//是否自动递增
     private String type;
     private String tablename;
+    private String cloumtnote;//excle显示名称
+
+    public String getCloumtnote() {
+        return cloumtnote;
+    }
+
+    public void setCloumtnote(String cloumtnote) {
+        this.cloumtnote = cloumtnote;
+    }
 
     public String getTablename() {
         return tablename;

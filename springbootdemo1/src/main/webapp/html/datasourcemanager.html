@@ -312,6 +312,7 @@
                      , {field: 'isautoincrement', title: '是否自动递增', align: 'center',edit: 'text'}*/
                 {title: '序号', type: 'numbers'},
                 {field: 'cloumtname', title: '字段名', edit: 'text'},
+                {field: 'cloumtnote', title: '显示名称', edit: 'text'},
                 {
                     field: 'type', title: '字段类型', templet: function (d) {
                         var options = viewObj.renderSelectOptions(viewObj.typeData, {
@@ -359,7 +360,8 @@
                 var newRow = {
                     tempId: new Date().valueOf(),
                     type: null,
-                    cloumtname: '请填写名称',
+                    cloumtname: '请填写字段名',
+                    cloumtnote: '请填写注释',
                     cloumlength: 11,
                     cloumpoint: 2,
                     iskey: 0,

@@ -1,5 +1,6 @@
 package cn.wmyskxz.springboot.service.impl;
 
+import cn.wmyskxz.springboot.exceptions.BusinessException;
 import cn.wmyskxz.springboot.mapper.ExportAndImportMapper;
 import cn.wmyskxz.springboot.mo.*;
 import cn.wmyskxz.springboot.service.ExportAndImportService;
@@ -154,19 +155,24 @@ public class ExportAndImportServiceImpl implements ExportAndImportService {
     }
 
     @Override
+    @Transactional
     public void createformwork(CreateFormRequestMO createFormRequestMO) {
         List<CreateFormResponseMO> createFormResponseMOList = exportAndImportMapper.getCloumns(createFormRequestMO);
+        Map<Integer, CreateFormResponseMO> accts = null;
         final String[] filename = {"nullexcle"};
-        Map<String, Integer> accts = new HashMap<String, Integer>() {
-            {
-                if (createFormResponseMOList != null && createFormResponseMOList.size() > 0) {
+        if (createFormResponseMOList != null && createFormResponseMOList.size() > 0) {
+            accts = new HashMap<Integer, CreateFormResponseMO>() {
+                {
                     filename[0] = createFormResponseMOList.get(0).getTablename();
                     for (CreateFormResponseMO createForm : createFormResponseMOList) {
-                        put(createForm.getCloumtname(), createForm.getCloumpoint());
+                        put(createForm.getId(), createForm);
                     }
                 }
-            }
-        };
+            };
+        } else {
+            throw new BusinessException("未查到数据源信息");
+        }
+
         // 创建HSSFWorkbook对象(excel的文档对象)
         HSSFWorkbook wb = new HSSFWorkbook();
         // 建立新的sheet对象（excel的表单）
@@ -175,10 +181,10 @@ public class ExportAndImportServiceImpl implements ExportAndImportService {
         HSSFRow row1 = sheet.createRow(0);
         // 创建单元格（excel的单元格，参数为列索引，可以是0～255之间的任何一个
         int i = 0;
-        for (String key : accts.keySet()) {
+        for (Integer key : accts.keySet()) {
             HSSFCell cell = row1.createCell(i);
             // 设置单元格内容
-            cell.setCellValue(key);
+            cell.setCellValue(accts.get(key).getCloumtnote());
             i++;
         }
         // 第六步，将文件存到指定位置
@@ -208,6 +214,25 @@ public class ExportAndImportServiceImpl implements ExportAndImportService {
         }
         // 合并单元格CellRangeAddress构造参数依次表示起始行，截至行，起始列， 截至列
         //sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 3));
+        exportAndImportMapper.addFormWork(createFormRequestMO);
+
+    }
+
+    @Override
+    public GetCategoryAndRoleResponseMO getCategoryAndRole(GetCategoryAndRoleRequestMO getCategoryAndRoleRequestMO) {
+        GetCategoryAndRoleResponseMO getCategoryAndRoleResponseMO = new GetCategoryAndRoleResponseMO();
+        List<DatasourceMO> datasourceMOList = exportAndImportMapper.getDataSource(getCategoryAndRoleRequestMO);
+        List<FormworkMO> formworkMOList = exportAndImportMapper.getFormwork(getCategoryAndRoleRequestMO);
+        List<RoleMO> roleMOList = exportAndImportMapper.getRole(getCategoryAndRoleRequestMO);
+        getCategoryAndRoleResponseMO.setDatasourceMOList(datasourceMOList);
+        getCategoryAndRoleResponseMO.setFormworkMOList(formworkMOList);
+        getCategoryAndRoleResponseMO.setRoleMOList(roleMOList);
+        return getCategoryAndRoleResponseMO;
+    }
+
+    @Override
+    public void saveCategory(SaveCategoryRequestMO saveCategoryRequestMO) {
+        exportAndImportMapper.saveCategory(saveCategoryRequestMO);
     }
 
 }

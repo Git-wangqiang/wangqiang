@@ -395,7 +395,7 @@ function downselect() {
         type: 1,
         content: $("#downloadselect").html(),
         title: '修改数据',
-        area: ['500px', '300px'],
+        area: ['550px', '400px'],
         offset: 'auto',
         fixed: false,
         scrollbar: false,
@@ -407,13 +407,22 @@ function downselect() {
         type: "post",
         contentType: 'application/json',
         dataType: "json",
-        async: false,
         url: "/api/selectdatasourcenopage",
         data: JSON.stringify({id: ''}),
         success: function (data) {
             if (data.isSuccess == true) {
                 d = data.data;
-                str += " <div class=\"layui-inline\">\n" +
+                str +=
+                    "   <div class=\"layui-form-item\" style=\"margin-top: 20px\">" +
+                    "                <label class=\"layui-form-label\">模板名称</label>\n" +
+                    "                <div class=\"layui-input-block\">\n" +
+                    "                    <input type=\"text\" id=\"mobanname\" required lay-verify=\"required\"\n" +
+                    "                           autocomplete=\"off\"\n" +
+                    "                           class=\"layui-input\" style=\"width: 300px;\">\n" +
+                    "                    <input type=\"hidden\" name=\"id\">\n" +
+                    "                </div>\n" +
+                    "            </div>" +
+                    " <div class=\"layui-inline\" style=\"margin-top: 20px\">\n" +
                     "                <label class=\"layui-form-label\">选择数据源</label>\n" +
                     "                <div class=\"layui-input-inline\">\n" +
                     "                    <select id=\"select-id\" name=\"modules\" lay-verify=\"required\" lay-search=\"\">\n" +
@@ -424,7 +433,13 @@ function downselect() {
                 str += "                    </select>\n" +
                     "                </div>\n" +
                     "            </div>\n" +
-                    "            <button class=\"layui-btn layui-btn-sm\" onclick=\"submitcreateform();\">立即提交</button>";
+                    "<div class=\"layui-form-item layui-form-text\" style=\"margin-top: 20px\">\n" +
+                    "    <label class=\"layui-form-label\">备注</label>\n" +
+                    "    <div class=\"layui-input-block\">\n" +
+                    "      <textarea id=\"remark\" placeholder=\"请输入内容\" class=\"layui-textarea\"></textarea>\n" +
+                    "    </div>\n" +
+                    "  </div>" +
+                    "            <button class=\"layui-btn layui-btn-sm\" type=\"button\" style=\"margin-left: 220px\" onclick=\"submitcreateform();\">立即提交</button>";
                 createformselect.innerHTML = str;
                 form.render('select');
             } else {
@@ -439,19 +454,115 @@ function downselect() {
 
 function submitcreateform() {
     var id = document.getElementById("select-id").value;
+    var formworkname = document.getElementById("mobanname").value;
+    var remark = document.getElementById("remark").value;
+    var logusername = sessionStorage.getItem("logusername");
     $.ajax({
         type: "post",
         contentType: 'application/json',
         dataType: "json",
-        async: false,
         url: "/api/createformwork",
-        data: JSON.stringify({id: id}),
+        data: JSON.stringify({id: id, formworkname: formworkname, remark: remark, username: logusername}),
         success: function (data) {
             debugger;
             if (data.isSuccess == true) {
+                layer.closeAll();
+                tableins.reload('reldata', {
+                    url: '/api/selectformwork'
+                    , where: {} //设定异步数据接口的额外参数
+                });
                 layer.msg("操作成功");
             } else {
-                layer.msg("操作失败");
+                layer.msg(data.errorMessage);
+            }
+        },
+        error: function () {
+            layer.msg("操作失败");
+        }
+    });
+}
+
+function getDataFormworkRole() {
+    $.ajax({
+        type: "post",
+        contentType: 'application/json',
+        dataType: "json",
+        url: "/api/getcategoryandrole",
+        data: JSON.stringify({id: ''}),
+        success: function (data) {
+            if (data.isSuccess == true) {
+                var dd = data.data;
+                var datasourceMOList = dd['datasourceMOList'];
+                var formworkMOList = dd['formworkMOList'];
+                var roleMOList = dd['roleMOList'];
+                var str = "<fieldset class=\"layui-elem-field layui-field-title fieldset-roleinfo\" style=\"margin-top: 30px;\">\n" +
+                    "                    <legend>选择数据源</legend>\n";
+                if (datasourceMOList != null && datasourceMOList.length > 0) {
+                    for (i = 0; i < datasourceMOList.length; i++) {
+                        str += "<input type=\"radio\" name=\"datasource\" value=\"" + datasourceMOList[i].id + "\" title=\"" + datasourceMOList[i].tablename + "\" checked>";
+                    }
+                }
+                str += "                </fieldset>\n" +
+                    "                <fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 50px;\">\n" +
+                    "                    <legend>选择模板</legend>\n";
+                if (formworkMOList != null && formworkMOList.length > 0) {
+                    for (i = 0; i < formworkMOList.length; i++) {
+                        str += "<input type=\"radio\" name=\"formwork\" value=\"" + formworkMOList[i].id + "\" title=\"" + formworkMOList[i].formworkname + "\" checked>";
+                    }
+                }
+
+                str += "                </fieldset>\n" +
+                    "\n" +
+                    "                <fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 50px;\">\n" +
+                    "                    <legend>选择角色</legend>\n";
+                if (roleMOList != null && roleMOList.length > 0) {
+                    for (i = 0; i < roleMOList.length; i++) {
+                        str += "<input type=\"radio\" name=\"role\" value=\"" + roleMOList[i].id + "\" title=\"" + roleMOList[i].description + "\" checked>";
+                    }
+                }
+                str += "                </fieldset>\n" +
+                    "                <div class=\"layui-form-item roleinfo-btn-save\" style=\"margin-top: 200px;\">\n" +
+                    "                    <button class=\"layui-btn layui-btn-sm\" onclick=\"saveCategory();\">保存</button>\n" +
+                    "                    </button>\n" +
+                    "                </div>";
+                var ht = document.getElementById("dataformworkrole");
+                ht.innerHTML = str;
+                form.render('radio');
+            } else {
+                layer.msg(data.errorMessage);
+            }
+        },
+        error: function () {
+            layer.msg("操作失败");
+        }
+    });
+}
+
+function saveCategory() {
+    var datasourceid = $("input[name='datasource']:checked").val();
+    var formworkid = $("input[name='formwork']:checked").val();
+    var roleid = $("input[name='role']:checked").val();
+    var roletitle = $("input[name='role']:checked")[0].title;
+    var formworktitle = $("input[name='formwork']:checked")[0].title;
+    var datasourcetitle = $("input[name='datasource']:checked")[0].title;
+    $.ajax({
+        type: "post",
+        contentType: 'application/json',
+        dataType: "json",
+        url: "/api/savecategory",
+        data: JSON.stringify({
+            datasourceid: datasourceid,
+            formworkid: formworkid,
+            roleid: roleid,
+            roletitle: roletitle,
+            formworktitle: formworktitle,
+            datasourcetitle: datasourcetitle
+        }),
+        success: function (data) {
+            if (data.isSuccess == true) {
+                layer.msg("操作成功");
+            } else {
+                layer.msg(data.errorMessage);
             }
         },
         error: function () {

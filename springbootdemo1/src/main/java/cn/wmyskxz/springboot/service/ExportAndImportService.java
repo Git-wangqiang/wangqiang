@@ -14,5 +14,9 @@ public interface ExportAndImportService {
     List<FormworkResponseMO> selectFormwork(FormworkRequestMO formworkRequestMO);
 
     void createformwork(CreateFormRequestMO createFormRequestMO);
+
+    GetCategoryAndRoleResponseMO getCategoryAndRole(GetCategoryAndRoleRequestMO getCategoryAndRoleRequestMO);
+
+    void saveCategory(SaveCategoryRequestMO saveCategoryRequestMO);
 }
 

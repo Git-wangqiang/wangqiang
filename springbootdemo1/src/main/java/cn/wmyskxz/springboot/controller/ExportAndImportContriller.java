@@ -86,5 +86,19 @@ public class ExportAndImportContriller {
         return JsonUtil.success();
     }
 
+    @RequestMapping(value = "/getcategoryandrole", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getCategoryAndRole(@RequestBody GetCategoryAndRoleRequestMO getCategoryAndRoleRequestMO) {
+        GetCategoryAndRoleResponseMO getCategoryAndRoleResponseMO = exportAndImportService.getCategoryAndRole(getCategoryAndRoleRequestMO);
+        return JsonUtil.success(getCategoryAndRoleResponseMO);
+    }
+
+    @RequestMapping(value = "/savecategory", method = RequestMethod.POST)
+    @ResponseBody
+    public Object saveCategory(@RequestBody SaveCategoryRequestMO saveCategoryRequestMO) {
+        exportAndImportService.saveCategory(saveCategoryRequestMO);
+        return JsonUtil.success();
+    }
+
 
 }

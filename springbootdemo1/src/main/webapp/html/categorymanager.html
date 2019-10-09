@@ -7,7 +7,7 @@
     <link href="../css/main.css">
 </head>
 
-<body onload="cd();">
+<body onload="cd();getDataFormworkRole();">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header layui-bg-black">
         <div class="layui-row layui-col-md6">
@@ -21,14 +21,14 @@
 
     <div class="layui-side layui-bg-black diy3">
         <ul class="layui-nav layui-nav-tree" lay-filter="test" id="dtcd">
-
         </ul>
-
     </div>
 
     <div class="bstyle">
         <div class="layui-body">
+            <div class="layui-row layui-form layui-form-pane" style="" id="dataformworkrole">
 
+            </div>
         </div>
     </div>
 
@@ -47,14 +47,14 @@
     layui.use(['element', 'laypage', 'form', 'laydate', 'upload', 'table'], function () {
         element = layui.element;
         laypage = layui.laypage;
-        var form = layui.form;
+        form = layui.form;
         var laydate = layui.laydate;
         var upload = layui.upload;
         var table = layui.table;
 
     });
- /*   formworkmanager
-    categorymanager*/
+    /*   formworkmanager
+       categorymanager*/
 
 </script>
 

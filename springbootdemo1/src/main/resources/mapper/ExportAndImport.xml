@@ -30,7 +30,7 @@
 
 
     <insert id="addDataSourceDetail" parameterType="cn.wmyskxz.springboot.mo.CloumsPropertyRequestMO">
-        INSERT INTO t_datasource_detail (cloumtname,cloumtype,cloumlength,cloumpoint,isnull,iskey,isautoincrement,tablename)
+        INSERT INTO t_datasource_detail (cloumtname,cloumtype,cloumlength,cloumpoint,isnull,iskey,isautoincrement,tablename,cloumtnote)
         VALUES
         (
         #{cloumtname},
@@ -40,7 +40,8 @@
         #{isnull},
         #{iskey},
         #{isautoincrement},
-        #{tablename}
+        #{tablename},
+        #{cloumtnote}
         );
     </insert>
 
@@ -59,5 +60,53 @@
                                   FROM t_datasource a
                                   WHERE id = #{id})
     </select>
+
+    <insert id="addFormWork" parameterType="cn.wmyskxz.springboot.mo.CreateFormRequestMO">
+        INSERT INTO t_formwork (formworkname,createdate,createuser,updateuser,updatedate,lastdate,remark)
+        VALUES
+        (
+        #{formworkname},
+        SYSDATE(),
+        #{username},
+        #{username},
+        SYSDATE(),
+        SYSDATE(),
+        #{remark}
+        );
+    </insert>
+
+    <select id="getRole" parameterType="cn.wmyskxz.springboot.mo.GetCategoryAndRoleRequestMO"
+            resultType="cn.wmyskxz.springboot.mo.RoleMO">
+        SELECT *
+        FROM sys_role b
+        WHERE 1=1
+    </select>
+    <select id="getDataSource" parameterType="cn.wmyskxz.springboot.mo.GetCategoryAndRoleRequestMO"
+            resultType="cn.wmyskxz.springboot.mo.DatasourceMO">
+        SELECT *
+        FROM t_datasource b
+        WHERE 1=1
+    </select>
+    <select id="getFormwork" parameterType="cn.wmyskxz.springboot.mo.GetCategoryAndRoleRequestMO"
+            resultType="cn.wmyskxz.springboot.mo.FormworkMO">
+        SELECT *
+        FROM t_formwork
+        WHERE 1=1
+    </select>
+
+    <insert id="saveCategory" parameterType="cn.wmyskxz.springboot.mo.SaveCategoryRequestMO">
+        INSERT INTO data_form_role (datasourceid,formworkid,roleid,roletitle,formworktitle,datasourcetitle,updatedate,lastdate)
+        VALUES
+        (
+        #{datasourceid},
+        #{formworkid},
+        #{roleid},
+        #{roletitle},
+        #{formworktitle},
+        #{datasourcetitle},
+        SYSDATE(),
+        SYSDATE()
+        );
+    </insert>
 
 </mapper>
