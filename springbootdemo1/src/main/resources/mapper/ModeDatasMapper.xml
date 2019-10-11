@@ -2,14 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.wmyskxz.springboot.mapper.ModeDatasMapper">
 
-    <select id="findZckj" parameterType="cn.wmyskxz.springboot.mo.ZckjRequestMO"
-            resultType="cn.wmyskxz.springboot.pojo.Zckj">
-        select * from t_szckj t
-        where 1=1
-        <if test="yyzt != null and yyzt != '' ">and yyzt=#{yyzt}</if>
-        <if test="rdnf != null and rdnf != '' ">and rdnf=#{rdnf}</if>
-        <if test="mc != null and mc != '' ">and mode_name=#{mc}</if>
-        order by id asc
+    <select id="getEmpAsMapById" parameterType="cn.wmyskxz.springboot.mo.CurrencyRequestMO"
+            resultType="java.util.HashMap">
+        ${selectsql}
     </select>
 
 

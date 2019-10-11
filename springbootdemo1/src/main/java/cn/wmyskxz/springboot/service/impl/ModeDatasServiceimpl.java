@@ -2,17 +2,17 @@ package cn.wmyskxz.springboot.service.impl;
 
 import cn.wmyskxz.springboot.exceptions.BusinessException;
 import cn.wmyskxz.springboot.mapper.ModeDatasMapper;
-import cn.wmyskxz.springboot.mo.DelDatasRequestMO;
-import cn.wmyskxz.springboot.mo.UserManagerReqoestMO;
-import cn.wmyskxz.springboot.mo.UserManagerResponseMO;
-import cn.wmyskxz.springboot.mo.ZckjRequestMO;
+import cn.wmyskxz.springboot.mo.*;
 import cn.wmyskxz.springboot.pojo.Zckj;
+import cn.wmyskxz.springboot.pojo.Zckj1;
 import cn.wmyskxz.springboot.service.ModeDatasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service(value = "modeDatasService")
 public class ModeDatasServiceimpl implements ModeDatasService {
@@ -21,7 +21,9 @@ public class ModeDatasServiceimpl implements ModeDatasService {
 
     @Override
     public List<Zckj> findZckj(ZckjRequestMO zckjRequestMO) {
-        return modeDatasMapper.findZckj(zckjRequestMO);
+        List<Zckj> list = new ArrayList<>();
+        List<Zckj1> list1 = modeDatasMapper.findZckj(zckjRequestMO);
+        return list;
     }
 
     @Override
@@ -57,6 +59,18 @@ public class ModeDatasServiceimpl implements ModeDatasService {
     @Override
     public Zckj findZckjByid(Integer id) {
         return modeDatasMapper.findZckjByid(id);
+    }
+
+    @Override
+    public List<Map<String, Object>> getEmpAsMapById(CurrencyRequestMO currencyRequestMO) {
+        if (currencyRequestMO != null) {
+             StringBuffer sql = new StringBuffer();
+             sql.append("select * from ");
+             sql.append(currencyRequestMO.getTablename());
+             currencyRequestMO.setSelectsql(sql.toString());
+        }
+        List<Map<String, Object>> map = modeDatasMapper.getEmpAsMapById(currencyRequestMO);
+        return map;
     }
 
 }

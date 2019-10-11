@@ -18,5 +18,9 @@ public interface ExportAndImportService {
     GetCategoryAndRoleResponseMO getCategoryAndRole(GetCategoryAndRoleRequestMO getCategoryAndRoleRequestMO);
 
     void saveCategory(SaveCategoryRequestMO saveCategoryRequestMO);
+
+    List<CreateFormResponseMO> getDatabtCols(GetDatabtColsRequestMO getDatabtColsRequestMO);
+
+    CreateTableRequestMO getRemarkBytablename(CloumsPropertyRequestMO cloumsPropertyRequestMO);
 }
 

@@ -1,12 +1,10 @@
 package cn.wmyskxz.springboot.service;
 
-import cn.wmyskxz.springboot.mo.DelDatasRequestMO;
-import cn.wmyskxz.springboot.mo.UserManagerReqoestMO;
-import cn.wmyskxz.springboot.mo.UserManagerResponseMO;
-import cn.wmyskxz.springboot.mo.ZckjRequestMO;
+import cn.wmyskxz.springboot.mo.*;
 import cn.wmyskxz.springboot.pojo.Zckj;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ModeDatasService {
     List<Zckj> findZckj(ZckjRequestMO zckjRequestMO);
@@ -20,5 +18,7 @@ public interface ModeDatasService {
     void importexcel(List<ZckjRequestMO> list);
 
     Zckj findZckjByid(Integer id);
+
+    List<Map<String, Object>> getEmpAsMapById(CurrencyRequestMO currencyRequestMO);
 
 }

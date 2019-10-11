@@ -26,5 +26,11 @@ public interface ExportAndImportMapper {
     List<FormworkMO> getFormwork(GetCategoryAndRoleRequestMO getCategoryAndRoleRequestMO);
 
     void saveCategory(SaveCategoryRequestMO saveCategoryRequestMO);
+
+    SaveCategoryRequestMO getDataformworkroleByUsername(GetDatabtColsRequestMO getDatabtColsRequestMO);
+
+    CreateTableRequestMO getRemarkBytablename(CloumsPropertyRequestMO cloumsPropertyRequestMO);
+
+    List<CloumsPropertyRequestMO> getCloumnsByid(CreateTableRequestMO createTableRequestMO);
 }
 

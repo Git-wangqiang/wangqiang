@@ -235,4 +235,28 @@ public class ExportAndImportServiceImpl implements ExportAndImportService {
         exportAndImportMapper.saveCategory(saveCategoryRequestMO);
     }
 
+    @Override
+    public List<CreateFormResponseMO> getDatabtCols(GetDatabtColsRequestMO getDatabtColsRequestMO) {
+        //根据username查询拥有的角色 和  dataroleformwork表 返回此表的数据
+        SaveCategoryRequestMO saveCategoryRequestMO =
+                exportAndImportMapper.getDataformworkroleByUsername(getDatabtColsRequestMO);
+        List<CreateFormResponseMO> createFormResponseMOList = null;
+        if (saveCategoryRequestMO != null) {
+            CreateFormRequestMO createFormRequestMO = new CreateFormRequestMO();
+            createFormRequestMO.setId(saveCategoryRequestMO.getDatasourceid());
+            createFormResponseMOList =
+                    exportAndImportMapper.getCloumns(createFormRequestMO);
+        }
+        //如果不是空就查询出data_detail  字段名  然后返回
+        return createFormResponseMOList;
+    }
+
+    @Override
+    public CreateTableRequestMO getRemarkBytablename(CloumsPropertyRequestMO cloumsPropertyRequestMO) {
+        CreateTableRequestMO createTableRequestMO = exportAndImportMapper.getRemarkBytablename(cloumsPropertyRequestMO);
+        List<CloumsPropertyRequestMO> cloumsPropertyRequestMOList = exportAndImportMapper.getCloumnsByid(createTableRequestMO);
+        createTableRequestMO.setCloumsPropertyRequestMOList(cloumsPropertyRequestMOList);
+        return createTableRequestMO;
+    }
+
 }

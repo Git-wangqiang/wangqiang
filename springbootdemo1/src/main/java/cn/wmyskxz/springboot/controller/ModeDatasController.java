@@ -1,10 +1,7 @@
 package cn.wmyskxz.springboot.controller;
 
 
-import cn.wmyskxz.springboot.mo.DelDatasRequestMO;
-import cn.wmyskxz.springboot.mo.UserManagerReqoestMO;
-import cn.wmyskxz.springboot.mo.UserManagerResponseMO;
-import cn.wmyskxz.springboot.mo.ZckjRequestMO;
+import cn.wmyskxz.springboot.mo.*;
 import cn.wmyskxz.springboot.pojo.Zckj;
 import cn.wmyskxz.springboot.service.ModeDatasService;
 
@@ -306,5 +303,24 @@ public class ModeDatasController {
         // 合并单元格CellRangeAddress构造参数依次表示起始行，截至行，起始列， 截至列
         //sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 3));
     }
+
+    @RequestMapping(value = "/getEmpAsMapById", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getEmpAsMapById(@RequestBody CurrencyRequestMO currencyRequestMO) {
+        List<Map<String, Object>> data = modeDatasService.getEmpAsMapById(currencyRequestMO);
+        PageHelper.startPage(currencyRequestMO.getPage(), currencyRequestMO.getLimit());
+        //查询
+        PageInfo page = new PageInfo(data);
+        System.out.println("总数量：" + page.getTotal());
+        System.out.println("当前页查询记录：" + page.getList().size());
+        System.out.println("当前页码：" + page.getPageNum());
+        System.out.println("每页显示数量：" + page.getPageSize());
+        System.out.println("总页：" + page.getPages());
+        System.out.println(page);
+        Object object = JsonUtil.successTable(page.getList(), page.getTotal());
+        System.out.println(object);
+        return object;
+    }
+
 
 }

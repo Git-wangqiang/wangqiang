@@ -7,7 +7,15 @@ public class CreateTableRequestMO {
     private String sqlyuju;
     private String tablename;
     private String remark;
+    private Integer id;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     private List<CloumsPropertyRequestMO> cloumsPropertyRequestMOList;
 

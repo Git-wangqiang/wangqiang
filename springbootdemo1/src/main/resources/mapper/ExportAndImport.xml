@@ -60,6 +60,15 @@
                                   FROM t_datasource a
                                   WHERE id = #{id})
     </select>
+    <select id="getCloumnsByid" parameterType="cn.wmyskxz.springboot.mo.CreateTableRequestMO"
+            resultType="cn.wmyskxz.springboot.mo.CloumsPropertyRequestMO">
+            SELECT *
+            FROM t_datasource_detail b
+            WHERE b.tablename IN (SELECT a.tablename
+                                  FROM t_datasource a
+                                  WHERE id = #{id})
+    </select>
+
 
     <insert id="addFormWork" parameterType="cn.wmyskxz.springboot.mo.CreateFormRequestMO">
         INSERT INTO t_formwork (formworkname,createdate,createuser,updateuser,updatedate,lastdate,remark)
@@ -108,5 +117,24 @@
         SYSDATE()
         );
     </insert>
+    <select id="getDataformworkroleByUsername" parameterType="cn.wmyskxz.springboot.mo.GetDatabtColsRequestMO"
+            resultType="cn.wmyskxz.springboot.mo.SaveCategoryRequestMO">
+        SELECT *
+        FROM data_form_role a
+        WHERE a.roleid IN (
+          SELECT b.roleid
+          FROM sys_user_role b
+          WHERE b.userid IN (SELECT c.uid
+                             FROM user_info c
+                             WHERE c.username =#{logusername})
+        )
+        LIMIT 1
+    </select>
+    <select id="getRemarkBytablename" parameterType="cn.wmyskxz.springboot.mo.CloumsPropertyRequestMO"
+            resultType="cn.wmyskxz.springboot.mo.CreateTableRequestMO">
+        SELECT *
+        FROM t_datasource where tablename = #{tablename}
+    </select>
+
 
 </mapper>

@@ -570,3 +570,83 @@ function saveCategory() {
         }
     });
 }
+
+function getDataBt() {
+    var mycols = [];
+    var logusername = sessionStorage.getItem("logusername");
+    $.ajax({
+        type: "post",
+        contentType: 'application/json',
+        dataType: "json",
+        url: "/api/getdatabtcols",
+        async: false,
+        data: JSON.stringify({
+            logusername: logusername
+        }),
+        success: function (data) {
+            if (data.isSuccess == true) {
+                mycols = data.data;
+            } else {
+                layer.msg(data.errorMessage);
+            }
+        },
+        error: function () {
+            layer.msg("操作失败");
+        }
+    });
+    return mycols;
+}
+
+function gettabtitle(tablename) {
+    var str = "";
+    var straddinfo = "";
+    $.ajax({
+        type: "post",
+        contentType: 'application/json',
+        dataType: "json",
+        url: "/api/getRemarkBytablename",
+        data: JSON.stringify({
+            tablename: tablename
+        }),
+        success: function (data) {
+            if (data.isSuccess == true) {
+                debugger;
+                var d = data.data.remark;
+                var dd = document.getElementById("tab-title");
+                str += "<li class=\"layui-this\">" + d + "信息查看" + "</li>";
+                str += "<li>" + d + "信息添加" + "</li>";
+                dd.innerHTML = str;
+
+                straddinfo += "<form action=\"\" class=\"layui-form layui-form-pane gcjs-add\">";
+                var datas = data.data.cloumsPropertyRequestMOList;
+                for (i = 0; i < datas.length; i++) {
+                    straddinfo += "<div class=\"layui-form-item gcjs-add\">";
+                    straddinfo += "<label class=\"layui-form-label\">" + datas[i].cloumtnote + "</label>";
+                    straddinfo += "<div class=\"layui-input-block\">";
+                    straddinfo += "<input type=\"text\" class=\"layui-input tjform\" id=\"" + datas[i].cloumtname + "\">";
+                    straddinfo += "</div>\n" +
+                        "    </div>";
+                }
+                straddinfo += "    <div class=\"layui-form-item gcjs-add-but\">\n" +
+                    "    <div class=\"layui-input-block\">\n" +
+                    "    <button class=\"layui-btn layui-btn-sm\" lay-submit lay-filter=\"formDemo\"\n" +
+                    "onclick=\"test(data)\">保存\n" +
+                    "    </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                    "    <button type=\"reset\" class=\"layui-btn layui-btn-primary layui-btn-sm\">重置</button>\n" +
+                    "    </div>\n" +
+                    "    </div>";
+                straddinfo += " </form>";
+                var addinfo = document.getElementById("addinfo");
+                addinfo.innerHTML = straddinfo;
+
+            } else {
+                layer.msg(data.errorMessage);
+            }
+        },
+        error: function () {
+            layer.msg("操作失败");
+        }
+    });
+}
+
+
