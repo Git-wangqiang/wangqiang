@@ -68,6 +68,12 @@
                                   FROM t_datasource a
                                   WHERE id = #{id})
     </select>
+    <select id="getClounmsByTablename" parameterType="java.lang.String"
+            resultType="cn.wmyskxz.springboot.mo.CloumsPropertyRequestMO">
+          SELECT *
+            FROM t_datasource_detail b
+            WHERE b.tablename  = #{tablename}
+    </select>
 
 
     <insert id="addFormWork" parameterType="cn.wmyskxz.springboot.mo.CreateFormRequestMO">
@@ -119,7 +125,7 @@
     </insert>
     <select id="getDataformworkroleByUsername" parameterType="cn.wmyskxz.springboot.mo.GetDatabtColsRequestMO"
             resultType="cn.wmyskxz.springboot.mo.SaveCategoryRequestMO">
-        SELECT *
+       select * from (SELECT *
         FROM data_form_role a
         WHERE a.roleid IN (
           SELECT b.roleid
@@ -128,13 +134,38 @@
                              FROM user_info c
                              WHERE c.username =#{logusername})
         )
-        LIMIT 1
+        LIMIT 1) A
     </select>
     <select id="getRemarkBytablename" parameterType="cn.wmyskxz.springboot.mo.CloumsPropertyRequestMO"
             resultType="cn.wmyskxz.springboot.mo.CreateTableRequestMO">
         SELECT *
         FROM t_datasource where tablename = #{tablename}
     </select>
+
+    <select id="getFormworkAndrolebyrole" parameterType="cn.wmyskxz.springboot.mo.GetFormworkAndrolebyroleRequestMO"
+            resultType="cn.wmyskxz.springboot.mo.SaveCategoryRequestMO">
+            SELECT *
+            FROM data_form_role c
+            WHERE c.roleid IN (SELECT b.roleid
+                               FROM sys_user_role b
+                               WHERE b.userid IN (SELECT uid
+                                                  FROM user_info a
+                                                  WHERE a.username = #{inputname}))
+            LIMIT  1
+    </select>
+
+
+    <update id="addInfo" parameterType="cn.wmyskxz.springboot.mo.AddinfoRequestMO">
+        ${addinfosql}
+    </update>
+
+    <update id="deleteinfoByid" parameterType="cn.wmyskxz.springboot.mo.AddinfoRequestMO">
+        ${deleteinfobyidsql}
+    </update>
+
+    <delete id="delinfosByids" parameterType="cn.wmyskxz.springboot.mo.AddinfoRequestMO">
+        DELETE FROM ${tablename} WHERE id = ${id}
+    </delete>
 
 
 </mapper>

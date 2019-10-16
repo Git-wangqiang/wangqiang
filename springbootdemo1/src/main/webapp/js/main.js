@@ -28,7 +28,7 @@ function cd() {
         + "<a href=\"#\"><i class=\"layui-icon layui-icon-user\" style=\"font-size: 16px;\"></i>&nbsp;"
         + "欢迎回来," + logusername + "</a>" + "<dl class=\"layui-nav-child\">" +
         "<dd style=\"margin-left: 30px;\"><a href=\"/html/ModifyUserInfo.html\"><i class=\"layui-icon layui-icon-password\"></i>&nbsp;&nbsp;修改密码</a></dd>"
-        + "<dd style=\"margin-left: 30px;\"><a href=\"\" onclick=\"logout();\"><i class=\"layui-icon layui-icon-close-fill\"></i>&nbsp;&nbsp;退了</a></dd>"
+        + "<dd style=\"margin-left: 30px;\"><a href=\"\" onclick=\"logout();\"><i class=\"layui-icon layui-icon-close-fill\"></i>&nbsp;&nbsp;退出系统</a></dd>"
         + "</dl></li></div></ul>";
     logininfo.innerHTML = str;
     element.init();
@@ -136,6 +136,26 @@ function delthis(id, u) {
     });
 }
 
+function delthis(id, tablename, u) {
+    $.ajax({
+        type: "post",
+        contentType: 'application/json',
+        dataType: "json",
+        url: u,
+        data: JSON.stringify({id: id, tablename: tablename}),
+        success: function (data) {
+            if (data.isSuccess == true) {
+                return data;
+            } else {
+                alert(data.errorMessage)
+            }
+        },
+        error: function () {
+            alert(data.errorMessage);
+        }
+    });
+}
+
 
 function downloadmoban() {
     downloadTemplate('/api/downloadexcel', 'filename', 'project');
@@ -214,7 +234,6 @@ function chongzhimima() {
         url: "/api/tresetpassword",
         data: JSON.stringify({password: password, username: username}),
         success: function (data) {
-            debugger;
             if (data.isSuccess == true) {
                 layer.msg("重置成功，初始密码为123456");
             }
@@ -338,8 +357,25 @@ function getUser(logusername) {
 }
 
 function logout() {
-    sessionStorage.clear();  //清除所有session值
-    window.location.replace("/login.html");
+    $.ajax({
+        type: "post",
+        contentType: 'application/json',
+        dataType: "json",
+        async: false,
+        url: "/hello/user/logout"
+        , success: function (data) {
+            debugger;
+            if (data.isSuccess == true) {
+                window.location.href = "/login.html";
+            } else {
+                layer.msg("操作失败");
+            }
+        },
+        error: function () {
+            layer.msg("操作失败");
+        }
+    });
+
 }
 
 function addresource(data) {
@@ -464,7 +500,6 @@ function submitcreateform() {
         url: "/api/createformwork",
         data: JSON.stringify({id: id, formworkname: formworkname, remark: remark, username: logusername}),
         success: function (data) {
-            debugger;
             if (data.isSuccess == true) {
                 layer.closeAll();
                 tableins.reload('reldata', {
@@ -610,27 +645,26 @@ function gettabtitle(tablename) {
         }),
         success: function (data) {
             if (data.isSuccess == true) {
-                debugger;
                 var d = data.data.remark;
                 var dd = document.getElementById("tab-title");
                 str += "<li class=\"layui-this\">" + d + "信息查看" + "</li>";
                 str += "<li>" + d + "信息添加" + "</li>";
                 dd.innerHTML = str;
 
-                straddinfo += "<form action=\"\" class=\"layui-form layui-form-pane gcjs-add\">";
+                straddinfo += "<form class=\"layui-form layui-form-pane gcjs-add\">";
                 var datas = data.data.cloumsPropertyRequestMOList;
                 for (i = 0; i < datas.length; i++) {
                     straddinfo += "<div class=\"layui-form-item gcjs-add\">";
                     straddinfo += "<label class=\"layui-form-label\">" + datas[i].cloumtnote + "</label>";
                     straddinfo += "<div class=\"layui-input-block\">";
-                    straddinfo += "<input type=\"text\" class=\"layui-input tjform\" id=\"" + datas[i].cloumtname + "\">";
+                    straddinfo += "<input type=\"text\" name=\"" + datas[i].cloumtname + "\" class=\"layui-input tjform\" id=\"" + datas[i].cloumtname + "\">";
                     straddinfo += "</div>\n" +
                         "    </div>";
                 }
                 straddinfo += "    <div class=\"layui-form-item gcjs-add-but\">\n" +
                     "    <div class=\"layui-input-block\">\n" +
-                    "    <button class=\"layui-btn layui-btn-sm\" lay-submit lay-filter=\"formDemo\"\n" +
-                    "onclick=\"test(data)\">保存\n" +
+                    "    <button class=\"layui-btn layui-btn-sm\" lay-submit  lay-filter=\"but-submit\"" +
+                    ">保存\n" +
                     "    </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
                     "    <button type=\"reset\" class=\"layui-btn layui-btn-primary layui-btn-sm\">重置</button>\n" +
                     "    </div>\n" +
@@ -647,6 +681,17 @@ function gettabtitle(tablename) {
             layer.msg("操作失败");
         }
     });
+}
+
+function getExit() {
+    return "   <div class=\"layui-btn-container\">\n" +
+        "        <button class=\"layui-btn layui-btn-danger layui-btn-xs\" lay-event=\"delete\"><i\n" +
+        "                class=\"layui-icon layui-icon-delete\"/>删除\n" +
+        "        </button>\n" +
+        "        <button class=\"layui-btn layui-btn-primary layui-btn-xs\" lay-event=\"update\"><i\n" +
+        "                class=\"layui-icon layui-icon-edit\"/>编辑\n" +
+        "        </button>\n" +
+        "    </div>";
 }
 
 

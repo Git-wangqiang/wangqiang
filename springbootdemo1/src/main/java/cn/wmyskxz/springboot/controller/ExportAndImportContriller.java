@@ -10,6 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 @Controller
 @RequestMapping("/api")
@@ -106,9 +110,38 @@ public class ExportAndImportContriller {
 
     @RequestMapping(value = "/getRemarkBytablename", method = RequestMethod.POST)
     @ResponseBody
-    public Object getRemarkBytablename(@RequestBody CloumsPropertyRequestMO  cloumsPropertyRequestMO) {
+    public Object getRemarkBytablename(@RequestBody CloumsPropertyRequestMO cloumsPropertyRequestMO) {
         CreateTableRequestMO createTableRequestMO = exportAndImportService.getRemarkBytablename(cloumsPropertyRequestMO);
         return JsonUtil.success(createTableRequestMO);
+    }
+
+    @RequestMapping(value = "/getformworkandrolebyrole", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getFormworkAndrolebyrole(@RequestBody GetFormworkAndrolebyroleRequestMO getFormworkAndrolebyroleRequestMO) {
+        boolean flag = exportAndImportService.getFormworkAndrolebyrole(getFormworkAndrolebyroleRequestMO);
+        return JsonUtil.success(flag);
+    }
+
+    @RequestMapping(value = "/addinfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Object addInfo(@RequestBody AddinfoRequestMO addinfoRequestMO) {
+        exportAndImportService.addInfo(addinfoRequestMO);
+        return JsonUtil.success();
+    }
+
+
+    @RequestMapping(value = "/deleteinfoByid", method = RequestMethod.POST)
+    @ResponseBody
+    public Object deleteinfoByid(@RequestBody AddinfoRequestMO addinfoRequestMO) {
+        exportAndImportService.deleteinfoByid(addinfoRequestMO);
+        return JsonUtil.success();
+    }
+
+    @RequestMapping(value = "/delinfosByids", method = RequestMethod.POST)
+    @ResponseBody
+    public Object delinfosByids(@RequestBody AddinfoRequestMO addinfoRequestMO) {
+        exportAndImportService.delinfosByids(addinfoRequestMO);
+        return JsonUtil.success();
     }
 
 

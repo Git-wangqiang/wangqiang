@@ -98,6 +98,11 @@
             <classifier>sources</classifier>
             <type>jar.asc.sha256</type>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.47</version>
+        </dependency>
         <!--     &lt;!&ndash;shiro&ndash;&gt;
              <dependency>
                  <groupId>org.apache.shiro</groupId>

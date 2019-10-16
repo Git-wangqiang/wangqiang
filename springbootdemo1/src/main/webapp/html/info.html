@@ -81,37 +81,6 @@
                     </div>
                     <div class="layui-tab-item addinfo" id="addinfo">
 
-                        <!--<form action="" class="layui-form layui-form-pane gcjs-add">
-                            <div class="layui-form-item gcjs-add">
-                                <label class="layui-form-label">认证年份</label>
-                                <div class="layui-input-block">
-                                    <input type="text" class="layui-input tjform" id="rznf">
-                                </div>
-                            </div>
-
-                            <div class="layui-form-item gcjs-add">
-                                <label class="layui-form-label">省级众创空间名称</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="title" required lay-verify="required" placeholder="请输入..."
-                                           autocomplete="off" class="layui-input tjform">
-                                </div>
-                            </div>
-                            <div class="layui-form-item gcjs-add">
-                                <label class="layui-form-label">运营主体</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="title" required lay-verify="required" placeholder="请输入..."
-                                           autocomplete="off" class="layui-input tjform">
-                                </div>
-                            </div>
-                            <div class="layui-form-item gcjs-add-but">
-                                <div class="layui-input-block">
-                                    <button class="layui-btn layui-btn-sm" lay-submit lay-filter="formDemo"
-                                            onclick="test(data)">保存
-                                    </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
-                                </div>
-                            </div>
-                        </form>-->
                     </div>
                 </div>
             </div>
@@ -163,7 +132,6 @@
             }
             mycols[i] = {field: 'caozuo', title: '操作', templet: '#titleTpl', align: 'center'}
         }
-        debugger;
         var tablename = col[0].tablename;
         var tableins = table.render({
                 elem: '#xitongshezhit'
@@ -189,11 +157,10 @@
             })
         ;
         gettabtitle(tablename);
-
         //查询
         $("#chaxun").click(function () {
             tableins.reload({
-                where: {rdnf: $("#rdnf").val(), mc: $("#mc").val(), yyzt: $("#yyzt").val(), pageNum: 1, pageSize: 10},
+                where: {rdnf: $("#rdnf").val(), mc: $("#mc").val(), yyzt: $("#yyzt").val()},
                 page: {
                     curr: 1 //重新从第 1 页开始
                 }
@@ -210,22 +177,20 @@
                 for (var i in checkdatas) {
                     ids.push(checkdatas[i].id);//获取数组中的id
                 }
-
                 layer.confirm('是否删除', {icon: 3, title: '消息'}, function (index) {
                     //传入后台
                     $.ajax({
                         type: "post",
                         contentType: 'application/json',
                         dataType: "json",
-                        url: "/api/deldatas",
-                        data: JSON.stringify({ids: ids}),
+                        url: "/api/delinfosByids",
+                        data: JSON.stringify({ids: ids, tablename: tablename}),
                         success: function (data) {
+                            debugger;
                             if (data.isSuccess == true) {
                                 //如果成功就显示数据
                                 tableins.reload({
-                                    where: {rdnf: null, mc: null, yyzt: null, pageNum: 1, pageSize: 10}, page: {
-                                        curr: 1 //重新从第 1 页开始
-                                    }
+                                    where: {aaaaaa: 'xxx'}
                                 });
                                 layer.alert('删除成功', {icon: 1});
                             } else {
@@ -245,24 +210,20 @@
         table.on('tool(xtsz)', function (obj) {
             var layEvent = obj.event;
             var data = obj.data; //获得当前行数据
-            var u = "/api/deldataByid";
+            var u = "/api/deleteinfoByid";
             if (layEvent == 'delete') {
-
                 layer.confirm('是否删除', {icon: 3, title: '消息'}, function (index) {
-                    var ms = delthis(data.id, u);
+                    var ms = delthis(data.id, tablename, u);
                     tableins.reload({
-                        where: {rdnf: null, mc: null, yyzt: null, pageNum: 1, pageSize: 10}, page: {
-                            curr: 1 //重新从第 1 页开始
-                        }
+                        where: {aaaaaa: 'xxx'}
                     });
-                    //table.reload("xitongshezhit", {});
                     layer.alert('删除成功', {icon: 1});
                 });
             } else {
-                //layer.alert('删除失败', {icon: 2});
+                var content = getExit();
                 layer.open({
                     type: 1,
-                    content: $("#editxinxi").html(),
+                    content: content,
                     title: '修改数据',
                     area: ['500px', '300px']
                 });
@@ -273,43 +234,37 @@
                 , "updatedate": data.updatedate
                 , "yyzt": data.yyzt,
                 "id": data.id
-            })
-            //提交表单
-            form.on('submit(but-submit)', function (data) {
-                var subeditd = data.field;
-                $.ajax({
-                    type: "post",
-                    contentType: 'application/json',
-                    dataType: "json",
-                    url: "/api/editdata",
-                    //data: $('#formajax').serialize(),
-                    data: JSON.stringify({
-                        rdnf: subeditd.mode_name,
-                        id: subeditd.id,
-                        mc: subeditd.updatedate,
-                        yyzt: subeditd.yyzt
-                    }),
-                    success: function (data) {
-                        if (data.isSuccess == true) {
-                            layer.closeAll();
-                            tableins.reload({
-                                where: {rdnf: null, mc: null, yyzt: null, pageNum: 1, pageSize: 10}, page: {
-                                    curr: 1 //重新从第 1 页开始
-                                }
-                            });
-                            layer.alert('修改成功', {icon: 1});
-                        } else {
-                            layer.alert('修改失败', {icon: 2});
-                        }
-                    },
-                    error: function () {
-                        alert(data.errorMessage);
-                    }
-                });
-                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
             });
         });
-
+        form.on('submit(but-submit)', function (data) {
+            var subeditd = data.field;
+            var requestdata = [];
+            requestdata.push(subeditd);
+            //requestdata["tablename"]=tablename;
+            $.ajax({
+                type: "post",
+                contentType: 'application/json',
+                dataType: "json",
+                url: "/api/addinfo",
+                data: JSON.stringify({requestdata: requestdata, tablename: tablename}),
+                success: function (data) {
+                    debugger;
+                    if (data.isSuccess == true) {
+                        layer.closeAll();
+                        tableins.reload({
+                            where: {aaaaaa: 'xxx'}
+                        });
+                        layer.alert('修改成功', {icon: 1});
+                    } else {
+                        layer.alert('修改失败', {icon: 2});
+                    }
+                },
+                error: function () {
+                    alert(data.errorMessage);
+                }
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
         element.render();
     });
 
@@ -355,7 +310,7 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="but-submit">立即提交</button>
+                <button class="layui-btn" lay-submit lay-filter="but-submit-editinfo">立即提交</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>

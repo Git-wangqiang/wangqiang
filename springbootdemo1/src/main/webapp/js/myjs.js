@@ -31,7 +31,12 @@ function login() {
                 var dd = encodeURIComponent(JSON.stringify(data))
                 sessionStorage.setItem("data", dd);
                 sessionStorage.setItem("logusername", inputname);
-                window.location.href = "/html/info2.html";
+                var flag = checkdataroemworkrolexinfo(inputname);
+                if (flag) {
+                    window.location.href = "/html/info.html";
+                } else {
+                    window.location.href = "/html/info2.html";
+                }
             } else {
                 alert(data.errorMessage)
             }
@@ -79,4 +84,29 @@ function test(data) {
 
 function aa() {
     alert("aa");
+}
+
+function checkdataroemworkrolexinfo(inputname) {
+    var flag = false;
+    $.ajax({
+        type: "post",
+        contentType: 'application/json',
+        dataType: "json",
+        async: false,
+        url: "/api/getformworkandrolebyrole",
+        data: JSON.stringify({
+            inputname: inputname
+        }),
+        success: function (data) {
+            if (data.isSuccess == true) {
+                flag = true;
+            } else {
+                flag = false;
+            }
+        },
+        error: function () {
+            layer.msg("操作失败");
+        }
+    });
+    return flag;
 }

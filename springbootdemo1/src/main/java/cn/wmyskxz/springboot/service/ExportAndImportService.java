@@ -22,5 +22,13 @@ public interface ExportAndImportService {
     List<CreateFormResponseMO> getDatabtCols(GetDatabtColsRequestMO getDatabtColsRequestMO);
 
     CreateTableRequestMO getRemarkBytablename(CloumsPropertyRequestMO cloumsPropertyRequestMO);
+
+    boolean getFormworkAndrolebyrole(GetFormworkAndrolebyroleRequestMO getFormworkAndrolebyroleRequestMO);
+
+    void  addInfo(AddinfoRequestMO addinfoRequestMO);
+
+    void deleteinfoByid(AddinfoRequestMO addinfoRequestMO);
+
+    void delinfosByids(AddinfoRequestMO addinfoRequestMO);
 }
 

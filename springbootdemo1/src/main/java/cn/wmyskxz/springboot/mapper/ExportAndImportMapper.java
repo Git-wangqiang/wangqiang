@@ -32,5 +32,15 @@ public interface ExportAndImportMapper {
     CreateTableRequestMO getRemarkBytablename(CloumsPropertyRequestMO cloumsPropertyRequestMO);
 
     List<CloumsPropertyRequestMO> getCloumnsByid(CreateTableRequestMO createTableRequestMO);
+
+    SaveCategoryRequestMO getFormworkAndrolebyrole(GetFormworkAndrolebyroleRequestMO getFormworkAndrolebyroleRequestMO);
+
+    void addInfo(AddinfoRequestMO addinfoRequestMO);
+
+    List<CloumsPropertyRequestMO> getClounmsByTablename(String tablename);
+
+    void deleteinfoByid(AddinfoRequestMO addinfoRequestMO);
+
+    void delinfosByids(AddinfoRequestMO addinfoRequestMO);
 }
 

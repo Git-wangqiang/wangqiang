@@ -1,10 +1,14 @@
 package cn.wmyskxz.springboot.service.impl;
 
 import cn.wmyskxz.springboot.exceptions.BusinessException;
+import cn.wmyskxz.springboot.mapper.ExportAndImportMapper;
 import cn.wmyskxz.springboot.mapper.SysPermissionMapper;
 import cn.wmyskxz.springboot.mapper.SysRoleMapper;
 import cn.wmyskxz.springboot.mapper.UserInfoMapper;
+import cn.wmyskxz.springboot.mo.GetCategoryAndRoleResponseMO;
+import cn.wmyskxz.springboot.mo.GetFormworkAndrolebyroleRequestMO;
 import cn.wmyskxz.springboot.mo.LoginfoRequestMO;
+import cn.wmyskxz.springboot.mo.SaveCategoryRequestMO;
 import cn.wmyskxz.springboot.pojo.SysPermission;
 import cn.wmyskxz.springboot.pojo.SysRole;
 import cn.wmyskxz.springboot.pojo.UserInfo;
@@ -34,6 +38,8 @@ public class LoginServiceimpl implements LoginService {
     private HttpServletRequest request;
     @Autowired
     private HttpServletResponse response;
+    @Autowired
+    private ExportAndImportMapper exportAndImportMapper;
 
     @Override
     public Map<String, List<SysPermission>> login(LoginfoRequestMO loginfoRequestMO) {
@@ -56,6 +62,18 @@ public class LoginServiceimpl implements LoginService {
                             System.out.println(s);
                             List<SysPermission> sysPermissionList = sysPermissionMapper.findPermissionByRoleId(s);
                             if (sysPermissionList != null && sysPermissionList.size() > 0) {
+                                for (SysPermission sysPermission : sysPermissionList) {
+                                    if (sysPermission.getUrl().indexOf("/info") != -1) {
+                                        GetFormworkAndrolebyroleRequestMO getFormworkAndrolebyroleRequestMO = new GetFormworkAndrolebyroleRequestMO();
+                                        getFormworkAndrolebyroleRequestMO.setInputname(loginfoRequestMO.getUsername());
+                                        SaveCategoryRequestMO saveCategoryRequestMO = exportAndImportMapper.getFormworkAndrolebyrole(getFormworkAndrolebyroleRequestMO);
+                                        if (saveCategoryRequestMO != null) {
+                                            sysPermission.setUrl("/html/info.html");
+                                        } else {
+                                            sysPermission.setUrl("/html/info2.html");
+                                        }
+                                    }
+                                }
                                 sysPermissions.addAll(sysPermissionList);
                             } else {
                                 throw new BusinessException("用户" + userInfo.getUsername() + "没有任何权限");

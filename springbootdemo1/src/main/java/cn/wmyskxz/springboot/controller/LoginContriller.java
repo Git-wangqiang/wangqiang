@@ -36,6 +36,16 @@ public class LoginContriller {
         return jsonObject;
     }
 
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @ResponseBody
+    public Object logout(HttpServletRequest request,
+                         HttpServletResponse response) {
+        request.getSession().invalidate();
+        return JsonUtil.success();
+
+
+    }
+
     /**
      * 生成验证码
      */

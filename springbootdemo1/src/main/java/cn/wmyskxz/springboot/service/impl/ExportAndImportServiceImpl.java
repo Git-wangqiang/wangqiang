@@ -16,9 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service(value = "ExportAndImportService")
 public class ExportAndImportServiceImpl implements ExportAndImportService {
@@ -257,6 +259,88 @@ public class ExportAndImportServiceImpl implements ExportAndImportService {
         List<CloumsPropertyRequestMO> cloumsPropertyRequestMOList = exportAndImportMapper.getCloumnsByid(createTableRequestMO);
         createTableRequestMO.setCloumsPropertyRequestMOList(cloumsPropertyRequestMOList);
         return createTableRequestMO;
+    }
+
+    @Override
+    public boolean getFormworkAndrolebyrole(GetFormworkAndrolebyroleRequestMO getFormworkAndrolebyroleRequestMO) {
+        SaveCategoryRequestMO saveCategoryRequestMO = exportAndImportMapper.getFormworkAndrolebyrole(getFormworkAndrolebyroleRequestMO);
+        if (saveCategoryRequestMO != null) {
+            return true;
+        } else {
+            throw new BusinessException("此角色未绑定数据源信息");
+        }
+    }
+
+    @Override
+    public void addInfo(AddinfoRequestMO addinfoRequestMO) {
+        if (addinfoRequestMO != null) {
+            StringBuilder addinfosql = new StringBuilder();
+            String tablename = addinfoRequestMO.getTablename();
+            List<Map<String, Object>> mapList = addinfoRequestMO.getRequestdata();
+            if (mapList != null && mapList.size() > 0) {
+                addinfosql.append("insert into ");
+                addinfosql.append(tablename);
+                addinfosql.append(" (");
+                List<CloumsPropertyRequestMO> cloumsPropertyRequestMOList = exportAndImportMapper.getClounmsByTablename(tablename);
+                Map<String, CloumsPropertyRequestMO> cloumsPropertyRequestMOMap = cloumsPropertyRequestMOList.stream().collect(Collectors.toMap(CloumsPropertyRequestMO::getCloumtname, a -> a, (k1, k2) -> k1));
+                for (Map<String, Object> map : mapList) {
+                    if (map != null) {
+                        for (Map.Entry<String, Object> entry : map.entrySet()) {
+                            String cloumtype = cloumsPropertyRequestMOMap.get(entry.getKey()).getCloumtype();
+                            String isautoincrement = cloumsPropertyRequestMOMap.get(entry.getKey()).getIsautoincrement();
+                            if (!("int".equals(cloumtype) && "1".equals(isautoincrement))) {
+                                addinfosql.append(entry.getKey() + ",");
+                            }
+                        }
+                        addinfosql.append(") value (");
+                        for (Map.Entry<String, Object> entry : map.entrySet()) {
+                            String cloumtype = cloumsPropertyRequestMOMap.get(entry.getKey()).getCloumtype();
+                            String isautoincrement = cloumsPropertyRequestMOMap.get(entry.getKey()).getIsautoincrement();
+                            if ("int".equals(cloumtype)) {
+                                if (!"1".equals(isautoincrement)) {
+                                    addinfosql.append(entry.getValue() + ",");
+                                }
+                            } else if ("varchar".equals(cloumtype)) {
+                                addinfosql.append("'" + entry.getValue() + "'" + ",");
+                            }
+                        }
+                        addinfosql.append(")");
+                    }
+                }
+            }
+            String reg = ",\\)";
+            Pattern pat = Pattern.compile(reg);
+            Matcher mat = pat.matcher(addinfosql);
+            String longLoadPermit = mat.replaceAll(")");
+            System.out.println(longLoadPermit + "\n" + addinfosql);
+            addinfoRequestMO.setAddinfosql(longLoadPermit);
+        }
+        exportAndImportMapper.addInfo(addinfoRequestMO);
+    }
+
+    @Override
+    @Transactional
+    public void deleteinfoByid(AddinfoRequestMO addinfoRequestMO) {
+        if (addinfoRequestMO != null && addinfoRequestMO.getId() != null) {
+            StringBuilder addinfosql = new StringBuilder();
+            addinfosql.append("delete from ");
+            addinfosql.append(addinfoRequestMO.getTablename());
+            addinfosql.append(" where  id = ");
+            addinfosql.append(addinfoRequestMO.getId());
+            addinfoRequestMO.setDeleteinfobyidsql(addinfosql.toString());
+        }
+        exportAndImportMapper.deleteinfoByid(addinfoRequestMO);
+    }
+
+    @Override
+    public void delinfosByids(AddinfoRequestMO addinfoRequestMO) {
+        Integer[] ids = addinfoRequestMO.getIds();
+        if (ids != null && ids.length > 0) {
+            for (Integer id : ids) {
+                addinfoRequestMO.setId(id);
+                exportAndImportMapper.delinfosByids(addinfoRequestMO);
+            }
+        }
     }
 
 }
