@@ -1,8 +1,10 @@
 package cn.wmyskxz.springboot.service;
 
 import cn.wmyskxz.springboot.mo.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ExportAndImportService {
     void createTable(CreateTableRequestMO createTableRequestMO);
@@ -25,10 +27,18 @@ public interface ExportAndImportService {
 
     boolean getFormworkAndrolebyrole(GetFormworkAndrolebyroleRequestMO getFormworkAndrolebyroleRequestMO);
 
-    void  addInfo(AddinfoRequestMO addinfoRequestMO);
+    void  addInfo(MakedataInfoRequestMO makedataInfoRequestMO);
 
-    void deleteinfoByid(AddinfoRequestMO addinfoRequestMO);
+    void deleteinfoByid(MakedataInfoRequestMO makedataInfoRequestMO);
 
-    void delinfosByids(AddinfoRequestMO addinfoRequestMO);
+    void delinfosByids(MakedataInfoRequestMO makedataInfoRequestMO);
+
+    void editinfo(MakedataInfoRequestMO makedataInfoRequestMO);
+
+    List<CloumsPropertyRequestMO> getClounmsByTablename(String tablename);
+    List<Map<String, Object>> getEmpAsMapById(CurrencyRequestMO currencyRequestMO);
+    Map<String, Object> importexcel(MultipartFile xlsFile,String tablename);
+
+    void saveExcle(LeadingOutRequestMO leadingOutRequestMO);
 }
 

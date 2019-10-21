@@ -35,6 +35,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api")
@@ -90,89 +91,14 @@ public class ModeDatasController {
     }
 
 
-    //导入
-    @RequestMapping(value = "/importexcel", method = RequestMethod.POST)
-    @ResponseBody
-    public Object imporTexcel(@RequestParam("file") MultipartFile xlsFile) {
-     /*   将上传到的MultipartFile转为输入流，然后交给POI去解析即可，第一步需要创建Workbook，HSSFWorkbook和XSSFWorkbook都实现了Workbook
-        接口，也可以创建HSSFWorkbook或XSSFWorkbook，它们方法名基本一致，需要注意的是POI读取excel2003、excel2007存在兼容性问题，excel主
-        要有两类：xls、xlsx，HSSFWorkbook：是操作Excel2003以前（包括2003）
-        的版本，扩展名是.xls，XSSFWorkbook：是操作Excel2007的版本，扩展名是.xlsx，如果使用XSSFWorkbook类导入Excel2003版本的表就会出错*/
-        Map<String, Object> result = new HashMap<>();
-        // contentType
-        // String contentType = file.getContentType();
-        // excel文件名
-        // String fileName = file.getOriginalFilename();
-        if (xlsFile.isEmpty()) {
-            result.put("code", 500);
-            result.put("message", "导入文件为空！");
-            return result;
-        }
-        // 根据不同excel创建不同对象,Excel2003版本-->HSSFWorkbook,Excel2007版本-->XSSFWorkbook
-        Workbook wb = null;
-        InputStream im = null;
-        List<ZckjRequestMO> zckjRequestMOS = null;
-        try {
-            im = xlsFile.getInputStream();
-            wb = WorkbookFactory.create(im);
-            // 根据页面index 获取sheet页
-            Sheet sheet = wb.getSheetAt(0);
-            Row row = null;
-            ZckjRequestMO zckjRequestMO = null;
-            List<ZckjRequestMO> zckjRequestMOList = new ArrayList<>();
-            // 循环sheet页中数据从第x行开始,例:第3行开始为导入数据
-            for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
-                // 获取每一行数据
-                row = sheet.getRow(i);
-                if (row != null) {
-                    // 输出表格内容,此处可替换为数据插入操作
-                    // 日期,表格数字格式为日期
-                  /*  if (null != row.getCell(0) && "" != row.getCell(0).toString()) {
-                        //System.out.println((new SimpleDateFormat("yyyy-MM-dd")).format(row.getCell(0).getDateCellValue()));
-
-                    }*/
-                    // 内容,表格数字格式为常规
-                    zckjRequestMO = new ZckjRequestMO();
-                    if (null != row.getCell(1) && "" != row.getCell(1).toString()) {
-                        // 如果表格内容为数字,需要设置CellType为string，否则调用getStringCellValue()会出现获取类型错误
-                        row.getCell(1).setCellType(HSSFCell.CELL_TYPE_STRING);
-                        System.out.println(row.getCell(1).getStringCellValue());
-                        zckjRequestMO.setRdnf(row.getCell(1).getStringCellValue());
-                    }
-                    if (null != row.getCell(2) && "" != row.getCell(2).toString()) {
-                        zckjRequestMO.setMc(row.getCell(2).getStringCellValue());
-                    }
-                    if (null != row.getCell(3) && "" != row.getCell(3).toString()) {
-                        zckjRequestMO.setYyzt(row.getCell(3).getStringCellValue());
-                    }
-                    if (null != row.getCell(4) && "" != row.getCell(4).toString()) {
-                        zckjRequestMO.setUpdatedate(row.getCell(4).getDateCellValue());
-                    }
-                    zckjRequestMOList.add(zckjRequestMO);
-                }
-            }
-            modeDatasService.importexcel(zckjRequestMOList);
-        } catch (Exception e1) {
-            // 回滚数据
-            //TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            e1.printStackTrace();
-        } finally {
-            try {
-                im.close();
-                wb.close();
-            } catch (IOException e2) {
-                e2.printStackTrace();
-            }
-        }
-        result.put("code", 200);
-        result.put("message", "导入成功!");
-        return result;
-    }
 
 
-    /**
-     * 下载excel模板
+    /*
      */
+/**
+ * 下载excel模板
+ *//*
+
     @GetMapping("/downloadexcel")
     public void downloadPermMatrix(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Workbook wb;
@@ -195,6 +121,7 @@ public class ModeDatasController {
             e.printStackTrace();
         }
     }
+*/
 
 
     /**
@@ -232,17 +159,10 @@ public class ModeDatasController {
         workbook.close();
     }
 
-    @GetMapping("/saveExcle")
-    public void saveExcle() {
-        Map<String, Integer> accts = new HashMap<String, Integer>() {
-            {
-                put("123456", 125);
-                put("123451", 121);
-                put("123457", 124);
-                put("123459", 122);
+    /*@RequestMapping(value = "/saveExcle", method = RequestMethod.POST)
+    @ResponseBody
+    public Object saveExcle(@RequestBody LeadingOutRequestMO leadingOutRequestMO) {
 
-            }
-        };
         // 创建HSSFWorkbook对象(excel的文档对象)
         HSSFWorkbook wb = new HSSFWorkbook();
         // 建立新的sheet对象（excel的表单）
@@ -250,29 +170,44 @@ public class ModeDatasController {
         // 在sheet里创建第一行，参数为行索引(excel的行)，可以是0～65535之间的任何一个
         HSSFRow row1 = sheet.createRow(0);
         // 创建单元格（excel的单元格，参数为列索引，可以是0～255之间的任何一个
-        HSSFCell cellOne = row1.createCell(0);
+       *//* HSSFCell cellOne = row1.createCell(0);
         // 设置单元格内容
         cellOne.setCellValue("账号");
         HSSFCell cellTwo = row1.createCell(1);
         // 设置单元格内容
-        cellTwo.setCellValue("金额");
+        cellTwo.setCellValue("金额");*//*
 
         //行数
         int rowNum = 1;
-        //遍历hashmap
-        Iterator iterator = accts.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry entry = (Map.Entry) iterator.next();
-            Object key = entry.getKey();
-            Object val = entry.getValue();
-            //创建一行行记录
-            rowNum++;
-            // 在sheet里创建下一行
-            HSSFRow newRow = sheet.createRow(rowNum);
-            // 创建单元格并设置单元格内容
-            newRow.createCell(0).setCellValue((String) key);
-            newRow.createCell(1).setCellValue((Integer) val);
+        List<Map<String, Object>> checkdata = leadingOutRequestMO.getCheckdata();
+        List<CloumsPropertyRequestMO> cloumsPropertyRequestMOList = exportAndImportMapper.getClounmsByTablename(leadingOutRequestMO.getTablename());
+        Map<String, CloumsPropertyRequestMO> cloumsPropertyRequestMOMap = cloumsPropertyRequestMOList.stream().collect(Collectors.toMap(CloumsPropertyRequestMO::getCloumtname, a -> a, (k1, k2) -> k1));
 
+        if (checkdata != null && checkdata.size() > 0) {
+            for (Map<String, Object> map : checkdata) {
+                if (map != null && map.size() > 0) {
+                    Iterator iterator = map.entrySet().iterator();
+                    HSSFRow newRow = sheet.createRow(rowNum);
+                    rowNum++;
+                    int i = 0;
+                    while (iterator.hasNext()) {
+                        Map.Entry entry = (Map.Entry) iterator.next();
+                        Object key = entry.getKey();
+                        Object val = entry.getValue();
+                        Integer mapsize = map.entrySet().size();
+                        HSSFCell cellOne = row1.createCell(i);
+                        // 设置单元格内容
+                        cellOne.setCellValue(cloumsPropertyRequestMOMap.get(key).getCloumtnote());
+                        //创建一行行记录
+                        // 在sheet里创建下一行
+
+                        // 创建单元格并设置单元格内容
+                        //newRow.createCell(i).setCellValue((String) key);
+                        newRow.createCell(i).setCellValue(val.toString());
+                        i++;
+                    }
+                }
+            }
         }
 
         // 第六步，将文件存到指定位置
@@ -302,25 +237,8 @@ public class ModeDatasController {
         }
         // 合并单元格CellRangeAddress构造参数依次表示起始行，截至行，起始列， 截至列
         //sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 3));
-    }
-
-    @RequestMapping(value = "/getEmpAsMapById", method = RequestMethod.POST)
-    @ResponseBody
-    public Object getEmpAsMapById(@RequestBody CurrencyRequestMO currencyRequestMO) {
-        List<Map<String, Object>> data = modeDatasService.getEmpAsMapById(currencyRequestMO);
-        PageHelper.startPage(currencyRequestMO.getPage(), currencyRequestMO.getLimit());
-        //查询
-        PageInfo page = new PageInfo(data);
-        System.out.println("总数量：" + page.getTotal());
-        System.out.println("当前页查询记录：" + page.getList().size());
-        System.out.println("当前页码：" + page.getPageNum());
-        System.out.println("每页显示数量：" + page.getPageSize());
-        System.out.println("总页：" + page.getPages());
-        System.out.println(page);
-        Object object = JsonUtil.successTable(page.getList(), page.getTotal());
-        System.out.println(object);
-        return object;
-    }
+        return JsonUtil.success();
+    }*/
 
 
 }

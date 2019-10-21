@@ -25,5 +25,5 @@ public interface ModeDatasMapper {
 
     List<UserManagerResponseMO> userManagerSelect(UserManagerReqoestMO userManagerReqoestMO);
 
-    List<Map<String, Object>> getEmpAsMapById(CurrencyRequestMO currencyRequestMO);
+
 }

@@ -11,6 +11,15 @@ public class CloumsPropertyRequestMO {
     private String type;
     private String tablename;
     private String cloumtnote;//excle显示名称
+    private String isselect;
+
+    public String getIsselect() {
+        return isselect;
+    }
+
+    public void setIsselect(String isselect) {
+        this.isselect = isselect;
+    }
 
     public String getCloumtnote() {
         return cloumtnote;

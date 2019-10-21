@@ -39,40 +39,24 @@
 
 
                             <div class="layui-form-item box1">
-                                <form id="" method="post" class="layui-form layui-form-pane">
-                                    <div class="layui-inline">
-                                        <label class="layui-form-label cxlable">认定年份:</label>
-                                        <div class="layui-input-inline colformstyle"
-                                             style="width: 200px; line-height: 30px">
-                                            <input type="text" name="" autocomplete="off"
-                                                   class="layui-input colformstyle rdnf" id="rdnf">
-                                        </div>
+                                <form method="post" class="layui-form layui-form-pane flexbox">
+                                    <div id="form-select" class="flexbox1"></div>
+                                    <div class="layui-col-md12 flexbox2" style="margin-top: 10px;float: right">
+                                        <button type="button" class="layui-btn layui-btn-normal layui-btn-sm"
+                                                id="chaxun">
+                                            查询
+                                        </button>
+                                        <button type="button" onclick="daochudaoru();"
+                                                class="layui-btn layui-btn-primary layui-btn-sm">导入导出
+                                        </button>
+                                        <button type="button" class="layui-btn layui-btn-danger layui-btn-sm"
+                                                id="piliangshanchu">批量删除
+                                        </button>
                                     </div>
-                                    <div class="layui-inline">
-                                        <label class="layui-form-label cxlable">名称:</label>
-                                        <div class="layui-input-inline colformstyle" style="width: 200px;">
-                                            <input type="text" name="" autocomplete="off"
-                                                   class="layui-input colformstyle mc" id="mc">
-                                        </div>
-                                    </div>
-                                    <div class="layui-inline">
-                                        <label class="layui-form-label cxlable">运营主体:</label>
-                                        <div class="layui-input-inline colformstyle" style="width: 200px;">
-                                            <input type="text" name="" autocomplete="off"
-                                                   class="layui-input colformstyle yyzt" id="yyzt">
-                                        </div>
-                                    </div>
-                                    <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="chaxun">查询
-                                    </button>
-                                    <button type="button" onclick="daochudaoru();"
-                                            class="layui-btn layui-btn-primary layui-btn-sm">导入导出
-                                    </button>
-                                    <button type="button" class="layui-btn layui-btn-danger layui-btn-sm"
-                                            id="piliangshanchu">批量删除
-                                    </button>
                                 </form>
                             </div>
                             <table id="xitongshezhit" lay-filter="xtsz" lay-data="{id:'reldata')"></table>
+                            <input value="999" id="999test">
                         </div>
 
                         <div class="pagefix">
@@ -101,172 +85,213 @@
 <script>
     //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
     layui.use(['element', 'laypage', 'form', 'laydate', 'upload', 'table'], function () {
-        element = layui.element;
-        laypage = layui.laypage;
-        var form = layui.form;
-        var upload = layui.upload;
-        var table = layui.table;
+            element = layui.element;
+            laypage = layui.laypage;
+            var form = layui.form;
+            var upload = layui.upload;
+            var table = layui.table;
 
-        var uploadInst = upload.render({
-            elem: '#shangchuan' //绑定元素
-            , url: '/upload/' //上传接口
-            , done: function (res) {
-                //上传完毕回调
-            }
-            , error: function () {
-                //请求异常回调
-            }
-        });
-        var col = getDataBt();
-        var mycols = [];
-
-        if (col != null) {
-            for (i = 0; i < col.length; i++) {
-                var field = col[i].cloumtname;
-                var title = col[i].cloumtnote;
-                if (field == 'id') {
-                    mycols[i] = {field: field, title: title, align: 'center', type: 'checkbox'}
-                } else {
-                    mycols[i] = {field: field, title: title, align: 'center'}
+            var uploadInst = upload.render({
+                elem: '#shangchuan' //绑定元素
+                , url: '/upload/' //上传接口
+                , done: function (res) {
+                    //上传完毕回调
+                    layer.msg("上传成功");
                 }
-            }
-            mycols[i] = {field: 'caozuo', title: '操作', templet: '#titleTpl', align: 'center'}
-        }
-        var tablename = col[0].tablename;
-        var tableins = table.render({
-                elem: '#xitongshezhit'
-                //, toolbar: '#titleTpl'
-                , tool: "#titleTpl"
-                , toolbar: false
-                , height: 500
-                , width: 1300
-                , even: true
-                , url: '/api/getEmpAsMapById' //数据接口
-                , page: true //开启分页
-                , done: function (res, curr, count) {
-                    console.log(res);
-                    console.log(curr);
-                    console.log(count);
-                }
-                , method: 'post'
-                , contentType: 'application/json'
-                , where: {
-                    tablename: tablename
-                }
-                , cols: [mycols]
-            })
-        ;
-        gettabtitle(tablename);
-        //查询
-        $("#chaxun").click(function () {
-            tableins.reload({
-                where: {rdnf: $("#rdnf").val(), mc: $("#mc").val(), yyzt: $("#yyzt").val()},
-                page: {
-                    curr: 1 //重新从第 1 页开始
+                , error: function () {
+                    //请求异常回调
                 }
             });
-        });
+            var col = getDataBt();
+            var mycols = [];
 
-        //批量删除
-        $("#piliangshanchu").click(function () {
-            var checkdatas = table.checkStatus('xitongshezhit').data;
-            if (checkdatas.length == 0) {
-                layer.msg("请选中你要删除的数据");
-            } else {
-                var ids = [];
-                for (var i in checkdatas) {
-                    ids.push(checkdatas[i].id);//获取数组中的id
+            if (col != null) {
+                for (i = 0; i < col.length; i++) {
+                    var field = col[i].cloumtname;
+                    var title = col[i].cloumtnote;
+                    if (field == 'id') {
+                        mycols[i] = {field: field, title: title, align: 'center', type: 'checkbox'}
+                    } else {
+                        mycols[i] = {field: field, title: title, align: 'center'}
+                    }
                 }
-                layer.confirm('是否删除', {icon: 3, title: '消息'}, function (index) {
-                    //传入后台
-                    $.ajax({
-                        type: "post",
-                        contentType: 'application/json',
-                        dataType: "json",
-                        url: "/api/delinfosByids",
-                        data: JSON.stringify({ids: ids, tablename: tablename}),
-                        success: function (data) {
-                            debugger;
-                            if (data.isSuccess == true) {
-                                //如果成功就显示数据
-                                tableins.reload({
-                                    where: {aaaaaa: 'xxx'}
-                                });
-                                layer.alert('删除成功', {icon: 1});
-                            } else {
-                                layer.alert('删除失败', {icon: 2});
-                            }
-                        },
-                        error: function () {
-                            alert(data.errorMessage);
+                mycols[i] = {field: 'caozuo', title: '操作', templet: '#titleTpl', align: 'center'}
+            }
+            var tablename = col[0].tablename;
+            //生成查询条件
+            getclounmsbytablename(tablename);
+            var tableins = table.render({
+                    elem: '#xitongshezhit'
+                    , tool: "#titleTpl"
+                    , toolbar: false
+                    , height: 500
+                    , width: 1300
+                    , even: true
+                    , url: '/api/getEmpAsMapById' //数据接口
+                    , page: true //开启分页
+                    , done: function (res, curr, count) {
+                        console.log(res);
+                        console.log(curr);
+                        console.log(count);
+                    }
+                    , method: 'post'
+                    , contentType: 'application/json'
+                    , where: {
+                        tablename: tablename
+                    }
+                    , cols: [mycols]
+                })
+            ;
+            gettabtitle(tablename);
+            //查询
+            $("#chaxun").click(function () {
+                var fselect = [];
+                var f = {};
+                if (col != null) {
+                    for (i = 0; i < col.length; i++) {
+                        var field = col[i].cloumtname;
+                        var title = col[i].cloumtnote;
+                        var value = document.getElementById(field.toString()).value;
+                        if (value != null && value != "") {
+                            f[field] = value;
+                        } else {
+                            f[field] = null;
                         }
-                    });
+                    }
+                    fselect.push(f);
+                    //fselect["tablename"] = tablename;
+                }
+                tableins.reload({
+                    where: {selectterm: fselect},
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
                 });
-
-            }
-        });
-
-        //删除
-        table.on('tool(xtsz)', function (obj) {
-            var layEvent = obj.event;
-            var data = obj.data; //获得当前行数据
-            var u = "/api/deleteinfoByid";
-            if (layEvent == 'delete') {
-                layer.confirm('是否删除', {icon: 3, title: '消息'}, function (index) {
-                    var ms = delthis(data.id, tablename, u);
-                    tableins.reload({
-                        where: {aaaaaa: 'xxx'}
-                    });
-                    layer.alert('删除成功', {icon: 1});
-                });
-            } else {
-                var content = getExit();
-                layer.open({
-                    type: 1,
-                    content: content,
-                    title: '修改数据',
-                    area: ['500px', '300px']
-                });
-            }
-            //填充表单
-            form.val("edit-filter-form", {
-                "mode_name": data.mode_name // "name": "value"
-                , "updatedate": data.updatedate
-                , "yyzt": data.yyzt,
-                "id": data.id
             });
-        });
-        form.on('submit(but-submit)', function (data) {
-            var subeditd = data.field;
-            var requestdata = [];
-            requestdata.push(subeditd);
-            //requestdata["tablename"]=tablename;
-            $.ajax({
-                type: "post",
-                contentType: 'application/json',
-                dataType: "json",
-                url: "/api/addinfo",
-                data: JSON.stringify({requestdata: requestdata, tablename: tablename}),
-                success: function (data) {
-                    debugger;
-                    if (data.isSuccess == true) {
-                        layer.closeAll();
+
+            //批量删除
+            $("#piliangshanchu").click(function () {
+                var checkdatas = table.checkStatus('xitongshezhit').data;
+                if (checkdatas.length == 0) {
+                    layer.msg("请选中你要删除的数据");
+                } else {
+                    var ids = [];
+                    for (var i in checkdatas) {
+                        ids.push(checkdatas[i].id);//获取数组中的id
+                    }
+                    layer.confirm('是否删除', {icon: 3, title: '消息'}, function (index) {
+                        //传入后台
+                        $.ajax({
+                            type: "post",
+                            contentType: 'application/json',
+                            dataType: "json",
+                            url: "/api/delinfosByids",
+                            data: JSON.stringify({ids: ids, tablename: tablename}),
+                            success: function (data) {
+                                if (data.isSuccess == true) {
+                                    //如果成功就显示数据
+                                    tableins.reload({
+                                        where: {aaaaaa: 'xxx'}
+                                    });
+                                    layer.alert('删除成功', {icon: 1});
+                                } else {
+                                    layer.alert('删除失败', {icon: 2});
+                                }
+                            },
+                            error: function () {
+                                alert(data.errorMessage);
+                            }
+                        });
+                    });
+
+                }
+            });
+
+            //删除
+            table.on('tool(xtsz)', function (obj) {
+                var layEvent = obj.event;
+                var data = obj.data; //获得当前行数据
+                var u = "/api/deleteinfoByid";
+                if (layEvent == 'delete') {
+                    layer.confirm('是否删除', {icon: 3, title: '消息'}, function (index) {
+                        var ms = delthis(data.id, tablename, u);
                         tableins.reload({
                             where: {aaaaaa: 'xxx'}
                         });
-                        layer.alert('修改成功', {icon: 1});
-                    } else {
-                        layer.alert('修改失败', {icon: 2});
-                    }
-                },
-                error: function () {
-                    alert(data.errorMessage);
+                        layer.alert('删除成功', {icon: 1});
+                    });
+                } else {
+                    var content = getExit();
+                    layer.open({
+                        type: 1,
+                        content: content,
+                        title: '修改数据',
+                        area: ['500px', '300px']
+                    });
                 }
+                //填充表单
+                form.val("edit-filter-form", data);
             });
-            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-        });
-        element.render();
-    });
+
+            form.on('submit(but-submit)', function (data) {
+                var subeditd = data.field;
+                var requestdata = [];
+                requestdata.push(subeditd);
+                //requestdata["tablename"]=tablename;
+                $.ajax({
+                    type: "post",
+                    contentType: 'application/json',
+                    dataType: "json",
+                    url: "/api/addinfo",
+                    data: JSON.stringify({requestdata: requestdata, tablename: tablename}),
+                    success: function (data) {
+                        if (data.isSuccess == true) {
+                            layer.closeAll();
+                            tableins.reload({
+                                where: {aaaaaa: 'xxx'}
+                            });
+                            layer.alert('操作成功', {icon: 1});
+                        } else {
+                            layer.alert('操作失败', {icon: 2});
+                        }
+                    },
+                    error: function () {
+                        alert(data.errorMessage);
+                    }
+                });
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+            form.on('submit(but-submit-editinfo)', function (data) {
+                var subeditd = data.field;
+                var requestdata = [];
+                requestdata.push(subeditd);
+                $.ajax({
+                    type: "post",
+                    contentType: 'application/json',
+                    dataType: "json",
+                    url: "/api/editinfo",
+                    data: JSON.stringify({requestdata: requestdata, tablename: tablename}),
+                    success: function (data) {
+                        if (data.isSuccess == true) {
+                            layer.closeAll();
+                            tableins.reload({
+                                where: {aaaaaa: 'xxx'}
+                            });
+                            layer.alert('修改成功', {icon: 1});
+                        } else {
+                            layer.alert('修改失败', {icon: 2});
+                        }
+                    },
+                    error: function () {
+                        alert(data.errorMessage);
+                    }
+                });
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+            element.render();
+        }
+    );
 
 
 </script>
@@ -281,40 +306,6 @@
         </button>
     </div>
 
-</script>
-<script type="text/html" id="editxinxi">
-    <form class="layui-form layui-form-pane" action="" lay-filter="edit-filter-form">
-        <div class="layui-form-item">
-            <label class="layui-form-label">名称</label>
-            <div class="layui-input-block">
-                <input type="text" name="mode_name" required lay-verify="required" placeholder="请输入标题"
-                       autocomplete="off"
-                       class="layui-input">
-                <input type="hidden" name="id">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">名称1</label>
-            <div class="layui-input-block">
-                <input type="text" name="updatedate" required lay-verify="required" placeholder="请输入标题"
-                       autocomplete="off"
-                       class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">名称2</label>
-            <div class="layui-input-block">
-                <input type="text" name="yyzt" required lay-verify="required" placeholder="请输入标题" autocomplete="off"
-                       class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="but-submit-editinfo">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-            </div>
-        </div>
-    </form>
 </script>
 <style>
     .title-index {
@@ -355,14 +346,25 @@
         flex-direction: column;
     }
 
-    .gcjs-add {
-        margin-top: 40px;
-        margin-left: 20px;
+    .flexbox {
+        display: flex;
+        flex-wrap: nowrap;
     }
 
-    .gcjs-add-but {
-        margin-top: 200px;
-        text-align: center;
+    .flexbox1 {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .flexbox2 {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .flexbox1child {
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 10px;
     }
 </style>
 </body>

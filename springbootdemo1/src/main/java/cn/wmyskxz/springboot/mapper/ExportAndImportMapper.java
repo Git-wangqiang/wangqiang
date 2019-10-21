@@ -3,6 +3,7 @@ package cn.wmyskxz.springboot.mapper;
 import cn.wmyskxz.springboot.mo.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ExportAndImportMapper {
     void createTable(CreateTableRequestMO createTableRequestMO);
@@ -35,12 +36,17 @@ public interface ExportAndImportMapper {
 
     SaveCategoryRequestMO getFormworkAndrolebyrole(GetFormworkAndrolebyroleRequestMO getFormworkAndrolebyroleRequestMO);
 
-    void addInfo(AddinfoRequestMO addinfoRequestMO);
+    void addInfo(MakedataInfoRequestMO makedataInfoRequestMO);
 
     List<CloumsPropertyRequestMO> getClounmsByTablename(String tablename);
 
-    void deleteinfoByid(AddinfoRequestMO addinfoRequestMO);
+    void deleteinfoByid(MakedataInfoRequestMO makedataInfoRequestMO);
 
-    void delinfosByids(AddinfoRequestMO addinfoRequestMO);
+    void delinfosByids(MakedataInfoRequestMO makedataInfoRequestMO);
+
+    void editinfo(MakedataInfoRequestMO makedataInfoRequestMO);
+    List<Map<String, Object>> getEmpAsMapById(CurrencyRequestMO currencyRequestMO);
+
+    void importexcel(List<ZckjRequestMO> zckjRequestMOList);
 }
 

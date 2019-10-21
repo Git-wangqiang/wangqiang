@@ -44,7 +44,7 @@ public class ModeDatasServiceimpl implements ModeDatasService {
         modeDatasMapper.delDatas(delDatasRequestMO);
     }
 
-    @Override
+/*    @Override
     @Transactional
     public void importexcel(List<ZckjRequestMO> list) {
         for (ZckjRequestMO zckjRequestMO : list) {
@@ -54,23 +54,13 @@ public class ModeDatasServiceimpl implements ModeDatasService {
                 throw new BusinessException(zckjRequestMO.getMc() + "导入失败！");
             }
         }
-    }
+    }*/
 
     @Override
     public Zckj findZckjByid(Integer id) {
         return modeDatasMapper.findZckjByid(id);
     }
 
-    @Override
-    public List<Map<String, Object>> getEmpAsMapById(CurrencyRequestMO currencyRequestMO) {
-        if (currencyRequestMO != null) {
-             StringBuffer sql = new StringBuffer();
-             sql.append("select * from ");
-             sql.append(currencyRequestMO.getTablename());
-             currencyRequestMO.setSelectsql(sql.toString());
-        }
-        List<Map<String, Object>> map = modeDatasMapper.getEmpAsMapById(currencyRequestMO);
-        return map;
-    }
+
 
 }

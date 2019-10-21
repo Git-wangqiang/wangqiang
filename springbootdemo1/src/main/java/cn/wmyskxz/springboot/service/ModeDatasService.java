@@ -15,10 +15,10 @@ public interface ModeDatasService {
 
     void delDatas(DelDatasRequestMO delDatasRequestMO);
 
-    void importexcel(List<ZckjRequestMO> list);
+
 
     Zckj findZckjByid(Integer id);
 
-    List<Map<String, Object>> getEmpAsMapById(CurrencyRequestMO currencyRequestMO);
+
 
 }

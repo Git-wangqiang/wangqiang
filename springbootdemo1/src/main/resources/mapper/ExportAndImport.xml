@@ -155,17 +155,24 @@
     </select>
 
 
-    <update id="addInfo" parameterType="cn.wmyskxz.springboot.mo.AddinfoRequestMO">
+    <update id="addInfo" parameterType="cn.wmyskxz.springboot.mo.MakedataInfoRequestMO">
         ${addinfosql}
     </update>
 
-    <update id="deleteinfoByid" parameterType="cn.wmyskxz.springboot.mo.AddinfoRequestMO">
+    <update id="editinfo" parameterType="cn.wmyskxz.springboot.mo.MakedataInfoRequestMO">
+        ${updateinfosql}
+    </update>
+
+    <update id="deleteinfoByid" parameterType="cn.wmyskxz.springboot.mo.MakedataInfoRequestMO">
         ${deleteinfobyidsql}
     </update>
 
-    <delete id="delinfosByids" parameterType="cn.wmyskxz.springboot.mo.AddinfoRequestMO">
+    <delete id="delinfosByids" parameterType="cn.wmyskxz.springboot.mo.MakedataInfoRequestMO">
         DELETE FROM ${tablename} WHERE id = ${id}
     </delete>
-
+    <select id="getEmpAsMapById" parameterType="cn.wmyskxz.springboot.mo.CurrencyRequestMO"
+            resultType="java.util.HashMap">
+        ${selectsql}
+    </select>
 
 </mapper>

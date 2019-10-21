@@ -5,14 +5,25 @@ import cn.wmyskxz.springboot.service.ExportAndImportService;
 import cn.wmyskxz.springboot.util.JsonUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -124,25 +135,106 @@ public class ExportAndImportContriller {
 
     @RequestMapping(value = "/addinfo", method = RequestMethod.POST)
     @ResponseBody
-    public Object addInfo(@RequestBody AddinfoRequestMO addinfoRequestMO) {
-        exportAndImportService.addInfo(addinfoRequestMO);
+    public Object addInfo(@RequestBody MakedataInfoRequestMO makedataInfoRequestMO) {
+        exportAndImportService.addInfo(makedataInfoRequestMO);
         return JsonUtil.success();
     }
 
 
     @RequestMapping(value = "/deleteinfoByid", method = RequestMethod.POST)
     @ResponseBody
-    public Object deleteinfoByid(@RequestBody AddinfoRequestMO addinfoRequestMO) {
-        exportAndImportService.deleteinfoByid(addinfoRequestMO);
+    public Object deleteinfoByid(@RequestBody MakedataInfoRequestMO makedataInfoRequestMO) {
+        exportAndImportService.deleteinfoByid(makedataInfoRequestMO);
         return JsonUtil.success();
     }
 
     @RequestMapping(value = "/delinfosByids", method = RequestMethod.POST)
     @ResponseBody
-    public Object delinfosByids(@RequestBody AddinfoRequestMO addinfoRequestMO) {
-        exportAndImportService.delinfosByids(addinfoRequestMO);
+    public Object delinfosByids(@RequestBody MakedataInfoRequestMO makedataInfoRequestMO) {
+        exportAndImportService.delinfosByids(makedataInfoRequestMO);
         return JsonUtil.success();
     }
 
+    @RequestMapping(value = "/editinfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Object editinfo(@RequestBody MakedataInfoRequestMO makedataInfoRequestMO) {
+        exportAndImportService.editinfo(makedataInfoRequestMO);
+        return JsonUtil.success();
+    }
+
+    @RequestMapping(value = "/getclounmsbytablename", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getClounmsByTablename(@RequestBody MakedataInfoRequestMO makedataInfoRequestMO) {
+        List<CloumsPropertyRequestMO> cloumsPropertyRequestMOList = exportAndImportService.getClounmsByTablename(makedataInfoRequestMO.getTablename());
+        return JsonUtil.success(cloumsPropertyRequestMOList);
+    }
+
+    @RequestMapping(value = "/getEmpAsMapById", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getEmpAsMapById(@RequestBody CurrencyRequestMO currencyRequestMO) {
+        List<Map<String, Object>> data = exportAndImportService.getEmpAsMapById(currencyRequestMO);
+        PageHelper.startPage(currencyRequestMO.getPage(), currencyRequestMO.getLimit());
+        //查询
+        PageInfo page = new PageInfo(data);
+        System.out.println("总数量：" + page.getTotal());
+        System.out.println("当前页查询记录：" + page.getList().size());
+        System.out.println("当前页码：" + page.getPageNum());
+        System.out.println("每页显示数量：" + page.getPageSize());
+        System.out.println("总页：" + page.getPages());
+        System.out.println(page);
+        Object object = JsonUtil.successTable(page.getList(), page.getTotal());
+        System.out.println(object);
+        return object;
+    }
+
+    //导入
+    @RequestMapping(value = "/importexcel", method = RequestMethod.POST)
+    @ResponseBody
+    public Object imporTexcel(@RequestParam("file") MultipartFile xlsFile, String tablename) {
+        Map<String, Object> map = exportAndImportService.importexcel(xlsFile, tablename);
+        return map;
+    }
+
+
+    /**
+     * 下载excel模板
+     */
+    @RequestMapping(value = "/downloadexcel", method = RequestMethod.GET)
+    @ResponseBody
+    public void downloadPermMatrix(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String formworkname = request.getParameter("formworkname");
+        Workbook wb;
+        try {
+            String path = "E:/resources/templates/" + formworkname + ".xls";
+            File file = new File(path);
+            InputStream inputStream = new FileInputStream(file);
+            // 根据不同excel创建不同对象,Excel2003版本-->HSSFWorkbook,Excel2007版本-->XSSFWorkbook
+            wb = WorkbookFactory.create(inputStream);
+            response.reset();
+            response.setContentType("multipart/form-data");
+            if (wb.getClass().getSimpleName() == "HSSFWorkbook") {
+                response.setHeader("Content-Disposition",
+                        "attachment; filename=" + new String("excel模板".getBytes(), "utf-8") + ".xls");
+            } else {
+                response.setHeader("Content-Disposition",
+                        "attachment; filename=" + new String("excel模板".getBytes(), "utf-8") + ".xls");
+            }
+            wb.write(response.getOutputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "/saveExcle", method = RequestMethod.POST)
+    @ResponseBody
+    public Object saveExcle(@RequestBody LeadingOutRequestMO leadingOutRequestMO) {
+        exportAndImportService.saveExcle(leadingOutRequestMO);
+        return JsonUtil.success();
+    }
+
+    public static void main(String[] args) {
+        String regex = "^(?![A-Za-z]+$)(?![A-Z\\d]+$)(?![A-Z\\W]+$)(?![a-z\\d]+$)(?![a-z\\W]+$)(?![\\d\\W]+$)\\S{8,20}$";
+        System.out.println("1234@qaz".matches(regex));
+    }
 
 }

@@ -77,19 +77,16 @@ function jztable(pNum, pSize) {
 }
 
 function daochudaoru() {
-    layer.open({
+    index = layer.open({
         type: 2,
-        area: ['450px', '230px'],
+        area: ['470px', '230px'],
         fixed: false, //不固定
         maxmin: false,
         scrollbar: false,
         title: false,
         shadeClose: true,//点击其他区域是否显示
         shade: [0.8, '#393D49'],
-        content: 'daochudaoru.html',
-        /*   end: function () {
-               layer.msg("已经销毁");
-           }*/
+        content: 'daochudaoru.html'
     });
 }
 
@@ -158,14 +155,13 @@ function delthis(id, tablename, u) {
 
 
 function downloadmoban() {
-    downloadTemplate('/api/downloadexcel', 'filename', 'project');
+    downloadTemplate('/api/downloadexcel', 'formworkname', 'formworkname');
 }
 
 function downloadTemplate(action, type, value) {
-    var ids = [];
+    /*var ids = [];
     ids.push(333);//获取数组中的id
-    ids.push(334);//获取数组中的id
-
+    ids.push(334);//获取数组中的id*/
     var form = document.createElement('form');
     document.body.appendChild(form);
     form.style.display = "none";
@@ -176,7 +172,7 @@ function downloadTemplate(action, type, value) {
     var newElement = document.createElement("input");
     newElement.setAttribute("type", "hidden");
     newElement.name = type;
-    newElement.value = JSON.stringify(ids);
+    newElement.value = "wangqiang";
     form.appendChild(newElement);
     form.submit();
 }
@@ -364,7 +360,6 @@ function logout() {
         async: false,
         url: "/hello/user/logout"
         , success: function (data) {
-            debugger;
             if (data.isSuccess == true) {
                 window.location.href = "/login.html";
             } else {
@@ -684,14 +679,88 @@ function gettabtitle(tablename) {
 }
 
 function getExit() {
-    return "   <div class=\"layui-btn-container\">\n" +
-        "        <button class=\"layui-btn layui-btn-danger layui-btn-xs\" lay-event=\"delete\"><i\n" +
-        "                class=\"layui-icon layui-icon-delete\"/>删除\n" +
-        "        </button>\n" +
-        "        <button class=\"layui-btn layui-btn-primary layui-btn-xs\" lay-event=\"update\"><i\n" +
-        "                class=\"layui-icon layui-icon-edit\"/>编辑\n" +
-        "        </button>\n" +
-        "    </div>";
+    var col = getDataBt();
+    var str = "<form class=\"layui-form layui-form-pane\" action=\"\" lay-filter=\"edit-filter-form\">";
+    if (col != null && col.length > 0) {
+        for (i = 0; i < col.length; i++) {
+            str += "<div class=\"layui-form-item\">";
+            str += "<label class=\"layui-form-label\">" + col[i].cloumtnote + "</label>";
+            str += "<div class=\"layui-input-block\">";
+            str += "<input type=\"text\" name=\"" + col[i].cloumtname + "\" required lay-verify=\"required\" placeholder=\"请输入标题\"   autocomplete=\"off\" class=\"layui-input\">";
+            str += "</div></div>";
+        }
+    }
+    str += "<div class=\"layui-form-item\">\n" +
+        "            <div class=\"layui-input-block\">\n" +
+        "                <button class=\"layui-btn layui-btn-sm\" lay-submit lay-filter=\"but-submit-editinfo\">立即提交</button>\n" +
+        "                <button type=\"reset\" class=\"layui-btn  layui-btn-sm layui-btn-primary\">重置</button>\n" +
+        "            </div>\n" +
+        "        </div>";
+    str += "</form>";
+    return str.toString();
 }
 
+function getclounmsbytablename(tablename) {
+    var str = "";
+    $.ajax({
+        type: "post",
+        contentType: 'application/json',
+        dataType: "json",
+        url: "/api/getclounmsbytablename",
+        data: JSON.stringify({
+            tablename: tablename
+        }),
+        success: function (data) {
+            if (data.isSuccess == true) {
+                var formselectdata = data.data;
+                if (formselectdata != null && formselectdata.length > 0) {
+                    for (i = 0; i < formselectdata.length; i++) {
+                        str += "<div class=\"layui-inline flexbox1child\">\n" +
+                            "                    <label class=\"layui-form-label cxlable\">" + formselectdata[i].cloumtnote + "</label>\n" +
+                            "                <div class=\"layui-input-inline colformstyle\"\n" +
+                            "                style=\"width: 200px; line-height: 30px\">";
+                        str += "<input type=\"text\" name=\"\" autocomplete=\"off\" class=\"layui-input colformstyle rdnf\" id=\"" + formselectdata[i].cloumtname + "\"></div> </div>";
 
+                    }
+                }
+
+
+                /*                str += "<button type=\"button\" class=\"layui-btn layui-btn-normal layui-btn-sm\" id=\"chaxun\">查询 </button>";
+                                str += "<button type=\"button\" onclick=\"daochudaoru();\" class=\"layui-btn layui-btn-primary layui-btn-sm\">导入导出 </button>";
+                                str += "<button type=\"button\" class=\"layui-btn layui-btn-danger layui-btn-sm\" id=\"piliangshanchu\">批量删除  </button>";*/
+                document.getElementById("form-select").innerHTML = str;
+            } else {
+                layer.msg(data.errorMessage);
+            }
+        },
+        error: function () {
+            layer.msg("操作失败");
+        }
+    });
+}
+
+function dataDaochu() {
+    var test = parent.$("#999test").val();
+    var table = parent.layui.table;
+    var checkStatus = table.checkStatus("xitongshezhit");
+    var col = getDataBt();
+    var tablename = col[0].tablename;
+    $.ajax({
+        type: "post",
+        contentType: 'application/json',
+        dataType: "json",
+        url: "/api/saveExcle",
+        data: JSON.stringify({checkdata: checkStatus.data, tablename: tablename}),
+        success: function (data) {
+            if (data.isSuccess == true) {
+                //假设这是iframe页
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                parent.layer.close(index); //再执行关闭
+                layer.msg("导出成功");
+            }
+        },
+        error: function () {
+            layer.msg("操作失败");
+        }
+    });
+}
